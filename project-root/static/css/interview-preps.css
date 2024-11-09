@@ -1,0 +1,192 @@
+/* General Styling for the Interview Preparation Page */
+body {
+  background: linear-gradient(
+    135deg,
+    #fff3e6,
+    #ffe5cc
+  ); /* Smooth gradient background */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  animation: backgroundWave 8s infinite alternate;
+}
+
+/* Header Styling */
+header {
+  background: #ff8c42; /* Orange color */
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  animation: bounceIn 1s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+nav ul li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Main Content Styling */
+main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 1.5s ease-in;
+}
+
+h2 {
+  text-align: center;
+  color: #ff8c42;
+  margin-bottom: 30px;
+  font-size: 1.8em;
+}
+
+h3 {
+  text-align: center;
+  color: #ff8c42;
+  margin-top: 25px;
+}
+
+section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  animation: slideInFromLeft 1s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+ul,
+ol {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+li {
+  margin-bottom: 8px;
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #ff8c42;
+  color: #fff;
+  margin-top: 40px;
+  animation: fadeIn 2s ease-in;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styling */
+button {
+  background: #ff8c42;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #e07a35;
+  transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  nav ul li {
+    display: block;
+    margin: 10px 0;
+  }
+
+  section {
+    padding: 15px;
+  }
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes backgroundWave {
+  0% {
+    background-color: #fff3e6;
+  }
+  100% {
+    background-color: #ffe5cc;
+  }
+}
