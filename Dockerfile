@@ -10,3 +10,4 @@ EXPOSE 80
 
 # Nginx runs by default on port 80
 CMD ["nginx", "-g", "daemon off;"]
+#######
