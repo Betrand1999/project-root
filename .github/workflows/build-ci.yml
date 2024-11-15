@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest  # Use the GitHub-hosted runner to run the actions
 
     container:
-      image: alpine:latest  # Use the official Alpine image, no need to build a custom image
+      image: alpine:latest  # Use the official Alpine image
 
     steps:
       - name: Checkout code
@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Docker in Alpine
         run: |
-          apk update && apk add --no-cache docker  # Install Docker in the Alpine container
+          apk update && apk add --no-cache docker  # Install Docker in Alpine
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
