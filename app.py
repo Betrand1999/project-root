@@ -18,7 +18,7 @@ users_collection = db['inventory_collection']  # Collection for storing user dat
 def home():
     video_url = None
     if 'username' in session:
-        video_url = "https://my-websites-videos.s3.amazonaws.com/videos/death%20row.mp4"  # Replace with your actual URL if needed
+        video_url = None  # Removed S3 video URL
     return render_template('index.html', video_url=video_url)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -60,22 +60,33 @@ def register():
 def services():
     return render_template('services.html')
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
-
 @app.route('/contact-form', methods=['GET', 'POST'])
 def contact_form():
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
+        category = request.form['category']
+        appointment = request.form.get('appointment')
         message = request.form['message']
-        contact_data = {'name': name, 'email': email, 'phone': phone, 'message': message}
+        
+        # Store the contact data in the database
+        contact_data = {
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'category': category,
+            'appointment': appointment,
+            'message': message
+        }
         db.contacts.insert_one(contact_data)
-        flash('Your message has been sent successfully.', 'success')
+
+        # Remove the email or SMS notification logic here
+        # Simply flash a success message
+        flash('Your message has been submitted successfully!', 'success')
+
         return redirect(url_for('home'))
     return render_template('contact-form.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(debug=True, port=8090)

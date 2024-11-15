@@ -12,6 +12,19 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/login.css') }}"
     />
+    <style>
+      .flash-messages {
+        list-style: none;
+        padding: 0;
+        margin: 1em 0;
+      }
+      .flash-messages .success {
+        color: green;
+      }
+      .flash-messages .error {
+        color: red;
+      }
+    </style>
   </head>
   <body>
     <div class="login-container">

@@ -23,9 +23,9 @@ body {
 
 /* Header Styling */
 header {
-  background: #1976d2; /* Slightly darker blue for better contrast */
+  background: #13ca4d; /* Slightly darker blue for better contrast */
   color: #fff;
-  padding: 20px;
+  padding: 60px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   animation: fadeInDown 1.5s ease-in-out;
@@ -116,12 +116,12 @@ input[type="tel"]:focus,
 input[type="datetime-local"]:focus,
 textarea:focus,
 select:focus {
-  border-color: #1976d2;
+  border-color: hsl(151, 79%, 46%);
   box-shadow: 0 0 5px rgba(25, 118, 210, 0.3);
 }
 
 input[type="submit"] {
-  background: #1976d2;
+  background: hsl(117, 79%, 46%);
   color: white;
   padding: 12px 20px;
   border: none;
@@ -132,12 +132,12 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-  background: #115293;
+  background: hsl(118, 79%, 32%);
   transform: translateY(-2px);
 }
 
 input[type="submit"]:active {
-  background: #0d3c61;
+  background: #80d27d;
   transform: translateY(0);
 }
 
@@ -145,7 +145,7 @@ input[type="submit"]:active {
 footer {
   text-align: center;
   padding: 15px;
-  background: #1976d2;
+  background: #18b74d;
   color: #fff;
   margin-top: 40px;
   animation: fadeIn 2.5s ease-in-out;
