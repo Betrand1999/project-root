@@ -1,43 +1,74 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     // Toggle navigation menu on smaller screens
-//     const navToggle = document.createElement("button");
-//     navToggle.className = "nav-toggle";
-//     navToggle.innerText = "Menu";
-//     document.querySelector("header").appendChild(navToggle);
-  
-//     const navMenu = document.querySelector("nav ul");
-//     navToggle.addEventListener("click", () => {
-//       navMenu.classList.toggle("visible");
-//     });
-  
-//     // Smooth scrolling for internal links
-//     const links = document.querySelectorAll('a[href^="#"], a[href^="index.html#"]');
-//     links.forEach(link => {
-//       link.addEventListener("click", function (e) {
-//         e.preventDefault();
-//         const target = document.querySelector(this.hash);
-//         if (target) {
-//           target.scrollIntoView({ behavior: "smooth" });
-//         }
-//       });
-//     });
-  
-//     // Scroll-to-top button
-//     const scrollToTopBtn = document.createElement("button");
-//     scrollToTopBtn.className = "scroll-to-top";
-//     scrollToTopBtn.innerText = "↑ Top";
-//     document.body.appendChild(scrollToTopBtn);
-  
-//     window.addEventListener("scroll", () => {
-//       if (window.pageYOffset > 300) {
-//         scrollToTopBtn.style.display = "block";
-//       } else {
-//         scrollToTopBtn.style.display = "none";
-//       }
-//     });
-  
-//     scrollToTopBtn.addEventListener("click", () => {
-//       window.scrollTo({ top: 0, behavior: "smooth" });
-//     });
-//   });
-  
+document.addEventListener("DOMContentLoaded", () => {
+    // Smooth scrolling for all internal links
+    const smoothScrollLinks = document.querySelectorAll("a[href^='#']");
+    smoothScrollLinks.forEach(link => {
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            const targetId = link.getAttribute("href").substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: "smooth" });
+            }
+        });
+    });
+
+    // Back to top button functionality
+    const backToTopButton = document.createElement("button");
+    backToTopButton.innerText = "↑ Top";
+    backToTopButton.className = "scroll-to-top";
+    document.body.appendChild(backToTopButton);
+
+    backToTopButton.style.display = "none";
+    backToTopButton.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.addEventListener("scroll", () => {
+        backToTopButton.style.display = window.pageYOffset > 300 ? "block" : "none";
+    });
+
+    // Modular function to reveal elements on scroll
+    const revealOnScroll = () => {
+        const sections = document.querySelectorAll("section");
+        const viewportHeight = window.innerHeight;
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop < viewportHeight - 100) {
+                section.classList.add("visible");
+            }
+        });
+    };
+    window.addEventListener("scroll", revealOnScroll);
+
+    // Inject dynamic styles for section reveal effect
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = `
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: none;
+            cursor: pointer;
+        }
+        .scroll-to-top:hover {
+            background: #0056b3;
+        }
+    `;
+    document.head.appendChild(styleSheet);
+});
+

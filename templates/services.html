@@ -4,23 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Our Services</title>
-    <link rel="stylesheet" href="../static/css/main.css" />
-
-    <link rel="stylesheet" href="../static/css/services.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/services.css') }}"
+    />
   </head>
   <body>
     <header>
-      <h1>Our Services</h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
+      <div class="header-container">
+        <div class="logo">CDC</div>
+        <h1>Our Services</h1>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('services') }}">Services</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
+
     <main>
-      <!-- Cloud Consulting Section -->
       <section>
         <h2>Cloud Consulting</h2>
         <p>
@@ -36,7 +44,6 @@
         </ul>
       </section>
 
-      <!-- DevOps Solutions Section -->
       <section>
         <h2>DevOps Solutions</h2>
         <p>
@@ -51,7 +58,6 @@
         </ul>
       </section>
 
-      <!-- Security and Compliance Section -->
       <section>
         <h2>Security and Compliance</h2>
         <p>
@@ -66,7 +72,6 @@
         </ul>
       </section>
 
-      <!-- Kubernetes and Container Solutions -->
       <section>
         <h2>Kubernetes and Container Solutions</h2>
         <p>
@@ -81,7 +86,6 @@
         </ul>
       </section>
 
-      <!-- Custom Software Development -->
       <section>
         <h2>Custom Software Development</h2>
         <p>
@@ -97,7 +101,6 @@
         </ul>
       </section>
 
-      <!-- Training and Workshops -->
       <section>
         <h2>Training and Workshops</h2>
         <p>
@@ -112,9 +115,18 @@
         </ul>
       </section>
     </main>
+
     <footer>
+      <div class="contact-info">
+        <p>
+          Phone: 240 298 1823 | Email:
+          <a href="mailto:mmutagha@gmail.com">mmutagha@gmail.com</a>
+        </p>
+      </div>
       <p>&copy; 2024 Cloud & DevOps Consulting. All rights reserved.</p>
     </footer>
-    <script src="../static/js/service.js"></script>
+
+    <script src="{{ url_for('static', filename='js/service.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/services.js') }}"></script>
   </body>
 </html>

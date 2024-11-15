@@ -101,3 +101,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.head.appendChild(styleSheet);
   });
   
+
+  // Function to scroll to the top of the page
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Show the button when the user scrolls down
+window.addEventListener('scroll', () => {
+  const scrollToTopButton = document.querySelector('.scroll-to-top');
+  if (window.pageYOffset > 300) {
+    scrollToTopButton.style.display = 'block';
+  } else {
+    scrollToTopButton.style.display = 'none';
+  }
+});

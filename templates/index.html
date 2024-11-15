@@ -4,42 +4,83 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Consulting Homepage</title>
-    <link rel="stylesheet" href="../static/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <style>
+      /* CSS for Moving Image */
+      .moving-image-container {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 300px; /* Adjust height as needed */
+        margin: 20px 0;
+      }
 
-    <link rel="stylesheet" href="../static/css/index.css" />
+      .moving-image {
+        position: absolute;
+        width: 1400px; /* Adjust the size as needed */
+        height: auto;
+        animation: moveImage 30s linear infinite;
+      }
+
+      @keyframes moveImage {
+        0% {
+          left: -150px; /* Start off-screen (left) */
+        }
+        50% {
+          left: 50%; /* Move to the center */
+          transform: translateX(-50%);
+        }
+        100% {
+          left: 100%; /* Move off-screen (right) */
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Header Section -->
     <header>
       <div class="header-container">
         <div class="logo">CDC</div>
         <h1>Welcome to Cloud & DevOps Consulting</h1>
-        <nav>
+        <nav aria-label="Main Navigation">
           <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="contact-form.html">Contact Form</a></li>
-            <li><a href="hands-on.html">Hands-On Practice</a></li>
-            <li><a href="interview-preps.html">Interview Preps</a></li>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('services') }}">Services</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            <li><a href="{{ url_for('contact_form') }}">Contact Form</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
-    <!-- Main Content -->
     <main>
       <!-- Hero Section -->
       <section class="hero">
         <h2>Empowering Your Cloud & DevOps Journey</h2>
         <p>
           We specialize in delivering Cloud and DevOps consulting services
-          tailored to meet your unique business needs. Our expertise helps you
-          achieve seamless, scalable, and secure infrastructure solutions.
+          tailored to meet your unique business needs.
         </p>
-        <button onclick="window.location.href='services.html'">
+        <button onclick="window.location.href='{{ url_for('services') }}'">
           Explore Services
         </button>
+      </section>
+
+      <!-- Moving Image Section -->
+      <section class="moving-image-container">
+        <img
+          src="{{ url_for('static', filename='images/image.jpg') }}"
+          alt="Moving Image"
+          class="moving-image"
+        />
       </section>
 
       <!-- Services Highlights -->
@@ -52,14 +93,14 @@
               Cloud migration, strategy, and optimization tailored for your
               business.
             </p>
-            <a href="services.html">Learn More</a>
+            <a href="{{ url_for('services') }}" class="btn-link">Learn More</a>
           </div>
           <div class="card">
             <h4>DevOps Solutions</h4>
             <p>
               CI/CD pipelines, automated infrastructure, and efficient delivery.
             </p>
-            <a href="services.html">Learn More</a>
+            <a href="{{ url_for('services') }}" class="btn-link">Learn More</a>
           </div>
           <div class="card">
             <h4>Security & Compliance</h4>
@@ -67,7 +108,7 @@
               Ensure security and compliance across your cloud and on-premise
               environments.
             </p>
-            <a href="services.html">Learn More</a>
+            <a href="{{ url_for('services') }}" class="btn-link">Learn More</a>
           </div>
         </div>
       </section>
@@ -76,16 +117,13 @@
       <section class="quick-links">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="services.html">View Our Services</a></li>
-          <li><a href="contact.html">Get in Touch</a></li>
-          <li><a href="contact-form.html">Contact Form</a></li>
-          <li><a href="hands-on.html">Hands-On Practice</a></li>
-          <li><a href="interview-preps.html">Interview Preparation</a></li>
+          <li><a href="{{ url_for('services') }}">View Our Services</a></li>
+          <li><a href="{{ url_for('contact') }}">Get in Touch</a></li>
+          <li><a href="{{ url_for('contact_form') }}">Contact Form</a></li>
         </ul>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer>
       <div class="contact-info">
         <p>
@@ -95,8 +133,7 @@
       </div>
       <p>&copy; 2024 Cloud & DevOps Consulting. All rights reserved.</p>
     </footer>
-    <script src="../static/js/main.js"></script>
-    <script src="../static/js/index.js"></script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>
-# TESTT
