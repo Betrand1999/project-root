@@ -29,11 +29,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-cloud-devops-consulting:latest -f Dockerfile .
+          docker build -t  betrand1997/my-static-websites .
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/my-cloud-devops-consulting:latest
+          docker push betrand1997/my-static-websites
 
   approval:
     runs-on: ubuntu-latest
