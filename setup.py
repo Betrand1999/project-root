@@ -1,18 +1,23 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='my-cloud-devops-consulting',  # Use a unique project name
-    version='0.1.1',  # Updated version
+    name='my-cloud-devops-consulting',
+    version='0.1.1',
     author='Betrand Mutagha',
     author_email='mmutagha@gmail.com',
     description='This is my consulting website for Cloud & DevOps services.',
-    long_description=open('README.md').read(),  # Make sure README.md exists
+    long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/Betrand1999/project-root',  # Replace with your GitHub project URL
-    packages=find_packages(),  # Automatically find all packages in the current directory
+    url='https://github.com/Betrand1999/project-root',
+    packages=find_packages(where="."),  # Include the root as the package
+    py_modules=["app"],  # Explicitly include app.py
+    include_package_data=True,  # Ensures static and template files are included
+    package_data={
+        "": ["static/**/*", "templates/**/*"],  # Include static and templates from the root
+    },
     install_requires=[
-        'Flask>=2.0',  # Add Flask as a dependency
-        'pymongo',  # Example for MongoDB driver
+        'Flask>=2.0',
+        'pymongo',
         'werkzeug',
         'requests',
     ],

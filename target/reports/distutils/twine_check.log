@@ -1,0 +1,8 @@
+Checking 
+/Users/betrandmutagha/project-root/target/dist/my_cloud_devops_consulting-0.1.0/
+dist/my_cloud_devops_consulting-0.1.0-py3-none-any.whl: [33mPASSED with warnings[0m
+[33mWARNING [0m `long_description_content_type` missing. defaulting to `text/x-rst`.   
+Checking 
+/Users/betrandmutagha/project-root/target/dist/my_cloud_devops_consulting-0.1.0/
+dist/my_cloud_devops_consulting-0.1.0.tar.gz: [33mPASSED with warnings[0m
+[33mWARNING [0m `long_description_content_type` missing. defaulting to `text/x-rst`.   

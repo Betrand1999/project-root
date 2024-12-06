@@ -1,5 +1,6 @@
 MANIFEST.in
 README.md
+app.py
 setup.py
 my_cloud_devops_consulting.egg-info/PKG-INFO
 my_cloud_devops_consulting.egg-info/SOURCES.txt

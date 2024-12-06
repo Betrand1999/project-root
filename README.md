@@ -81,3 +81,40 @@ what is twine: Twine is a utility for publishing Python packages on the Python P
 twine upload dist/my_cloud_devops_consulting-0.1.1-py3-none-any.whl
 
 #############################################################################
+How route are configure in apache2
+sudo vi /etc/apache2/sites-available/000-default.conf
+
+
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+
+    # Default application
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+
+    # Application running on port 9090
+    ProxyPass /app2 http://localhost:9090/
+    ProxyPassReverse /app2 http://localhost:9090/
+
+    # Logging
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+# Enable both configurations and restart Apache:
+
+bash
+Copy code
+sudo a2ensite app1.conf
+sudo a2ensite app2.conf
+sudo systemctl restart apache2
+
+
+ # sudo systemctl restart apache2
+
+####################################################
+https://www.youtube.com/watch?v=3j33lNzMZlM&t=308s
+####################################################

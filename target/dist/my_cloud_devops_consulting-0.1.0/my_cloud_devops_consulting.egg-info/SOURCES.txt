@@ -1,0 +1,8 @@
+setup.py
+my_cloud_devops_consulting.egg-info/PKG-INFO
+my_cloud_devops_consulting.egg-info/SOURCES.txt
+my_cloud_devops_consulting.egg-info/dependency_links.txt
+my_cloud_devops_consulting.egg-info/namespace_packages.txt
+my_cloud_devops_consulting.egg-info/requires.txt
+my_cloud_devops_consulting.egg-info/top_level.txt
+my_cloud_devops_consulting.egg-info/zip-safe
