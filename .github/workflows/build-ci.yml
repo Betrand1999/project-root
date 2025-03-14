@@ -3,7 +3,7 @@ name: Build and Deploy Docker Image
 on:
   push:
     branches:
-      - dev  # Trigger this workflow on pushes to the 'dev' branch
+      - main  # Trigger this workflow on pushes to the 'dev' branch
   workflow_dispatch:  # Manually trigger the workflow
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: Await Approval
         run: |
-          echo "Waiting for approval..."
+          echo "Waiting for approval..." 
         # Optional: You could use a manual approval action here
 
   # deploy-to-eks:
