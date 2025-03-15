@@ -1,41 +1,40 @@
-name: Build, Test, and Deploy Docker Image
+name: Build and Push Python Package
 
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the 'main' branch
-  
+      - main  
 jobs:
-  test:
+  build:
+    name: Build Python Package
     runs-on: ubuntu-latest
-    
-    container:
-      image: alpine:latest 
+    environment: prod
 
     steps:
-      - name: Install dependencies
-        run: |
-          yum install -y python3 python3-pip  # Use yum for Amazon Linux
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Set Up Python Environment
+        run: |
+          python3 -m venv venv
+          venv/bin/python -m pip install --upgrade pip
+          venv/bin/pip install -r requirements.txt --no-cache-dir
+
+      - name: Ensure Clean Build
+        run: |
+          rm -rf dist build *.egg-info
+
+      - name: Ensure dist directory exists
+        run: mkdir -p dist
+
+      - name: Build Python Package
+        run: |
+          venv/bin/python -m pip install --upgrade setuptools wheel
+          venv/bin/python setup.py sdist bdist_wheel
+          ls -lah dist/
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
         with:
-          repository: Betrand1999/project-root
-          path: project-root  # Clones repo into _work/project-root/
-
-      - name: Verify repository contents
-        run: ls -lah project-root  # Debugging step
-
-      - name: Install Python dependencies
-        run: |
-          cd project-root  # Navigate into project directory
-          python3 -m ensurepip
-          python3 -m pip install --upgrade pip
-          pip3 install -r requirements.txt
-        shell: bash
-
-      - name: Run unit tests
-        run: |
-          cd project-root  # Navigate into project directory
-          pytest -v tests/  # Ensure 'tests/' is the correct path for your test files
-        shell: bash
+          name: python-package-${{ github.run_id }}
+          path: dist/
