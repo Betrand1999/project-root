@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-app-service
+  name: pod-a-service
   namespace: dev
 spec:
   selector:
-    app: my-app
+    workload.user.cattle.io/workloadselector: pod-dev-pod-a
   ports:
     - protocol: TCP
-      port: 8080  # External port (maps to 80 inside the container)
-      targetPort: 80  # The container's exposed port
-  type: NodePort  # Change to NodePort if LoadBalancer isn't available
+      port: 8080      # External port to access
+      targetPort: 80  # The port the container listens on
+  type: NodePort

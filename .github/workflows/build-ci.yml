@@ -143,28 +143,26 @@ jobs:
         run: docker push betrand1997/my-static-websites
 ##### Deploy to Kubernetes ####
   deploy-to-k8s:
-    name: Deploy to Kubernetes
-    runs-on: self-hosted  # Use your self-hosted runner with Kubernetes installed
-    needs: build-and-deploy  # Runs only after Docker image is pushed to Docker Hub
+   name: Deploy to Kubernetes
+   runs-on: self-hosted  # Use your self-hosted runner with Kubernetes installed
+   needs: build-and-deploy
+   steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Verify kubectl Installation
+      run: kubectl version --client
 
-      - name: Verify kubectl Installation
-        run: kubectl version --client
+    - name: Apply Kubernetes Namespace
+      run: kubectl apply -f kubernetes/namespace.yaml
 
-      - name: Set Namespace Context
-        run: kubectl config set-context --current --namespace=dev
+    - name: Apply Kubernetes Manifests
+      run: |
+        kubectl apply -f kubernetes/deployment.yaml -n dev
+        kubectl apply -f kubernetes/service.yaml -n dev
 
-      - name: Pull Docker Image from Docker Hub
-        run: docker pull betrand1997/my-static-websites:latest
+    - name: Wait for Deployment to be Ready
+      run: kubectl rollout status deployment/my-app -n dev
 
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f kubernetes/namespace.yaml -n dev
-          kubectl apply -f kubernetes/deployment.yaml -n dev
-          kubectl apply -f kubernetes/service.yaml -n dev
-
-      - name: Verify Deployment
-        run: kubectl get pods -n dev -o wide
+    - name: Verify Deployment
+      run: kubectl get pods -n dev -o wide
