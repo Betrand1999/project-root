@@ -83,3 +83,36 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  ################### Publish to PyPI ################
+  package-and-publish:
+    name: Publish to PyPI
+    runs-on: [self-hosted]
+    # needs: sonarqube
+    environment: prod
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set Up Python Environment for Packaging
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install setuptools wheel twine
+
+      - name: Clean Dist Directory
+        run: rm -rf dist
+
+      - name: Build Package
+        run: |
+          source venv/bin/activate
+          python setup.py sdist bdist_wheel
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          source venv/bin/activate
+          twine upload dist/*
