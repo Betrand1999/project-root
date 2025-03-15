@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: dev
+  labels:
+    app: my-app
+spec:
+  replicas: 1  # Set to more if you need high availability
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      restartPolicy: Always  # Ensures pod restarts on failure or reboot
+      containers:
+        - name: my-app
+          image: betrand1997/my-static-websites:latest
+          ports:
+            - containerPort: 80  # The container runs on port 80
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
