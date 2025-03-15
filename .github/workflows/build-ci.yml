@@ -11,20 +11,25 @@ jobs:
     
     steps:
       - name: Install dependencies
-        run:  sudo yum install -y python3 python3-pip  # Use yum instead of apk
+        run: sudo yum install -y python3 python3-pip  # Use yum instead of apk
 
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          repository: Betrand1999/project-root
+          path: project-root  # Ensures repo is cloned into _work/project-root/
+
+      - name: Verify repository contents
+        run: ls -lah project-root  # Debugging step to confirm files are present
 
       - name: Install Python dependencies
         run: |
+          cd project-root  # Ensure we're in the right directory
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
           pip3 install -r requirements.txt
 
       - name: Run unit tests
         run: |
+          cd project-root  # Ensure we're in the right directory
           pytest -v
-
-
-  ###
