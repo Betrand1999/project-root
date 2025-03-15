@@ -1,3 +1,4 @@
+##### Build Python ######
 name: Build, Test, and Upload Python Package Artifact
 
 on:
@@ -8,7 +9,7 @@ on:
 jobs:
   build:
     name: Build Python Package
-    runs-on: self-hosted # Change this if needed (e.g., ubuntu-latest)
+    runs-on: self-hosted
     environment: prod
 
     steps:
@@ -22,8 +23,7 @@ jobs:
           venv/bin/pip install -r requirements.txt --no-cache-dir
 
       - name: Ensure Clean Build
-        run: |
-          rm -rf dist build *.egg-info
+        run: rm -rf dist build *.egg-info
 
       - name: Ensure dist directory exists
         run: mkdir -p dist
@@ -39,13 +39,12 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
-
-  # Run Unit Test With Pytest
+##### Unit Test ######
   test:
     name: Run Unit Tests
-    runs-on: ubuntu-latest # or self-hosted if you prefer
-    needs: build # Ensures this job runs after the build job
-
+    runs-on: ubuntu-latest
+    needs: build  # Runs only after 'build'
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -64,17 +63,13 @@ jobs:
           venv/bin/pip install pytest
 
       - name: Run Unit Tests
-        run: |
-          venv/bin/python -m pytest tests/ --disable-warnings
-
-  ############################################################
+        run: venv/bin/python -m pytest tests/ --disable-warnings
+######## SonarQube Scan #########
   sonarqube:
     name: SonarQube Scan
-    runs-on: [self-hosted]
-    #timeout-minutes: 3
-    needs: test
+    runs-on: self-hosted
+    needs: test  # Runs only after tests pass
     environment: prod
-    if: false
 
     steps:
       - name: Checkout Code
@@ -85,13 +80,13 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-  ################### Publish to PyPI ################
+##### package-and-publish #########
   package-and-publish:
     name: Publish to PyPI
-    runs-on: [self-hosted]
-    # needs: sonarqube
+    runs-on: self-hosted
+    # needs: sonarqube  # Ensures SonarQube scan completes before publishing
     environment: prod
+    if: false
 
     steps:
       - name: Checkout Code
@@ -119,20 +114,19 @@ jobs:
         run: |
           source venv/bin/activate
           twine upload dist/*
-
-  ################### Build and Deploy Docker Image ################
+##### Package artifact as container and push to docker Hub ####
   build-and-deploy:
+    name: Build and Deploy Docker Image
     runs-on: ubuntu-latest
-    needs: test # Ensures tests pass before building the Docker image
+    needs: package-and-publish  # Runs only after PyPI publishing is complete
     container:
-      image: alpine:latest # Use Alpine as the base image
+      image: alpine:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Install Docker in Alpine
-        run: |
-          apk update && apk add --no-cache docker
+        run: apk update && apk add --no-cache docker
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -141,9 +135,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: |
-          docker build -t betrand1997/my-static-websites .
+        run: docker build -t betrand1997/my-static-websites .
 
       - name: Push Docker image to Docker Hub
-        run: |
-          docker push betrand1997/my-static-websites
+        run: docker push betrand1997/my-static-websites
