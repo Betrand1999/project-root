@@ -42,7 +42,7 @@ jobs:
 ##### Unit Test ######
   test:
     name: Run Unit Tests
-    runs-on: [self-hosted]
+    runs-on: self-hosted
     needs: build
     environment: prod
     continue-on-error: true  # Continue workflow even if tests fail
