@@ -8,8 +8,7 @@ on:
 jobs:
   test:
     runs-on: self-hosted
-    container:
-      image: alpine:latest  # Use Alpine as the base image
+    
     steps:
       - name: Install dependencies
         run: apk add --no-cache python3 py3-pip
