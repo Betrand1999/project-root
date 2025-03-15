@@ -3,33 +3,39 @@ name: Build, Test, and Deploy Docker Image
 on:
   push:
     branches:
-      - main  # Trigger this workflow on pushes to the 'main' branch
+      - main  # Trigger on pushes to the 'main' branch
   
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     
+    container:
+      image: alphine  # Specify the container image (adjust if using another base)
+
     steps:
       - name: Install dependencies
-        run: sudo yum install -y python3 python3-pip  # Use yum instead of apk
+        run: |
+          yum install -y python3 python3-pip  # Use yum for Amazon Linux
 
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           repository: Betrand1999/project-root
-          path: project-root  # Ensures repo is cloned into _work/project-root/
+          path: project-root  # Clones repo into _work/project-root/
 
       - name: Verify repository contents
-        run: ls -lah project-root  # Debugging step to confirm files are present
+        run: ls -lah project-root  # Debugging step
 
       - name: Install Python dependencies
         run: |
-          cd project-root  # Ensure we're in the right directory
+          cd project-root  # Navigate into project directory
           python3 -m ensurepip
           python3 -m pip install --upgrade pip
           pip3 install -r requirements.txt
+        shell: bash
 
       - name: Run unit tests
         run: |
-          cd project-root  # Ensure we're in the right directory
-          pytest -v
+          cd project-root  # Navigate into project directory
+          pytest -v tests/  # Ensure 'tests/' is the correct path for your test files
+        shell: bash
