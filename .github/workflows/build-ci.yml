@@ -39,7 +39,8 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
-# Run Unit Test With Pytest
+
+  # Run Unit Test With Pytest
   test:
     name: Run Unit Tests
     runs-on: ubuntu-latest # or self-hosted if you prefer
@@ -65,6 +66,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           venv/bin/python -m pytest tests/ --disable-warnings
+
   ############################################################
   sonarqube:
     name: SonarQube Scan
@@ -72,7 +74,7 @@ jobs:
     #timeout-minutes: 3
     needs: test
     environment: prod
-    #if: false
+    if: false
 
     steps:
       - name: Checkout Code
@@ -83,6 +85,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
   ################### Publish to PyPI ################
   package-and-publish:
     name: Publish to PyPI
@@ -116,3 +119,31 @@ jobs:
         run: |
           source venv/bin/activate
           twine upload dist/*
+
+  ################### Build and Deploy Docker Image ################
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: test # Ensures tests pass before building the Docker image
+    container:
+      image: alpine:latest # Use Alpine as the base image
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Docker in Alpine
+        run: |
+          apk update && apk add --no-cache docker
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t betrand1997/my-static-websites .
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push betrand1997/my-static-websites
