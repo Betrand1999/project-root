@@ -1,4 +1,4 @@
-name: Build and Upload Python Package Artifact
+name: Build, Test, and Upload Python Package Artifact
 
 on:
   push:
@@ -39,4 +39,29 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
-#####
+
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest # or self-hosted if you prefer
+    needs: build # Ensures this job runs after the build job
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-${{ github.run_id }}
+          path: dist/
+
+      - name: Set Up Python Environment
+        run: |
+          python3 -m venv venv
+          venv/bin/python -m pip install --upgrade pip
+          venv/bin/pip install -r requirements.txt --no-cache-dir
+          venv/bin/pip install pytest
+
+      - name: Run Unit Tests
+        run: |
+          venv/bin/python -m pytest tests/ --disable-warnings
