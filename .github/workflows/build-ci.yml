@@ -1,13 +1,14 @@
-name: Build and Push Python Package
+name: Build and Upload Python Package Artifact
 
 on:
   push:
     branches:
       - main  
+
 jobs:
   build:
     name: Build Python Package
-    runs-on: self-hosted # ubuntu-latest # 
+    runs-on: self-hosted # Change this if needed (e.g., ubuntu-latest)
     environment: prod
 
     steps:
@@ -38,3 +39,4 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
+#####
