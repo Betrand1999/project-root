@@ -5,9 +5,9 @@ metadata:
   namespace: dev
 spec:
   selector:
-    workload.user.cattle.io/workloadselector: pod-dev-pod-a
+    app: my-app  # ✅ Fix: Change this to match your pod
   ports:
     - protocol: TCP
-      port: 8080      # External port to access
-      targetPort: 80  # The port the container listens on
+      port: 8080  # The external port
+      targetPort: 80  # The container’s internal port
   type: NodePort
