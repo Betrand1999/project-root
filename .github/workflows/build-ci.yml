@@ -86,9 +86,9 @@ jobs:
   package-and-publish:
     name: Publish to PyPI
     runs-on: self-hosted
-    # needs: sonarqube  # Ensures SonarQube scan completes before publishing
+    needs: sonarqube
     environment: prod
-    if: false
+    # if: false
 
     steps:
       - name: Checkout Code
