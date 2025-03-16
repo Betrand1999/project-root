@@ -1,5 +1,5 @@
 ##### Build Python ######
-name: Build, Test, and Upload Python Package Artifact
+name: Build, Test, and Upload Python Package Artifact 
 
 on:
   pull_request_review:
