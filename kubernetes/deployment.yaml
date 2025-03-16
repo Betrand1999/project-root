@@ -17,5 +17,4 @@ spec:
         - name: my-app
           image: betrand1997/my-static-websites:latest
           ports:
-            - containerPort: 80
-              hostPort: 8080  # This makes it accessible on <VM-IP>:8080
+            - containerPort: 80  # Removed hostPort

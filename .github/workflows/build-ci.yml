@@ -2,13 +2,18 @@
 name: Build, Test, and Upload Python Package Artifact
 
 on:
-  push:
-    branches:
-      - main  
+  pull_request_review:
+     types:
+      - submitted
+    
+     push:
+      branches:
+        - main
 
 jobs:
   build:
     name: Build Python Package
+    if: github.event_name == 'push' || github.event.review.state == 'approved'
     runs-on: self-hosted
     environment: prod
 
