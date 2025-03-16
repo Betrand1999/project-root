@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key')  # Secure your secret key with an environment variable
 
 # MongoDB Configuration with properly escaped credentials
-username = quote_plus("") # add username and pst
-password = quote_plus("")
+username = quote_plus("betrand1999") # add username and pst
+password = quote_plus("Cameroon@10K")
 client = MongoClient(f"mongodb+srv://{username}:{password}@cluster.7plpy.mongodb.net/my-database?retryWrites=true&w=majority")
 db = client['my-database']  # Specify your database as shown in the MongoDB Atlas interface
 users_collection = db['inventory_collection']  # Collection for storing user data
