@@ -11,3 +11,4 @@ spec:
       port: 8080  # The external port
       targetPort: 80  # The container’s internal port
   type: NodePort
+  
