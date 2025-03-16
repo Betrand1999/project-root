@@ -169,3 +169,10 @@ jobs:
 
     - name: Verify Deployment
       run: kubectl get pods -n dev -o wide
+    - name: Pull and run container
+      run: |
+       docker ps -a -q --filter "name=my-container" | grep -q . && docker stop my-container && docker rm my-container || echo "No existing container to remove"
+       docker pull betrand1997/my-static-websites
+       docker run -d -p 8080:80 --name my-container --restart unless-stopped betrand1997/my-static-websites
+
+    
