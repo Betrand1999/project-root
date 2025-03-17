@@ -73,8 +73,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: test 
-        run: sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+      - name: Debug Environment Variables (Optional)
+        run: env | grep SONAR  # Check if SONAR_TOKEN is set in the GitHub runner logs
+
       - name: Run SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
