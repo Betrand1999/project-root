@@ -69,7 +69,7 @@ jobs:
     name: SonarQube Scan
     runs-on: self-hosted
     needs: test
-    environment: ${{ github.event.inputs.environment }}
+    # environment: ${{ github.event.inputs.environment }}
 
     steps:
       - name: Checkout Code
@@ -155,8 +155,9 @@ jobs:
 
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kubernetes/deployment.yaml -n ${{ github.event.inputs.environment }}
-          kubectl apply -f kubernetes/service.yaml -n ${{ github.event.inputs.environment }}
+          kubectl apply -f kubernetes/namespace.yaml -n prod
+          kubectl apply -f kubernetes/deployment.yaml -n prod
+          kubectl apply -f kubernetes/service.yaml -n prod
 
       - name: Wait for Deployment to be Ready
         run: kubectl rollout status deployment/my-app -n ${{ github.event.inputs.environment }}
