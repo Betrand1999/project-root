@@ -141,7 +141,7 @@ jobs:
   deploy-to-k8s:
     name: Deploy to Kubernetes
     runs-on: self-hosted
-    needs: build-and-deploy  # Should run automatically without approval
+    needs: build-and-deploy  # Should run automatically without approval #
 
     steps:
       - name: Checkout Code
