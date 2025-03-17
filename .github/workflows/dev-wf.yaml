@@ -153,10 +153,6 @@ jobs:
 
       - name: Verify kubectl Installation
         run: kubectl version --client
-
-      - name: Apply Kubernetes Namespace
-        run: kubectl apply -f kubernetes/namespace.yaml
-
       - name: Apply Kubernetes Manifests
         run: |
           kubectl apply -f kubernetes/dev-namespace.yaml -n dev
