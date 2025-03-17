@@ -73,7 +73,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
+      - name: test 
+        run: sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - name: Run SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
