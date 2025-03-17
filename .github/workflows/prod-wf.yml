@@ -72,12 +72,6 @@ jobs:
    steps:
     - name: Checkout Code
       uses: actions/checkout@v4
-
-    - name: Debug SonarQube Variables
-      run: |
-        echo "SonarQube URL: ${{ secrets.SONAR_HOST_URL }}"
-        echo "SonarQube Token: ${{ secrets.SONAR_TOKEN }}"
-
     - name: Run SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
