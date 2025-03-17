@@ -155,7 +155,6 @@ jobs:
         run: kubectl version --client
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kubernetes/dev-namespace.yaml -n dev
           kubectl apply -f kubernetes/deployment.yaml -n dev
           kubectl apply -f kubernetes/service.yaml -n dev
 
