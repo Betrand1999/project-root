@@ -152,21 +152,17 @@ jobs:
 
       - name: Verify kubectl Installation
         run: kubectl version --client
-
-      - name: Apply Kubernetes Namespace
-        run: kubectl apply -f kubernetes/namespace.yaml
-
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kubernetes/namespace.yaml -n prod
+          kubectl apply -f kubernetes/prod-namespace.yaml -n prod
           kubectl apply -f kubernetes/deployment.yaml -n prod
           kubectl apply -f kubernetes/service.yaml -n prod
 
       - name: Wait for Deployment to be Ready
-        run: kubectl rollout status deployment/my-app -n ${{ github.event.inputs.environment }}
+        run: kubectl rollout status deployment/my-app -n prod
 
       - name: Verify Deployment
-        run: kubectl get pods -n ${{ github.event.inputs.environment }} -o wide
+        run: kubectl get pods -n prod -o wide
 
       - name: Stop and Remove Existing Container (if exists)
         run: |
