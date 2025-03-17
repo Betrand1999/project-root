@@ -192,12 +192,6 @@
 name: Build and Deploy
 
 on:
-  pull_request_review:
-    types:
-      - submitted
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       environment:
@@ -214,9 +208,8 @@ on:
 jobs:
   build:
     name: Build Python Package
-    if: github.event_name == 'push' || (github.event_name == 'pull_request_review' && github.event.review.state == 'approved') || github.event_name == 'workflow_dispatch'
     runs-on: self-hosted
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment }}  # Requires approval only for the first job
 
     steps:
       - name: Checkout Code
@@ -249,9 +242,8 @@ jobs:
   test:
     name: Run Unit Tests
     runs-on: self-hosted
-    needs: build
+    needs: build  # Runs automatically after build is approved
     environment: ${{ github.event.inputs.environment }}
-    continue-on-error: true
 
     steps:
       - name: Checkout Code
