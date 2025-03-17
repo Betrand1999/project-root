@@ -1,194 +1,3 @@
-# ##### Build Python ######
-# name: Build
-
-# on:
-#   pull_request_review:
-#     types:
-#       - submitted
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     name: Build Python Package
-#     if: github.event_name == 'push' || (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
-#     runs-on: self-hosted
-#     environment: prod
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Set Up Python Environment
-#         run: |
-#           python3 -m venv venv
-#           venv/bin/python -m pip install --upgrade pip
-#           venv/bin/pip install -r requirements.txt --no-cache-dir
-
-#       - name: Ensure Clean Build
-#         run: rm -rf dist build *.egg-info
-
-#       - name: Ensure dist directory exists
-#         run: mkdir -p dist
-
-#       - name: Build Python Package
-#         run: |
-#           venv/bin/python -m pip install --upgrade setuptools wheel
-#           venv/bin/python setup.py sdist bdist_wheel
-#           ls -lah dist/
-
-#       - name: Upload Build Artifact
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: python-package-${{ github.run_id }}
-#           path: dist/
-
-# ##### Unit Test ######
-#   test:
-#     name: Run Unit Tests
-#     runs-on: self-hosted
-#     needs: build
-#     environment: prod
-#     continue-on-error: true  # Continue workflow even if tests fail
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Set Up Python Environment
-#         run: |
-#           python3 -m venv venv
-#           source venv/bin/activate
-#           pip install --upgrade pip
-#           pip install -r requirements.txt
-#           pip install pytest  # Ensure pytest is installed
-
-#       - name: Run Unit Tests
-#         run: venv/bin/python -m pytest tests/ --disable-warnings
-
-# ######## SonarQube Scan #########
-#   sonarqube:
-#     name: SonarQube Scan
-#     runs-on: self-hosted
-#     needs: test  # Runs only after tests pass
-#     environment: prod
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Run SonarQube Scan
-#         uses: sonarsource/sonarqube-scan-action@master
-#         env:
-#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-# ##### package-and-publish #########
-#   package-and-publish:
-#     name: Publish to PyPI
-#     runs-on: self-hosted
-#     needs: sonarqube
-#     environment: prod
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Set Up Python Environment for Packaging
-#         run: |
-#           python3 -m venv venv
-#           source venv/bin/activate
-#           pip install --upgrade pip
-#           pip install setuptools wheel twine
-
-#       - name: Clean Dist Directory
-#         run: rm -rf dist
-
-#       - name: Build Package
-#         run: |
-#           source venv/bin/activate
-#           python setup.py sdist bdist_wheel
-
-#       - name: Publish to PyPI
-#         env:
-#           TWINE_USERNAME: __token__
-#           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-#         run: |
-#           source venv/bin/activate
-#           twine upload dist/*
-
-# ##### Package artifact as container and push to Docker Hub ####
-#   build-and-deploy:
-#     name: Build and Deploy Docker Image
-#     runs-on: ubuntu-latest
-#     needs: package-and-publish  # Runs only after PyPI publishing is complete
-#     container:
-#       image: alpine:latest
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Install Docker in Alpine
-#         run: apk update && apk add --no-cache docker
-
-#       - name: Log in to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-
-#       - name: Build Docker Image
-#         run: docker build -t betrand1997/my-static-websites .
-
-#       - name: Push Docker Image to Docker Hub
-#         run: docker push betrand1997/my-static-websites
-
-# ##### Deploy to Kubernetes ####
-#   deploy-to-k8s:
-#     name: Deploy to Kubernetes
-#     runs-on: self-hosted  # Use your self-hosted runner with Kubernetes installed
-#     needs: build-and-deploy
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Verify kubectl Installation
-#         run: kubectl version --client
-
-#       - name: Apply Kubernetes Namespace
-#         run: kubectl apply -f kubernetes/namespace.yaml
-
-#       - name: Apply Kubernetes Manifests
-#         run: |
-#           kubectl apply -f kubernetes/namespace.yaml
-#           kubectl apply -f kubernetes/deployment.yaml -n dev
-#           kubectl apply -f kubernetes/service.yaml -n dev
-
-#       - name: Wait for Deployment to be Ready
-#         run: kubectl rollout status deployment/my-app -n dev
-
-#       - name: Verify Deployment
-#         run: kubectl get pods -n dev -o wide
-
-#       - name: Stop and Remove Existing Container (if exists)
-#         run: |
-#          docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
-#          docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
-#       - name: Check if Port 8080 is in Use and Kill Process
-#         run: |
-#          sudo lsof -i :8080 && sudo fuser -k 8080/tcp || echo "Port 8080 is free"
-
-#       - name: Pull Latest Docker Image
-#         run: docker pull betrand1997/my-static-websites
-
-#       - name: Run New Container
-#         run: |
-#          docker run -d -p 8080:80 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
-
-
 name: Build and Deploy
 
 on:
@@ -200,16 +9,13 @@ on:
         default: prod
         type: choice
         options:
-          - dev
-          - test
-          - stage
           - prod
 
 jobs:
   build:
     name: Build Python Package
     runs-on: self-hosted
-    environment: ${{ github.event.inputs.environment }}  # Requires approval only for the first job
+    environment: ${{ github.event.inputs.environment }}  # Only this job requires approval
 
     steps:
       - name: Checkout Code
@@ -242,8 +48,8 @@ jobs:
   test:
     name: Run Unit Tests
     runs-on: self-hosted
-    needs: build  # Runs automatically after build is approved
-    environment: ${{ github.event.inputs.environment }}
+    needs: build
+    environment: ${{ github.event.inputs.environment }}  # Ensures correct environment but no manual approval
 
     steps:
       - name: Checkout Code
@@ -264,8 +70,6 @@ jobs:
     name: SonarQube Scan
     runs-on: self-hosted
     needs: test
-    environment: ${{ github.event.inputs.environment }}
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -280,8 +84,6 @@ jobs:
     name: Publish to PyPI
     runs-on: self-hosted
     needs: sonarqube
-    environment: ${{ github.event.inputs.environment }}
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -338,9 +140,7 @@ jobs:
   deploy-to-k8s:
     name: Deploy to Kubernetes
     runs-on: self-hosted
-    needs: build-and-deploy
-    environment: ${{ github.event.inputs.environment }}
-
+    needs: build-and-deploy  # Should run automatically without approval
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -353,8 +153,8 @@ jobs:
 
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kubernetes/deployment.yaml -n dev  
-          kubectl apply -f kubernetes/service.yaml -n dev
+          kubectl apply -f kubernetes/deployment.yaml -n ${{ github.event.inputs.environment }}
+          kubectl apply -f kubernetes/service.yaml -n ${{ github.event.inputs.environment }}
 
       - name: Wait for Deployment to be Ready
         run: kubectl rollout status deployment/my-app -n ${{ github.event.inputs.environment }}
