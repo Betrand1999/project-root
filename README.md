@@ -1,3 +1,13 @@
 sudo systemctl restart sshd
 3.235.142.37:8443 # rancher 
-8wf8vg9lwfzddtccxwc6gqw8mzlv7j422t7dfdlt6nqcwn7rjndmk6
+
+####
+sudo docker run --privileged -d \
+  --restart=always \
+  -p 8081:80 -p 8443:443 \
+  rancher/rancher
+############################
+
+# 
+docker logs  container-id  2>&1 | grep "Bootstrap Password:"
+###
