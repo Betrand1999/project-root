@@ -15,7 +15,7 @@ jobs:
   build:
     name: Build Python Package
     runs-on: self-hosted
-    environment: ${{ github.event.inputs.environment }}  # Only this job requires approval
+    environment: ${{ github.event.inputs.environment }}  # Approval required only for this job
 
     steps:
       - name: Checkout Code
@@ -48,8 +48,7 @@ jobs:
   test:
     name: Run Unit Tests
     runs-on: self-hosted
-    needs: build
-    environment: ${{ github.event.inputs.environment }}  # Ensures correct environment but no manual approval
+    needs: build  # Runs automatically after build is approved (No manual approval)
 
     steps:
       - name: Checkout Code
@@ -141,6 +140,7 @@ jobs:
     name: Deploy to Kubernetes
     runs-on: self-hosted
     needs: build-and-deploy  # Should run automatically without approval
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
