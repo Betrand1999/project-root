@@ -17,7 +17,7 @@ on:
 jobs:
   build:
     name: Build Python Package
-    if: false
+    # if: false
     runs-on: self-hosted
     environment: ${{ github.event.inputs.environment }}  # Approval required only for this job
 
@@ -155,8 +155,9 @@ jobs:
         run: kubectl version --client
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kubernetes/deployment.yaml -n prod
-          kubectl apply -f kubernetes/service.yaml -n prod
+          kubectl apply -f kubernetes/prod-namespace.yaml  -n prod
+          kubectl apply -f kubernetes/prod-deployment.yaml -n prod
+          kubectl apply -f kubernetes/prod-service.yaml -n prod
 
       - name: Wait for Deployment to be Ready
         run: kubectl rollout status deployment/my-app -n prod
