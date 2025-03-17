@@ -17,6 +17,7 @@ on:
 jobs:
   build:
     name: Build Python Package
+    if: false
     runs-on: self-hosted
     environment: ${{ github.event.inputs.environment }}  # Approval required only for this job
 
