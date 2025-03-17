@@ -9,7 +9,10 @@ on:
         default: prod
         type: choice
         options:
-          - prod
+          - Prod  # THIS IS A PROD WF
+          - dev
+          - test
+          - QA   # or stage
 
 jobs:
   build:
