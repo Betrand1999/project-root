@@ -155,9 +155,9 @@ jobs:
         run: kubectl version --client
       - name: Apply Kubernetes Manifests
         run: |
-          sudo kubectl apply -f kubernetes/dev-namespace.yaml -n dev
-          sudo kubectl apply -f kubernetes/dev-deployment.yaml -n dev
-          sudo kubectl apply -f kubernetes/dev-service.yaml  -n dev
+          sudo kubectl apply -f kubernetes/dev-namespace.yaml -n dev --validate=false
+          sudo kubectl apply -f kubernetes/dev-deployment.yaml -n dev --validate=false
+          sudo kubectl apply -f kubernetes/dev-service.yaml  -n dev --validate=false
 
       - name: Wait for Deployment to be Ready
         run: sudo kubectl rollout status deployment/my-app -n dev
