@@ -1,18 +1,40 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash,jsonify
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import quote_plus
+from bson.objectid import ObjectId
+
 import os
-
+from flask_login import LoginManager,login_user,UserMixin,login_required,logout_user,current_user
+from settings import SECRET_KEY,MONGO_URI, EMAIL_USER
+from utils import send_email, get_videos
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key')  # Secure your secret key with an environment variable
+app.secret_key = SECRET_KEY  # Secure your secret key with an environment variable
+login_manager = LoginManager()
 
-# MongoDB Configuration with properly escaped credentials
-username = quote_plus("betrand1999") # add username and pst
-password = quote_plus("Cameroon@10K")
-client = MongoClient(f"mongodb+srv://{username}:{password}@cluster.7plpy.mongodb.net/my-database?retryWrites=true&w=majority")
+login_manager.init_app(app)
+
+
+client = MongoClient(MONGO_URI)
 db = client['my-database']  # Specify your database as shown in the MongoDB Atlas interface
 users_collection = db['inventory_collection']  # Collection for storing user data
+
+
+
+class User(UserMixin):
+    def __init__(self, user_id, username):
+        self.id = str(user_id)
+        self.username = username
+
+    @staticmethod
+    def get(user_id):
+        user = users_collection.find_one({"_id": ObjectId(user_id)})
+        if user:
+            return User(user["_id"], user["username"])
+        return None
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.route('/')
 def home():
@@ -23,21 +45,28 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        
         user = users_collection.find_one({'username': username})
+        print(user)
         if user and check_password_hash(user['password'], password):
-            session['username'] = username
-            flash('Login successful', 'success')
-            return redirect(url_for('home'))
+            user_obj =User(user["_id"], user["username"])
+            login_user(user_obj)
+            # return redirect(url_for('home'))
+            return jsonify({"message":"Login successful", "status": 200})
         else:
-            flash('Invalid username or password', 'error')
-            return redirect(url_for('login'))
+            # return redirect(url_for('login'))
+            return jsonify({"message":"Invalid username or password", "status": 400})
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -79,14 +108,37 @@ def contact_form():
             'appointment': appointment,
             'message': message
         }
+        print("Contact Data: ", contact_data)
         db.contacts.insert_one(contact_data)
+        
+        send_email('New Contact Form Submission', EMAIL_USER, f'Name: {name}\nEmail: {email}\nPhone: {phone}\nCategory: {category}\nAppointment: {appointment}\nMessage: {message}')
+        send_email('Thanks for contacting', email, "We will get back to you soon!")
+        
+        
 
         # Remove the email or SMS notification logic here
         # Simply flash a success message
         flash('Your message has been submitted successfully!', 'success')
 
-        return redirect(url_for('home'))
+        return redirect(url_for('contact_form'))
     return render_template('contact-form.html')
 
+
+@app.route('/videos')
+# @login_required
+def private_videos():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    videos = get_videos()
+    return render_template('private-videos.html', videos=videos)
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Logged out successfully!", "info")
+    return redirect(url_for("login"))
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)
+
+
+
