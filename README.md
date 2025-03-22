@@ -7,3 +7,9 @@ sudo docker run --privileged -d \
   rancher/rancher
 
 # docker volume prune -f
+
+
+/etc/apache2/sites-available/000-default.conf
+sudo systemctl restart apache2
+update docker file for container port
+update your python app port
