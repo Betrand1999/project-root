@@ -9,10 +9,9 @@ on:
         default: prod
         type: choice
         options:
-          - Prod  # THIS IS A PROD WF
+          - Prod  
           - dev
-          - test
-          - QA   # or stage
+          - QA   
 
 jobs:
   build:
@@ -170,14 +169,14 @@ jobs:
           docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
           docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
 
-      - name: Check if Port 8080 is in Use and Kill Process
+      - name: Check if Port 5050 is in Use and Kill Process
         run: |
-          sudo lsof -i :8080 && sudo fuser -k 8080/tcp || echo "Port 8080 is free"
+          sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
 
       - name: Pull Latest Docker Image
         run: docker pull betrand1997/my-static-websites
 
       - name: Run New Container
         run: |
-          docker run -d -p 8080:80 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
+          docker run -d -p 5050:50 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
 ###
