@@ -7,3 +7,6 @@ sudo docker run --privileged -d \
   rancher/rancher
 
 # docker volume prune -f
+
+
+/etc/apache2/sites-available/000-default.conf

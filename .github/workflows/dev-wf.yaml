@@ -87,6 +87,7 @@ jobs:
 
   package-and-publish:
     name: Publish to PyPI
+    if: false # skip
     runs-on: self-hosted
     needs: sonarqube
     steps:
@@ -170,13 +171,13 @@ jobs:
           docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
           docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
 
-      - name: Check if Port 8080 is in Use and Kill Process
+      - name: Check if Port 30000 is in Use and Kill Process
         run: |
-          sudo lsof -i :8080 && sudo fuser -k 8080/tcp || echo "Port 8080 is free"
+          sudo lsof -i :30000 && sudo fuser -k 30000/tcp || echo "Port 30000 is free"
 
       - name: Pull Latest Docker Image
         run: docker pull betrand1997/my-static-websites
 
       - name: Run New Container
         run: |
-          docker run -d -p 8080:80 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
+          docker run -d -p 30000:80 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
