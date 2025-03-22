@@ -13,3 +13,7 @@ sudo docker run --privileged -d \
 sudo systemctl restart apache2
 update docker file for container port
 update your python app port
+
+
+# 
+docker rmi -f $(docker images betrand1997/my-static-websites -q)
