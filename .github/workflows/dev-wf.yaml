@@ -137,6 +137,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+      - name: Copy .env to working directory
+        run: cp /home/.env $GITHUB_WORKSPACE/.env
 
       - name: Install Docker in Alpine
         run: apk update && apk add --no-cache docker
