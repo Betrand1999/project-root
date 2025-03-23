@@ -34,6 +34,8 @@ jobs:
       MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 
     steps:
+      - name: Copy .env to working directory
+        run: cp /home/.env ./ # copy .env filr to working dir
       - name: Checkout Code
         uses: actions/checkout@v4
 
