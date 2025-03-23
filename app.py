@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 
 import os
 from flask_login import LoginManager,login_user,UserMixin,login_required,logout_user,current_user
-from settings import SECRET_KEY,MONGO_URI, EMAIL_USER
+from settings import SECRET_KEY,MONGO_URI, EMAIL_USER, MONGO_PASSWORD, MONGO_USERNAME
 from utils import send_email, get_videos
 app = Flask(__name__)
 app.secret_key = SECRET_KEY  # Secure your secret key with an environment variable
@@ -14,8 +14,8 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 
-
-client = MongoClient(MONGO_URI)
+decoded_mongo_url = f"mongodb+srv://{quote_plus(MONGO_USERNAME)}:{quote_plus(MONGO_PASSWORD)}@cluster.7plpy.mongodb.net/my-database?retryWrites=true&w=majority"
+client = MongoClient(decoded_mongo_url)
 db = client['my-database']  # Specify your database as shown in the MongoDB Atlas interface
 users_collection = db['inventory_collection']  # Collection for storing user data
 
