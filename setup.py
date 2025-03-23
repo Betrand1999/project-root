@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='my-cloud-devops-consulting',
-    version='5.18.9',
+    version='1.0.9',
     author='Betrand Mutagha',
     author_email='mmutagha@gmail.com',
     description='This is my consulting website for Cloud & DevOps services.',
