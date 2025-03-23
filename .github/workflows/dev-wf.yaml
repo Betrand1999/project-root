@@ -152,7 +152,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t betrand1997/my-static-websites .
+        # run: docker build -t betrand1997/my-static-websites .
+        run: docker buildx build --platform linux/amd64 -t betrand1997/my-static-websites . 
+
 
       - name: Push Docker Image to Docker Hub
         run: docker push betrand1997/my-static-websites
