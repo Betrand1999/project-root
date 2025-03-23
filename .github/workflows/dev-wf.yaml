@@ -10,9 +10,9 @@ on:
         type: choice
         options:
           - dev
-          - test
-          - stage  # or QA
-          - Prod
+         
+          
+         
 
 
 jobs:
