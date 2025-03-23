@@ -133,7 +133,7 @@ jobs:
 
   build-and-deploy:
     name: Build and Deploy Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: package-and-publish
     #container:
       #image: alpine:latest
