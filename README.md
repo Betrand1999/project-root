@@ -7,6 +7,9 @@ sudo docker run --privileged -d \
   rancher/rancher
 
 # docker volume prune -f
+# untainn the node
+kubectl taint nodes local-node node.kubernetes.io/disk-pressure:NoSchedule-
+
 
 
 /etc/apache2/sites-available/000-default.conf

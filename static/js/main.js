@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Inject dynamic styles for section reveal effect
     const styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
+    // styleSheet.type = "text/css"; // Deprecated, no longer needed
     styleSheet.innerText = `
         section {
             opacity: 0;
