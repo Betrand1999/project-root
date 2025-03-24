@@ -16,3 +16,7 @@ kubectl taint nodes local-node node.kubernetes.io/disk-pressure:NoSchedule-
 sudo systemctl restart apache2
 update docker file for container port
 update your python app port
+
+
+# 
+docker rmi -f $(docker images betrand1997/my-static-websites -q)

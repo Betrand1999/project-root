@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='my-cloud-devops-consulting',
-    version='2.1.9',
+    version='0.0.2',
     author='Betrand Mutagha',
     author_email='mmutagha@gmail.com',
     description='This is my consulting website for Cloud & DevOps services.',
@@ -29,4 +29,3 @@ setup(
     ],
     python_requires='>=3.6',
 )
-#
