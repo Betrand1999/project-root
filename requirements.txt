@@ -37,4 +37,3 @@ yarl==1.17.1
 python-dotenv
 flask-login
 yarl==1.17.1
-
