@@ -1,0 +1,32 @@
+name: Auto Merge main → dev
+
+on:
+  workflow_run:
+    workflows: ["Build and Deploy to Prod"]  # This must match the name of your main branch workflow
+    types:
+      - completed
+
+jobs:
+  merge-main-into-dev:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Merge main to dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches
+        run: |
+          git fetch origin
+          git checkout dev
+          git merge origin/main --no-ff -m "🔄 Auto-merged main into dev after successful main workflow"
+          git push origin dev
