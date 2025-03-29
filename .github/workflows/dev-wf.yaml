@@ -80,7 +80,7 @@ jobs:
         run: venv/bin/python -m pytest tests/ --disable-warnings
 
   sonarqube:
-    name: SonarQube Scan
+    name: SonarQube & Trivy Scan
     runs-on: self-hosted
     needs: test
     # environment: ${{ github.event.inputs.environment }}
@@ -99,6 +99,11 @@ jobs:
         run: chmod +x trivy-full-scan.sh
       - name: Run Trivy Full Scan 
         run: ./trivy-full-scan.sh  
+      - name: Upload Trivy Scan Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-results
+          path: trivy-scan-results.txt
 
   package-and-publish:
     name: Publish to PyPI
