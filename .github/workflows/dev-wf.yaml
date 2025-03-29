@@ -94,6 +94,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # Run Trivy Scan
+      - name: Make Trivy Script Executable 
+        run: chmod +x trivy-full-scan.sh
+      - name: Run Trivy Full Scan 
+        run: ./trivy-full-scan.sh  
 
   package-and-publish:
     name: Publish to PyPI
@@ -193,4 +198,3 @@ jobs:
       - name: Run New Container
         run: |
           docker run -d -p 5050:50 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
-# rerun
