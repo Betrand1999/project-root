@@ -90,12 +90,17 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+<<<<<<< HEAD
+=======
 
       - name: Run sonar-scanner
         run: sonar-scanner
+>>>>>>> main
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: run sonar-scanner
+        run: sonar-scanner
       # Run Trivy Scan
       - name: Make Trivy Script Executable 
         run: chmod +x trivy-full-scan.sh
