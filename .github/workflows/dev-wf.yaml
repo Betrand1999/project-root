@@ -61,7 +61,7 @@ jobs:
 
   test:
     name: Run Unit Tests
-    runs-on: ubuntu-latest # self-hosted
+    runs-on:  [macOS, X64]
     needs: build  # Runs automatically after build is approved (No manual approval)
 
     steps:
@@ -83,7 +83,7 @@ jobs:
 
   sonarqube:
     name: SonarQube & Trivy Scan
-    runs-on: [macOS, X64]  # self-hosted
+    runs-on: ubuntu-latest
     needs: test
     # environment: ${{ github.event.inputs.environment }}
     container:
