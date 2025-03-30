@@ -20,3 +20,6 @@ update your python app port
 
 # 
 docker rmi -f $(docker images betrand1997/my-static-websites -q)
+
+./svc.sh start
+
