@@ -1,206 +1,206 @@
-name: Build and Deploy to Prod
+# name: Build and Deploy to Prod
 
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Select deployment environment'
-        required: true
-        default: prod
-        type: choice
-        options:
-          - Prod
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: 'Select deployment environment'
+#         required: true
+#         default: prod
+#         type: choice
+#         options:
+#           - Prod
           
 
 
-jobs:
-  build:
-    name: Build Python Package
-    runs-on: self-hosted
-    environment: ${{ github.event.inputs.environment }}  # Approval required only for this job
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        env:  # <-- THIS GOES HERE!
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          EMAIL_USER: ${{ secrets.EMAIL_USER }}
-          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
-          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
-      - name: Set Up Python Environment
-        run: |
-          python3 -m venv venv
-          venv/bin/python -m pip install --upgrade pip
-          venv/bin/pip install -r requirements.txt --no-cache-dir
+# jobs:
+#   build:
+#     name: Build Python Package
+#     runs-on: self-hosted
+#     environment: ${{ github.event.inputs.environment }}  # Approval required only for this job
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
+#         env:  # <-- THIS GOES HERE!
+#           MONGO_URI: ${{ secrets.MONGO_URI }}
+#           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#           EMAIL_USER: ${{ secrets.EMAIL_USER }}
+#           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+#           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+#           SMTP_PORT: ${{ secrets.SMTP_PORT }}
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: ${{ secrets.AWS_REGION }}
+#           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+#           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+#       - name: Set Up Python Environment
+#         run: |
+#           python3 -m venv venv
+#           venv/bin/python -m pip install --upgrade pip
+#           venv/bin/pip install -r requirements.txt --no-cache-dir
 
-      - name: Ensure Clean Build
-        run: rm -rf dist build *.egg-info
+#       - name: Ensure Clean Build
+#         run: rm -rf dist build *.egg-info
 
-      - name: Ensure dist directory exists
-        run: mkdir -p dist
+#       - name: Ensure dist directory exists
+#         run: mkdir -p dist
 
-      - name: Build Python Package
-        run: |
-          venv/bin/python -m pip install --upgrade setuptools wheel
-          venv/bin/python setup.py sdist bdist_wheel
-          ls -lah dist/
+#       - name: Build Python Package
+#         run: |
+#           venv/bin/python -m pip install --upgrade setuptools wheel
+#           venv/bin/python setup.py sdist bdist_wheel
+#           ls -lah dist/
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-package-${{ github.run_id }}
-          path: dist/
+#       - name: Upload Build Artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: python-package-${{ github.run_id }}
+#           path: dist/
 
-  test:
-    name: Run Unit Tests
-    runs-on: self-hosted
-    needs: build  # Runs automatically after build is approved (No manual approval)
+#   test:
+#     name: Run Unit Tests
+#     runs-on: self-hosted
+#     needs: build  # Runs automatically after build is approved (No manual approval)
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Set Up Python Environment
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
+#       - name: Set Up Python Environment
+#         run: |
+#           python3 -m venv venv
+#           source venv/bin/activate
+#           pip install --upgrade pip
+#           pip install -r requirements.txt
+#           pip install pytest
 
-      - name: Run Unit Tests
-        run: venv/bin/python -m pytest tests/ --disable-warnings
+#       - name: Run Unit Tests
+#         run: venv/bin/python -m pytest tests/ --disable-warnings
 
-  sonarqube:
-    name: SonarQube & Trivy Scan
-    runs-on: self-hosted
-    needs: test
-    # environment: ${{ github.event.inputs.environment }}
+#   sonarqube:
+#     name: SonarQube & Trivy Scan
+#     runs-on: self-hosted
+#     needs: test
+#     # environment: ${{ github.event.inputs.environment }}
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Run SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # Trivy scan 
-      - name: Make Trivy Script Executable
-        run: chmod +x trivy-full-scan.sh
-      - name: Run Trivy Full Scan
-        run: ./trivy-full-scan.sh
-      - name: Upload Trivy Scan Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: trivy-scan-results
-          path: trivy-scan-results.txt
+#       - name: Run SonarQube Scan
+#         uses: sonarsource/sonarqube-scan-action@master
+#         env:
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+#       # Trivy scan 
+#       - name: Make Trivy Script Executable
+#         run: chmod +x trivy-full-scan.sh
+#       - name: Run Trivy Full Scan
+#         run: ./trivy-full-scan.sh
+#       - name: Upload Trivy Scan Results
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: trivy-scan-results
+#           path: trivy-scan-results.txt
         
 
 
-  package-and-publish:
-    name: Publish to PyPI
-    #if: false # skip
-    runs-on: self-hosted
-    needs: sonarqube
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#   package-and-publish:
+#     name: Publish to PyPI
+#     #if: false # skip
+#     runs-on: self-hosted
+#     needs: sonarqube
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Set Up Python Environment for Packaging
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install setuptools wheel twine
+#       - name: Set Up Python Environment for Packaging
+#         run: |
+#           python3 -m venv venv
+#           source venv/bin/activate
+#           pip install --upgrade pip
+#           pip install setuptools wheel twine
 
-      - name: Clean Dist Directory
-        run: rm -rf dist
+#       - name: Clean Dist Directory
+#         run: rm -rf dist
 
-      - name: Build Package
-        run: |
-          source venv/bin/activate
-          python setup.py sdist bdist_wheel
+#       - name: Build Package
+#         run: |
+#           source venv/bin/activate
+#           python setup.py sdist bdist_wheel
 
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          source venv/bin/activate
-          twine upload dist/*
+#       - name: Publish to PyPI
+#         env:
+#           TWINE_USERNAME: __token__
+#           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+#         run: |
+#           source venv/bin/activate
+#           twine upload dist/*
 
-  build-and-deploy:
-    name: Build and Deploy Docker Image
-    runs-on: self-hosted
-    needs: package-and-publish
-    #container:
-      #image: alpine:latest
+#   build-and-deploy:
+#     name: Build and Deploy Docker Image
+#     runs-on: self-hosted
+#     needs: package-and-publish
+#     #container:
+#       #image: alpine:latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      - name: Copy .env to working directory
-        run: cp /home/.env $GITHUB_WORKSPACE/.env
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
+#       - name: Copy .env to working directory
+#         run: cp /home/.env $GITHUB_WORKSPACE/.env
 
-      #- name: Install Docker in Alpine
-       # run: sudo apt update && apt add --no-cache docker
+#       #- name: Install Docker in Alpine
+#        # run: sudo apt update && apt add --no-cache docker
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+#       - name: Log in to Docker Hub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image
-        run: docker build -t betrand1997/my-static-websites .
+#       - name: Build Docker Image
+#         run: docker build -t betrand1997/my-static-websites .
 
-      - name: Push Docker Image to Docker Hub
-        run: docker push betrand1997/my-static-websites
+#       - name: Push Docker Image to Docker Hub
+#         run: docker push betrand1997/my-static-websites
 
-  deploy-to-k8s:
-    name: Deploy to Kubernetes
-    runs-on: self-hosted
-    needs: build-and-deploy  # Should run automatically without approval #
+#   deploy-to-k8s:
+#     name: Deploy to Kubernetes
+#     runs-on: self-hosted
+#     needs: build-and-deploy  # Should run automatically without approval #
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Verify kubectl Installation
-        run: kubectl version --client
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f kubernetes/prod-namespace.yaml -n prod 
-          kubectl apply -f kubernetes/prod-deployment.yaml -n prod 
-          kubectl apply -f kubernetes/prod-service.yaml  -n prod 
+#       - name: Verify kubectl Installation
+#         run: kubectl version --client
+#       - name: Apply Kubernetes Manifests
+#         run: |
+#           kubectl apply -f kubernetes/prod-namespace.yaml -n prod 
+#           kubectl apply -f kubernetes/prod-deployment.yaml -n prod 
+#           kubectl apply -f kubernetes/prod-service.yaml  -n prod 
 
-      - name: Wait for Deployment to be Ready
-        run: kubectl rollout status deployment/my-app -n prod
+#       - name: Wait for Deployment to be Ready
+#         run: kubectl rollout status deployment/my-app -n prod
 
-      - name: Verify Deployment
-        run: kubectl get pods -n prod -o wide
+#       - name: Verify Deployment
+#         run: kubectl get pods -n prod -o wide
 
-      - name: Stop and Remove Existing Container (if exists)
-        run: |
-          docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
-          docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
+#       - name: Stop and Remove Existing Container (if exists)
+#         run: |
+#           docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
+#           docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
 
-      - name: Check if Port 5050 is in Use and Kill Process
-        run: |
-          sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
+#       - name: Check if Port 5050 is in Use and Kill Process
+#         run: |
+#           sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
 
-      - name: Pull Latest Docker Image
-        run: docker pull betrand1997/my-static-websites
+#       - name: Pull Latest Docker Image
+#         run: docker pull betrand1997/my-static-websites
 
-      - name: Run New Container
-        run: |
-          docker run -d -p 5050:50 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
+#       - name: Run New Container
+#         run: |
+#           docker run -d -p 5050:50 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
           
