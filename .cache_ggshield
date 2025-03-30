@@ -1,1 +1,1 @@
-{"last_found_secrets": [{"name": "SonarQube Token Prefixed with Host - commit://9f7a21f0cfbb5ff52634aa894d45ad563ddf6563/sonar-project.properties", "match": "c202e12834f5f4cf3dbc7421a4542825a4ee58c4d41c6e31b4c423cf78832474"}]}
+{"last_found_secrets": [{"match": "011fcbd42957182eb6f1604406ff25dcefc82feac6a64e3db74087e2852028b8", "name": "SonarQube Token with Prefix - commit://staged/sonar-project.properties"}]}
