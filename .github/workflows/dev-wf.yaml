@@ -86,15 +86,18 @@ jobs:
     runs-on: [macOS, X64]  # self-hosted
     needs: test
     # environment: ${{ github.event.inputs.environment }}
-
+    env:
+      SONAR_TOKEN: ${{ vars.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # - name: run sonar-scanner
-      #   run: sonar-scanner
+      - name: Run SonarQube Scan
+        run: |
+          sonar-scanner \
+            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.host.url=$SONAR_HOST_URL
+   
       # Run Trivy Scan
       - name: Make Trivy Script Executable 
         run: chmod +x trivy-full-scan.sh
