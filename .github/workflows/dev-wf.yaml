@@ -89,9 +89,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # required for accurate Sonar analysis
-
       - name: Run SonarQube Scan
         run: sonar-scanner
         env:
