@@ -189,6 +189,8 @@ jobs:
 
       - name: Verify Deployment
         run: kubectl get pods -n dev -o wide
+      - name: open minikube dashboard
+        run: minikube dashboard &
 
       - name: Stop and Remove Existing Container (if exists)
         run: |
