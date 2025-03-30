@@ -75,9 +75,11 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest
-
       - name: Run Unit Tests
-        run: venv/bin/python -m pytest tests/ --disable-warnings
+        run: |
+          cd ${{ github.workspace }}
+          venv/bin/python -m pytest tests/ --disable-warnings
+      
 
   sonarqube:
     name: SonarQube & Trivy Scan
