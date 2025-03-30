@@ -61,7 +61,7 @@ jobs:
 
   test:
     name: Run Unit Tests
-    runs-on: [macOS, X64] # self-hosted
+    runs-on: ubuntu-latest # self-hosted
     needs: build  # Runs automatically after build is approved (No manual approval)
 
     steps:
