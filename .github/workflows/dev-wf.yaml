@@ -90,25 +90,25 @@ jobs:
      image: sonarsource/sonar-scanner-cli:latest
      options: --user root
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for accurate Sonar analysis
 
-    - name: Run SonarQube Scan
-      run: sonar-scanner
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-     
+      - name: Run SonarQube Scan
+        run: sonar-scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
    
       # Run Trivy Scan
-    - name: Make Trivy Script Executable 
-      run: chmod +x trivy-full-scan.sh
-    - name: Run Trivy Full Scan 
-      run: ./trivy-full-scan.sh  
-    - name: Upload Trivy Scan Results
-      uses: actions/upload-artifact@v4
-      with:
+      - name: Make Trivy Script Executable 
+        run: chmod +x trivy-full-scan.sh
+      - name: Run Trivy Full Scan 
+        run: ./trivy-full-scan.sh  
+      - name: Upload Trivy Scan Results
+        uses: actions/upload-artifact@v4
+        with:
           name: trivy-scan-results
           path: trivy-scan-results.txt
 
