@@ -91,8 +91,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run SonarQube Scan
-        uses: actions/checkout@v4
+      - name: Run sonar-scanner
+        run: sonar-scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
