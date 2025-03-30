@@ -83,7 +83,7 @@ jobs:
 
   sonarqube:
     name: SonarQube & Trivy Scan
-    runs-on: ubuntu-latest
+    runs-on:  [macOS, X64]
     needs: test
     # environment: ${{ github.event.inputs.environment }}
     steps:
