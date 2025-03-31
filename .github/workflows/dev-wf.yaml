@@ -10,10 +10,6 @@ on:
         type: choice
         options:
           - dev
-         
-          
-         
-
 
 jobs:
   build:
@@ -141,19 +137,10 @@ jobs:
 
   build-and-deploy:
     name: Build and Deploy Docker Image
-    runs-on:  ubuntu-latest
+    runs-on:  self-hosted
     needs: package-and-publish
-    container:
-      image: alpine:latest
-      options: --privileged
+    
     steps:
-    - name: Install Docker in Alpine
-      run: |
-        apk update
-        apk add docker openrc
-        dockerd &  # Start Docker daemon in background
-        sleep 5     # Give Docker time to start
-
     - name: Checkout Code
       uses: actions/checkout@v4
 
