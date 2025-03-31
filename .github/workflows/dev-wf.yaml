@@ -159,7 +159,7 @@ jobs:
 
   deploy-to-k8s:
     name: Deploy to Kubernetes
-    runs-on: [macOS, X64]  # self-hosted
+    runs-on: ubuntu-latest  # [macOS, X64]  # self-hosted
     needs: build-and-deploy  # Should run automatically without approval #
 
     steps:
