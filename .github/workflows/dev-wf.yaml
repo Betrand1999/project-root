@@ -141,7 +141,7 @@ jobs:
 
   build-and-deploy:
     name: Build and Deploy Docker Image
-    runs-on: self-hosted
+    runs-on:  [macOS, X64]
     needs: package-and-publish
     #container:
       #image: alpine:latest
@@ -149,9 +149,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Copy .env to working directory
-        run: cp /home/.env $GITHUB_WORKSPACE/.env
-
       #- name: Install Docker in Alpine
        # run: sudo apt update && apt add --no-cache docker
 
