@@ -137,7 +137,7 @@ jobs:
 
   build-and-deploy:
     name: Build and Deploy Docker Image
-    runs-on:  [macOS, X64]
+    runs-on:  self-hosted
     needs: package-and-publish
     
     steps:
