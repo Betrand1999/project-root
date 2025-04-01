@@ -155,6 +155,29 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push betrand1997/my-static-websites
 
+########### PULL IMAGE RUN ######################
+  deploy-container:
+    name: Deploy to Kubernetes
+    runs-on: self-hosted
+    needs: deploy-to-k8s
+    steps:
+      - name: Stop and Remove Existing Container (if exists)
+        run: |
+          docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
+          docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
+
+      - name: Check if Port 5050 is in Use and Kill Process
+        run: |
+          sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
+
+      - name: Pull Latest Docker Image
+        run: docker pull betrand1997/my-static-websites
+
+      - name: Run New Container
+        run: |
+          docker run -d -p 5050:50 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
+
+
 
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
   deploy-to-k8s:
@@ -182,24 +205,3 @@ jobs:
 
       - name: Open Minikube Dashboard
         run: minikube dashboard &
-########### PULL IMAGE RUN ######################
-  # deploy-container:
-  #   name: Deploy to Kubernetes
-  #   runs-on: self-hosted
-  #   needs: deploy-to-k8s
-  #   steps:
-  #     - name: Stop and Remove Existing Container (if exists)
-  #       run: |
-  #         docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
-  #         docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
-
-  #     - name: Check if Port 5050 is in Use and Kill Process
-  #       run: |
-  #         sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
-
-  #     - name: Pull Latest Docker Image
-  #       run: docker pull betrand1997/my-static-websites
-
-  #     - name: Run New Container
-  #       run: |
-  #         docker run -d -p 5050:50 --name my-static-websites-container --restart unless-stopped betrand1997/my-static-websites
