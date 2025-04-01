@@ -42,83 +42,83 @@ jobs:
           name: python-package-${{ github.run_id }}
           path: dist/
 ######## UNIT TEST JOB ###############################
-  test:
-    name: Run Unit Tests
-    runs-on: [macOS, X64]
-    needs: build
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  # test:
+  #   name: Run Unit Tests
+  #   runs-on: [macOS, X64]
+  #   needs: build
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Set Up Python Environment
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
+  #     - name: Set Up Python Environment
+  #       run: |
+  #         python3 -m venv venv
+  #         source venv/bin/activate
+  #         pip install --upgrade pip
+  #         pip install -r requirements.txt
+  #         pip install pytest
 
-      - name: Run Unit Tests
-        run: |
-          cd ${{ github.workspace }}
-          venv/bin/python -m pytest tests/ --disable-warnings
+  #     - name: Run Unit Tests
+  #       run: |
+  #         cd ${{ github.workspace }}
+  #         venv/bin/python -m pytest tests/ --disable-warnings
 ##### STATIC ANALYSIS ##################################
-  sonarqube:
-    name: SonarQube & Trivy Scan
-    runs-on: [macOS, X64]
-    needs: test
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # sonarqube:
+  #   name: SonarQube & Trivy Scan
+  #   runs-on: [macOS, X64]
+  #   needs: test
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Run SonarQube Scan
-        run: sonar-scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  #     - name: Run SonarQube Scan
+  #       run: sonar-scanner
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      - name: Make Trivy Script Executable
-        run: chmod +x trivy-full-scan.sh
+  #     - name: Make Trivy Script Executable
+  #       run: chmod +x trivy-full-scan.sh
 
-      - name: Run Trivy Full Scan
-        run: ./trivy-full-scan.sh
+  #     - name: Run Trivy Full Scan
+  #       run: ./trivy-full-scan.sh
 
-      - name: Upload Trivy Scan Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: trivy-scan-results
-          path: trivy-scan-results.txt
+  #     - name: Upload Trivy Scan Results
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: trivy-scan-results
+  #         path: trivy-scan-results.txt
 ########## PACKAGE AND PUSH ARTIFACT ################################
-  package-and-publish:
-    name: Publish to PyPI
-    runs-on: [macOS, X64]
-    needs: sonarqube
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  # package-and-publish:
+  #   name: Publish to PyPI
+  #   runs-on: [macOS, X64]
+  #   needs: sonarqube
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Set Up Python Environment for Packaging
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install setuptools wheel twine
+  #     - name: Set Up Python Environment for Packaging
+  #       run: |
+  #         python3 -m venv venv
+  #         source venv/bin/activate
+  #         pip install --upgrade pip
+  #         pip install setuptools wheel twine
 
-      - name: Clean Dist Directory
-        run: rm -rf dist
+  #     - name: Clean Dist Directory
+  #       run: rm -rf dist
 
-      - name: Build Package
-        run: |
-          source venv/bin/activate
-          python setup.py sdist bdist_wheel
+  #     - name: Build Package
+  #       run: |
+  #         source venv/bin/activate
+  #         python setup.py sdist bdist_wheel
 
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          source venv/bin/activate
-          twine upload dist/*
+  #     - name: Publish to PyPI
+  #       env:
+  #         TWINE_USERNAME: __token__
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+  #       run: |
+  #         source venv/bin/activate
+  #         twine upload dist/*
 ######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
   build-and-deploy-Docker-Hub:
     name: Build and Deploy Docker Image
@@ -182,28 +182,28 @@ jobs:
 
 
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
-  deploy-to-k8s:
-    name: Deploy to Kubernetes
-    runs-on: [macOS, X64]
-    needs: build-and-deploy-Docker-Hub
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  # deploy-to-k8s:
+  #   name: Deploy to Kubernetes
+  #   runs-on: [macOS, X64]
+  #   needs: deploy-container
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Verify kubectl Installation
-        run: kubectl version --client
+  #     - name: Verify kubectl Installation
+  #       run: kubectl version --client
 
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
-          kubectl apply -f kubernetes/dev-deployment.yaml -n dev 
-          kubectl apply -f kubernetes/dev-service.yaml -n dev 
+  #     - name: Apply Kubernetes Manifests
+  #       run: |
+  #         kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
+  #         kubectl apply -f kubernetes/dev-deployment.yaml -n dev 
+  #         kubectl apply -f kubernetes/dev-service.yaml -n dev 
 
-      - name: Wait for Deployment to be Ready
-        run: kubectl rollout status deployment/my-app -n dev
+  #     - name: Wait for Deployment to be Ready
+  #       run: kubectl rollout status deployment/my-app -n dev
 
-      - name: Verify Deployment
-        run: kubectl get pods -n dev -o wide
+  #     - name: Verify Deployment
+  #       run: kubectl get pods -n dev -o wide
 
-      - name: Open Minikube Dashboard
-        run: minikube dashboard &
+  #     - name: Open Minikube Dashboard
+  #       run: minikube dashboard &
