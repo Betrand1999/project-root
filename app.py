@@ -14,9 +14,9 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 
-# decoded_mongo_url = f"mongodb+srv://{quote_plus(MONGO_USERNAME)}:{quote_plus(MONGO_PASSWORD)}@cluster.7plpy.mongodb.net/my-database?retryWrites=true&w=majority"
-# client = MongoClient(decoded_mongo_url)
-client = MongoClient(MONGO_URI)
+decoded_mongo_url = f"mongodb+srv://{quote_plus(MONGO_USERNAME)}:{quote_plus(MONGO_PASSWORD)}@cluster.7plpy.mongodb.net/my-database?retryWrites=true&w=majority"
+client = MongoClient(decoded_mongo_url)
+
 
 db = client['my-database']  # Specify your database as shown in the MongoDB Atlas interface
 users_collection = db['inventory_collection']  # Collection for storing user data
