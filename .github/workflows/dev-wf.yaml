@@ -149,7 +149,7 @@ jobs:
    name: Deploy to Local Docker
    runs-on: self-hosted
    environment: ${{ github.event.inputs.environment }}
-   needs: build-and-deploy-Docker-Hub
+   #needs: build-and-deploy-Docker-Hub
    steps:
     - name: Stop and Remove Existing Container (if exists)
       run: |
