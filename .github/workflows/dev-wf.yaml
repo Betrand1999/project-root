@@ -7,7 +7,6 @@ on:
       environment:
         description: 'Select deployment environment'
         required: true
-        default: prod
         type: choice
         options:
           - dev
@@ -46,6 +45,7 @@ jobs:
   # test:
   #   name: Run Unit Tests
   #   runs-on: [macOS, X64]
+  #   environment: ${{ github.event.inputs.environment }}
   #   needs: build
   #   steps:
   #     - name: Checkout Code
@@ -67,6 +67,7 @@ jobs:
   # sonarqube:
   #   name: SonarQube & Trivy Scan
   #   runs-on: [macOS, X64]
+  #   environment: ${{ github.event.inputs.environment }}
   #   needs: test
   #   steps:
   #     - name: Checkout repository
@@ -93,6 +94,7 @@ jobs:
   # package-and-publish:
   #   name: Publish to PyPI
   #   runs-on: [macOS, X64]
+  #   environment: ${{ github.event.inputs.environment }}
   #   needs: sonarqube
   #   steps:
   #     - name: Checkout Code
@@ -124,6 +126,7 @@ jobs:
   build-and-deploy-Docker-Hub:
     name: Build and Deploy Docker Image
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     #needs: package-and-publish
     steps:
       - name: Checkout Code
@@ -145,6 +148,7 @@ jobs:
   deploy-container:
    name: Deploy to Local Docker
    runs-on: self-hosted
+   environment: ${{ github.event.inputs.environment }}
    needs: build-and-deploy-Docker-Hub
    steps:
     - name: Stop and Remove Existing Container (if exists)
@@ -186,6 +190,7 @@ jobs:
   # deploy-to-k8s:
   #   name: Deploy to Kubernetes
   #   runs-on: [macOS, X64]
+  #   environment: ${{ github.event.inputs.environment }}
   #   needs: build-and-deploy-Docker-Hub
   #   steps:
   #     - name: Checkout Code
