@@ -172,7 +172,7 @@ jobs:
           -e MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
           -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
           betrand1997/my-static-websites
-          
+
     - name: Push Docker Image to Docker Hub
       run: docker push betrand1997/my-static-websites
 
@@ -189,6 +189,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+      - name: Start Minikube (if not running)
+        run: |
+         if ! minikube status | grep -q "host: Running"; then
+          echo "Minikube is not running. Starting now..."
+          minikube start
+         else
+          echo "Minikube is already running ✅"
+         fi
 
       - name: Verify kubectl Installation
         run: kubectl version --client
