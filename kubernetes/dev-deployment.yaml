@@ -4,7 +4,7 @@ metadata:
   name: my-app
   namespace: dev  # or 'prod' depending on your environment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-app
