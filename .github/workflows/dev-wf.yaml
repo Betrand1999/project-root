@@ -212,6 +212,8 @@ jobs:
 
       - name: Verify Deployment
         run: kubectl get pods -n dev -o wide
+      - name: Set kubectl namespace to dev
+        run: kubectl config set-context --current --namespace=dev
 
       - name: Open Minikube Dashboard
         run: minikube dashboard &
