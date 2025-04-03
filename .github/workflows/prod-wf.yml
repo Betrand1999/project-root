@@ -1,5 +1,5 @@
-############ BUILD ARTIFACT JOB ###################
-name: Build and Deploy to prod
+############ BUILD ARTIFACT JOB ####################
+name: Build and Deploy to Prod
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         required: true
         type: choice
         options:
-          - prod
+          - Prod
 jobs:
   build:
     name: Build Python Package
@@ -121,7 +121,7 @@ jobs:
           twine upload dist/*
 ######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
   build-and-deploy-Docker-Hub:
-    name: Build and Deploy Docker Image to docker hub
+    name: Build and Deploy Docker Image
     runs-on: ubuntu-latest
     needs: package-and-publish
     steps:
@@ -137,7 +137,10 @@ jobs:
       - name: Build Docker Image
         run: docker build -t betrand1997/my-static-websites .
 
-########### PULL IMAGE RUN ######################
+      - name: Push Docker Image to Docker Hub
+        run: docker push betrand1997/my-static-websites
+
+########### PULL AND RUN IMAGE ######################
   deploy-container:
    name: Deploy to Local Docker
    runs-on: self-hosted
@@ -173,9 +176,6 @@ jobs:
           -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
           betrand1997/my-static-websites
 
-    - name: Push Docker Image to Docker Hub
-      run: docker push betrand1997/my-static-websites
-
    
 
    
@@ -185,7 +185,7 @@ jobs:
   deploy-to-k8s:
     name: Deploy to Kubernetes
     runs-on: [macOS, X64]
-    needs: build-and-deploy-Docker-Hub
+    needs: deploy-container
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -205,15 +205,16 @@ jobs:
         run: |
           kubectl apply -f kubernetes/prod-namespace.yaml -n prod 
           kubectl apply -f kubernetes/prod-deployment.yaml -n prod 
-          kubectl apply -f kubernetes/prod-service.yaml -n prod
+          kubectl apply -f kubernetes/prod-service.yaml -n prod 
 
       - name: Wait for Deployment to be Ready
         run: kubectl rollout status deployment/my-app -n prod
 
       - name: Verify Deployment
         run: kubectl get pods -n prod -o wide
-      - name: Set kubectl namespace to dev
-        run: kubectl config set-context --current --namespace=dev
+      - name: Set kubectl namespace to prod
+        run: kubectl config set-context --current --namespace=prod
 
       - name: Open Minikube Dashboard
         run: minikube dashboard &
+  
