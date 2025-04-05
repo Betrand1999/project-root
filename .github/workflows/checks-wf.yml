@@ -1,11 +1,8 @@
 name: Secret Scan
 
 on:
-  # Run whenever a pull request is opened or updated against *any* branch
-  #pull_request:
-    #branches: [ "*" ]
-  
-  # Run whenever there is a push to *any* branch
+  pull_request:
+    branches: [ "*" ]
   push:
     branches: [ "*" ]
 
@@ -15,10 +12,14 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
+        with:
+          # Make this 0 if you want the full commit history for deeper scans
+          fetch-depth: 0  
 
       - name: Run Gitleaks
         uses: zricethezav/gitleaks-action@v1.3.0
         with:
-          args: "--repo-path=. --verbose --redact --commit-history" # "--config-path=.gitleaks.toml --verbose --redact"
+          args: "--repo-path=. --verbose --redact --commit-history"
+
 # The Action itself includes the Gitleaks binary.
 # GitHub Actions pulls that environment automatically.
