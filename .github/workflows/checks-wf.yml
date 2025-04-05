@@ -13,13 +13,19 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
         with:
-          # Make this 0 if you want the full commit history for deeper scans
-          fetch-depth: 0  
+          fetch-depth: 0  # optional: 0 for full commit history
 
       - name: Run Gitleaks
         uses: zricethezav/gitleaks-action@v1.3.0
         with:
-          args: "--repo-path=. --verbose --redact --commit-history"
+          # The v7.x CLI supports '--report=FILE' for JSON output
+          args: "--repo-path=. --verbose --redact --commit-history --report=gitleaks-report.json"
+      
+      - name: Print Gitleaks Report
+        run: |
+          echo "=== Gitleaks JSON Report ==="
+          cat gitleaks-report.json
+
 
 # The Action itself includes the Gitleaks binary.
 # GitHub Actions pulls that environment automatically.
