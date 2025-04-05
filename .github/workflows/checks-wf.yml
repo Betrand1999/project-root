@@ -8,7 +8,7 @@ on:
 
 jobs:
   gitleaks-scan:
-    runs-on: [macOS, X64] # ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
       - name: Print Gitleaks Report
         run: |
           echo "=== Gitleaks JSON Report ==="
-          cat gitleaks-report.json
+          
 
 
 
