@@ -19,6 +19,6 @@ jobs:
       - name: Run Gitleaks
         uses: zricethezav/gitleaks-action@v1.3.0
         with:
-          args: "--config-path=.gitleaks.toml --verbose --redact"
+          args: "--repo-path=. --verbose --redact --commit-history" # "--config-path=.gitleaks.toml --verbose --redact"
 # The Action itself includes the Gitleaks binary.
 # GitHub Actions pulls that environment automatically.
