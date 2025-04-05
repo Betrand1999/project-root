@@ -1,0 +1,24 @@
+name: Secret Scan
+
+on:
+  # Run whenever a pull request is opened or updated against *any* branch
+  #pull_request:
+    #branches: [ "*" ]
+  
+  # Run whenever there is a push to *any* branch
+  push:
+    branches: [ "*" ]
+
+jobs:
+  gitleaks-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Run Gitleaks
+        uses: zricethezav/gitleaks-action@v1.3.0
+        with:
+          args: "--config-path=.gitleaks.toml --verbose --redact"
+# The Action itself includes the Gitleaks binary.
+# GitHub Actions pulls that environment automatically.
