@@ -20,14 +20,7 @@ jobs:
         with:
           args: "--repo-path=. --commit-history --verbose --redact --report=gitleaks-report.json"
 
-      - name: Debug Files
-        run: ls -la
-
-      - name: Print Gitleaks Report
-        run: |
-          echo "=== Gitleaks JSON Report ==="
-          cat gitleaks-report.json
-          
+    
 
 
 
