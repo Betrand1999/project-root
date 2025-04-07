@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: pod-a-service
+  name: my-app-service
   namespace: dev
 spec:
   selector:
-    app: my-app  # ✅ Fix: Change this to match your pod
+    app: my-app
   ports:
     - protocol: TCP
-      port: 8080  # The external port
-      targetPort: 80  # The container’s internal port
+      port: 50        # Port exposed by the service
+      targetPort: 50  # Port your app listens to in the container
   type: NodePort
-

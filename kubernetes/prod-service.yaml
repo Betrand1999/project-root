@@ -8,7 +8,7 @@ spec:
     app: my-app  # ✅ Fix: Change this to match your pod
   ports:
     - protocol: TCP
-      port: 8080  # The external port
-      targetPort: 80  # The container’s internal port
+      port: 50  # The external port
+      targetPort: 50  # The container’s internal port
   type: NodePort
 
