@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-app
-  namespace: dev  # or 'prod' depending on your environment
+  namespace: dev
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-app
@@ -17,7 +17,7 @@ spec:
         - name: my-app
           image: betrand1997/my-static-websites:latest
           ports:
-            - containerPort: 80
+            - containerPort: 50
           envFrom:
             - secretRef:
                 name: my-app-secret
