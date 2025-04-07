@@ -17,7 +17,7 @@ spec:
         - name: my-app
           image: betrand1997/my-static-websites:latest
           ports:
-            - containerPort: 80
+            - containerPort: 50
           envFrom:
             - secretRef:
                 name: my-app-secret
