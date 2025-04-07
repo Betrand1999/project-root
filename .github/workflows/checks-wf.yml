@@ -1,0 +1,28 @@
+name: Secret Scan
+
+on:
+  pull_request:
+    branches: [ "*" ]
+  push:
+    branches: [ "*" ]
+
+jobs:
+  gitleaks-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # optional - for full commit history scanning
+
+      - name: Run Gitleaks
+        uses: zricethezav/gitleaks-action@v1.3.0
+        with:
+          args: "--repo-path=. --commit-history --verbose --redact --report=gitleaks-report.json"
+
+    
+
+
+
+# The Action itself includes the Gitleaks binary.
+# GitHub Actions pulls that environment automatically.
