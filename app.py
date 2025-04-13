@@ -3,13 +3,16 @@ from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import quote_plus
 from bson.objectid import ObjectId
-
 import os
 from flask_login import LoginManager,login_user,UserMixin,login_required,logout_user,current_user
 from settings import SECRET_KEY,MONGO_URI, EMAIL_USER, MONGO_PASSWORD, MONGO_USERNAME
 from utils import send_email, get_videos
+
+
+
 app = Flask(__name__)
-app.secret_key = SECRET_KEY  # Secure your secret key with an environment variable
+app.secret_key = SECRET_KEY  # Secure your secret key with an environment variable 
+### app.secret_key = SECRET_KEY isn’t an import at all—it’s just an assignment
 login_manager = LoginManager()
 
 login_manager.init_app(app)
