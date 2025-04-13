@@ -140,7 +140,7 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push betrand1997/my-static-websites
 
-########### PULL AND RUN IMAGE ######################
+########### PULL AND RUN IMAGE #######################
   deploy-container:
    name: Run Image
    runs-on: self-hosted
