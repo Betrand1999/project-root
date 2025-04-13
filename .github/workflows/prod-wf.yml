@@ -193,6 +193,8 @@ jobs:
         run: |
          if ! minikube status | grep -q "host: Running"; then
           echo "Minikube is not running. Starting now..."
+          minikube delete || true          # ignore “nothing to delete” errors
+          echo "🚀  Starting Minikube from scratch…"
           minikube start
          else
           echo "Minikube is already running ✅"
