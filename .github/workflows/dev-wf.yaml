@@ -191,11 +191,14 @@ jobs:
         uses: actions/checkout@v4
       - name: Start Minikube (if not running)
         run: |
-         if ! minikube status | grep -q "host: Running"; then
-          echo "Minikube is not running. Starting now..."
-          minikube start
+         # Does `minikube status` report “host: Running”?
+         if minikube status 2>/dev/null | grep -q "host: Running"; then
+           echo "✅ Minikube is already running — nothing to do."
          else
-          echo "Minikube is already running ✅"
+          echo "⚠️  Minikube is not running. Cleaning up any stale state..."
+          minikube delete || true          # ignore error if nothing to delete
+          echo "🚀 Starting Minikube..."
+          minikube start
          fi
 
       - name: Verify kubectl Installation
