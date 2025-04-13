@@ -142,7 +142,7 @@ jobs:
 
 ########### PULL AND RUN IMAGE ######################
   deploy-container:
-   name: Deploy to Local Docker
+   name: Run Image
    runs-on: self-hosted
    needs: build-and-deploy-Docker-Hub
    steps:
@@ -216,5 +216,5 @@ jobs:
         run: kubectl config set-context --current --namespace=prod
 
       - name: Open Minikube Dashboard
-        run: minikube dashboard &
+        run: minikube dashboard & 
   

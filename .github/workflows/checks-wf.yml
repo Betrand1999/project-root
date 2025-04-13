@@ -20,9 +20,3 @@ jobs:
         with:
           args: "--repo-path=. --commit-history --verbose --redact --report=gitleaks-report.json"
 
-    
-
-
-
-# The Action itself includes the Gitleaks binary.
-# GitHub Actions pulls that environment automatically.
