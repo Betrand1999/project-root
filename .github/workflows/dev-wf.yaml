@@ -219,5 +219,5 @@ jobs:
         run: kubectl config set-context --current --namespace=dev
 
       - name: Open Minikube Dashboard
-        run: cd ~ && minikube dashboard &
+        run: cd ~ && minikube dashboard & #
   
