@@ -214,9 +214,5 @@ jobs:
 
       - name: Verify Deployment
         run: kubectl get pods -n prod -o wide
-      - name: Set kubectl namespace to prod
-        run: kubectl config set-context --current --namespace=prod
-
-      - name: Open Minikube Dashboard
-        run: minikube dashboard & 
+     
   
