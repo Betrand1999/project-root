@@ -141,40 +141,40 @@ jobs:
         run: docker push betrand1997/my-static-websites
 
 ########### PULL AND RUN IMAGE #######################
-  deploy-container:
-   name: Run Image
-   runs-on: self-hosted
-   needs: build-and-deploy-Docker-Hub
-   steps:
-    - name: Stop and Remove Existing Container (if exists)
-      run: |
-        docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
-        docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
+  # deploy-container:
+  #  name: Run Image
+  #  runs-on: self-hosted
+  #  needs: build-and-deploy-Docker-Hub
+  #  steps:
+  #   - name: Stop and Remove Existing Container (if exists)
+  #     run: |
+  #       docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
+  #       docker stop my-static-websites-container && docker rm my-static-websites-container || echo "No existing container to remove"
 
-    - name: Check if Port 5050 is in Use and Kill Process
-      run: |
-        sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
+  #   - name: Check if Port 5050 is in Use and Kill Process
+  #     run: |
+  #       sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
 
-    - name: Pull Latest Docker Image
-      run: docker pull betrand1997/my-static-websites
-    - name: Run New Container with Env Secrets and Restart Policy
-      run: |
-        docker run -d \
-          --name my-static-websites-container \
-          --restart unless-stopped \
-          -p 5050:50 \
-          -e MONGO_URI="${{ secrets.MONGO_URI }}" \
-          -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
-          -e EMAIL_USER="${{ secrets.EMAIL_USER }}" \
-          -e EMAIL_PASS="${{ secrets.EMAIL_PASS }}" \
-          -e SMTP_SERVER="${{ secrets.SMTP_SERVER }}" \
-          -e SMTP_PORT="${{ secrets.SMTP_PORT }}" \
-          -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
-          -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-          -e AWS_REGION="${{ secrets.AWS_REGION }}" \
-          -e MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
-          -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
-          betrand1997/my-static-websites
+  #   - name: Pull Latest Docker Image
+  #     run: docker pull betrand1997/my-static-websites
+  #   - name: Run New Container with Env Secrets and Restart Policy
+  #     run: |
+  #       docker run -d \
+  #         --name my-static-websites-container \
+  #         --restart unless-stopped \
+  #         -p 5050:50 \
+  #         -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+  #         -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+  #         -e EMAIL_USER="${{ secrets.EMAIL_USER }}" \
+  #         -e EMAIL_PASS="${{ secrets.EMAIL_PASS }}" \
+  #         -e SMTP_SERVER="${{ secrets.SMTP_SERVER }}" \
+  #         -e SMTP_PORT="${{ secrets.SMTP_PORT }}" \
+  #         -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+  #         -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+  #         -e AWS_REGION="${{ secrets.AWS_REGION }}" \
+  #         -e MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
+  #         -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
+  #         betrand1997/my-static-websites
 
    
 
@@ -184,26 +184,14 @@ jobs:
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
   deploy-to-k8s:
     name: Deploy to Kubernetes
-    runs-on: [macOS, X64]
+    runs-on: [self-hosted, Linux, X64]
+
     needs: deploy-container
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Start Minikube (if not running)
-        run: |
-         # Does `minikube status` report “host: Running”?
-         if minikube status 2>/dev/null | grep -q "host: Running"; then
-           echo "✅ Minikube is already running — nothing to do."
-         else
-          echo "⚠️  Minikube is not running. Cleaning up any stale state..."
-          minikube delete || true          # ignore error if nothing to delete
-          echo "🚀 Starting Minikube..."
-          minikube start
-         fi
-
       - name: Verify kubectl Installation
         run: kubectl version --client
-
       - name: Apply Kubernetes Manifests
         run: |
           kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
