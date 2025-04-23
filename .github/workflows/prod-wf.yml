@@ -189,16 +189,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Start Minikube (if not running)
-        run: |
-         if ! minikube status | grep -q "host: Running"; then
-          echo "Minikube is not running. Starting now..."
-          minikube delete || true          # ignore “nothing to delete” errors
-          echo "🚀  Starting Minikube from scratch…"
-          minikube start
-         else
-          echo "Minikube is already running ✅"
-         fi
 
       - name: Verify kubectl Installation
         run: kubectl version --client
