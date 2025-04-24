@@ -147,7 +147,8 @@ jobs:
    needs: build-and-deploy-Docker-Hub
    steps:
     - name: Fix Docker permissions
-      run: sudo chown $USER:docker /var/run/docker.sock
+      run: echo | sudo -S chown $USER:docker /var/run/docker.sock
+
     - name: Stop and Remove Existing Container (if exists)
       run: |
         docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
