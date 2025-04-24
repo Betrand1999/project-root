@@ -182,27 +182,5 @@ jobs:
 
 
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
-  deploy-to-k8s:
-    name: Deploy to Kubernetes
-    runs-on: [macOS, X64]
-    needs: deploy-container
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Verify kubectl Installation
-        run: kubectl version --client
-
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f kubernetes/prod-namespace.yaml -n prod 
-          kubectl apply -f kubernetes/prod-deployment.yaml -n prod 
-          kubectl apply -f kubernetes/prod-service.yaml -n prod 
-
-      - name: Wait for Deployment to be Ready
-        run: kubectl rollout status deployment/my-app -n prod
-
-      - name: Verify Deployment
-        run: kubectl get pods -n prod -o wide
-     
+  
   

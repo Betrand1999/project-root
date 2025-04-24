@@ -191,27 +191,24 @@ jobs:
 
    needs: deploy-container
    steps:
-    - name: Set up Node.js 18 (Compatible with Amazon Linux 2)
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Verify kubectl Installation
-      run: kubectl version --client
+    - name: Set up SSH Agent
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Apply Kubernetes Manifests
+    - name: Copy Kubernetes Manifests to EC2
       run: |
-        kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
-        kubectl apply -f kubernetes/dev-deployment.yaml -n dev 
-        kubectl apply -f kubernetes/dev-service.yaml -n dev 
+          scp -o StrictHostKeyChecking=no -r kubernetes ec2-user@3.208.1.75:/home/ec2-user/
 
-    - name: Wait for Deployment to be Ready
-      run: kubectl rollout status deployment/my-app -n dev
-
-    - name: Verify Deployment
-      run: kubectl get pods -n dev -o wide
-  
+    - name: Apply Kubernetes Manifests on EC2
+      run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@3.208.1.75 << 'EOF'
+            kubectl apply -f /home/ec2-user/kubernetes/dev-namespace.yaml -n dev
+            kubectl apply -f /home/ec2-user/kubernetes/dev-deployment.yaml -n dev
+            kubectl apply -f /home/ec2-user/kubernetes/dev-service.yaml -n dev
+            kubectl rollout status deployment/my-app -n dev
+          EOF
   
