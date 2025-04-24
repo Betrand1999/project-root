@@ -185,26 +185,32 @@ jobs:
 
 
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
+  
   deploy-to-k8s:
-    name: Deploy to Kubernetes
-    runs-on: [self-hosted, Linux, X64]
+   name: Deploy to Kubernetes
+   runs-on: [self-hosted, Linux, X64]
 
-    needs: deploy-container
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Verify kubectl Installation
-        run: kubectl version --client
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
-          kubectl apply -f kubernetes/dev-deployment.yaml -n dev 
-          kubectl apply -f kubernetes/dev-service.yaml -n dev 
+   needs: deploy-container
+   steps:
+    - name: Set up Node.js 18 (Compatible with Amazon Linux 2)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
 
-      - name: Wait for Deployment to be Ready
-        run: kubectl rollout status deployment/my-app -n dev
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-      - name: Verify Deployment
-        run: kubectl get pods -n dev -o wide
-     
-  #
+    - name: Verify kubectl Installation
+      run: kubectl version --client
+
+    - name: Apply Kubernetes Manifests
+      run: |
+        kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
+        kubectl apply -f kubernetes/dev-deployment.yaml -n dev 
+        kubectl apply -f kubernetes/dev-service.yaml -n dev 
+
+    - name: Wait for Deployment to be Ready
+      run: kubectl rollout status deployment/my-app -n dev 
+
+    - name: Verify Deployment
+      run: kubectl get pods -n dev -o wide
