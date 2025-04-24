@@ -189,7 +189,7 @@ jobs:
     needs: deploy-container
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses:  actions/checkout@v2
       - name: Verify kubectl Installation
         run: kubectl version --client
       - name: Apply Kubernetes Manifests
