@@ -1,4 +1,4 @@
-############ BUILD ARTIFACT JOB ####################
+# ############ BUILD ARTIFACT JOB ####################
 name: Build and Deploy to Dev
 
 on:
@@ -41,7 +41,7 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
-######## UNIT TEST JOB ###############################
+# ######## UNIT TEST JOB ###############################
   test:
     name: Run Unit Tests
     runs-on: [macOS, X64]
@@ -62,7 +62,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           venv/bin/python -m pytest tests/ --disable-warnings
-##### STATIC ANALYSIS ##################################
+# ##### STATIC ANALYSIS ##################################
   sonarqube:
     name: SonarQube & Trivy Scan
     runs-on: [macOS, X64]
@@ -88,7 +88,7 @@ jobs:
         with:
           name: trivy-scan-results
           path: trivy-scan-results.txt
-########## PACKAGE AND PUSH ARTIFACT ################################
+# ########## PACKAGE AND PUSH ARTIFACT ################################
   package-and-publish:
     name: Publish to PyPI
     runs-on: [macOS, X64]
@@ -119,7 +119,7 @@ jobs:
         run: |
           source venv/bin/activate
           twine upload dist/*
-######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
+# ######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
   build-and-deploy-Docker-Hub:
     name: Build Docker Image
     runs-on: ubuntu-latest
@@ -140,7 +140,7 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push betrand1997/my-static-websites
 
-########### PULL AND RUN IMAGE #######################
+# ########### PULL AND RUN IMAGE #######################
   deploy-container:
    name: Run Image
    runs-on: self-hosted
@@ -192,7 +192,7 @@ jobs:
     needs: deploy-container
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: Verify kubectl Installation
         run: kubectl version --client
       - name: Apply Kubernetes Manifests
