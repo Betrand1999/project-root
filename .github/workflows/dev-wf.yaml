@@ -146,9 +146,6 @@ jobs:
    runs-on: self-hosted
    needs: build-and-deploy-Docker-Hub
    steps:
-    - name: Fix Docker permissions
-      run: echo | sudo -S chown $USER:docker /var/run/docker.sock
-
     - name: Stop and Remove Existing Container (if exists)
       run: |
         docker ps -a -q --filter "name=my-static-websites-container" | grep -q . && \
@@ -159,7 +156,7 @@ jobs:
         sudo lsof -i :5050 && sudo fuser -k 5050/tcp || echo "Port 5050 is free"
 
     - name: Pull Latest Docker Image
-      run: sudo docker pull betrand1997/my-static-websites
+      run: docker pull betrand1997/my-static-websites
     - name: Run New Container with Env Secrets and Restart Policy
       run: |
         docker run -d \
@@ -188,7 +185,6 @@ jobs:
   deploy-to-k8s:
    name: Deploy to Kubernetes
    runs-on: [self-hosted, Linux, X64]
-
    needs: deploy-container
    steps:
     - name: Checkout Code
@@ -203,6 +199,7 @@ jobs:
       run: |
           scp -o StrictHostKeyChecking=no -r kubernetes ec2-user@3.208.1.75:/home/ec2-user/
 
+
     - name: Apply Kubernetes Manifests on EC2
       run: |
           ssh -o StrictHostKeyChecking=no ec2-user@3.208.1.75 << 'EOF'
@@ -212,3 +209,4 @@ jobs:
             kubectl rollout status deployment/my-app -n dev
           EOF
   
+
