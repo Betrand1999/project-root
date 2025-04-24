@@ -184,8 +184,7 @@ jobs:
    
 
 
-############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
-  
+  ########## PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
   deploy-to-k8s:
    name: Deploy to Kubernetes
    runs-on: [self-hosted, Linux, X64]
@@ -210,7 +209,9 @@ jobs:
         kubectl apply -f kubernetes/dev-service.yaml -n dev 
 
     - name: Wait for Deployment to be Ready
-      run: kubectl rollout status deployment/my-app -n dev 
+      run: kubectl rollout status deployment/my-app -n dev
 
     - name: Verify Deployment
       run: kubectl get pods -n dev -o wide
+  
+  
