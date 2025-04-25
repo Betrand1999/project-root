@@ -178,55 +178,37 @@ jobs:
 
    
 
-   
+############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
+  deploy:
+    name: Deploy to Kubernetes on EC2
+    runs-on: [self-hosted, Linux, X64]
 
-
-  ########## PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
-  deploy-to-k8s:
-   name: Deploy to Kubernetes
-   runs-on: ubuntu-latest
-
-<<<<<<< HEAD:.github/workflows/dev-wf.yaml
-    needs: deploy-container
     steps:
-      - name: Checkout Code
-        uses:  actions/checkout@v2
-      - name: Verify kubectl Installation
-        run: kubectl version --client
+      - name: Run checkout in container (Amazon Linux 2023)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: amazonlinux:2023
+          options: -v ${{ github.workspace }}:/workspace
+          run: |
+            yum install -y git tar gzip
+            cd /workspace
+            git config --global --add safe.directory /workspace
+            git init
+            git remote add origin https://github.com/${{ github.repository }}.git
+            git fetch --all
+            git checkout ${{ github.sha }}
+
+      - name: Debug - List repo structure
+        run: ls -la ${{ github.workspace }}
+
+      - name: Debug - List kubernetes folder
+        run: ls -la ${{ github.workspace }}/kubernetes
+
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kubernetes/dev-namespace.yaml -n dev 
-          kubectl apply -f kubernetes/dev-deployment.yaml -n dev 
-          kubectl apply -f kubernetes/dev-service.yaml -n dev 
-=======
-   needs: deploy-container
-   steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
->>>>>>> feature_branch:.github/workflows/dev-wf.txt
+          kubectl get namespace dev || kubectl create namespace dev
+          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-deployment.yaml -n dev
+          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-service.yaml -n dev
+          kubectl rollout status deployment/my-app -n dev
 
-    - name: Set up SSH Agent
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-<<<<<<< HEAD:.github/workflows/dev-wf.yaml
-      - name: Verify Deployment
-        run: kubectl get pods -n dev -o wide
-     
-  #
-=======
-    - name: Copy Kubernetes Manifests to EC2
-      run: |
-          scp -o StrictHostKeyChecking=no -r kubernetes ec2-user@3.208.1.75:/home/ec2-user/
-
-    - name: Apply Kubernetes Manifests on EC2
-      run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@3.208.1.75 << 'EOF'
-            kubectl apply -f /home/ec2-user/kubernetes/dev-namespace.yaml -n dev
-            kubectl apply -f /home/ec2-user/kubernetes/dev-deployment.yaml -n dev
-            kubectl apply -f /home/ec2-user/kubernetes/dev-service.yaml -n dev
-            kubectl rollout status deployment/my-app -n dev
-          EOF
-  
->>>>>>> feature_branch:.github/workflows/dev-wf.txt
