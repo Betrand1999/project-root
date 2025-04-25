@@ -230,4 +230,4 @@ jobs:
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev-deployment.yaml -n dev
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev-service.yaml -n dev
           kubectl rollout status deployment/my-app -n dev
- 
+
