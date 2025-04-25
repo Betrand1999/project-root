@@ -182,6 +182,7 @@ jobs:
   deploy:
     name: Deploy to Kubernetes on EC2
     runs-on: [self-hosted, Linux, X64]
+    needs:  deploy-container
 
     steps:
       - name: Run checkout in container (Amazon Linux 2023)
