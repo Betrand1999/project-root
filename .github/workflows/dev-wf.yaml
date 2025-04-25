@@ -1,5 +1,5 @@
-############ BUILD ARTIFACT JOB ####################
-name: Build and Deploy to Prod
+# ############ BUILD ARTIFACT JOB ####################
+name: Build and Deploy to Dev
 
 on:
   workflow_dispatch:
@@ -9,12 +9,12 @@ on:
         required: true
         type: choice
         options:
-          - Prod
+          - dev
 jobs:
   build:
     name: Build Python Package
     runs-on: [macOS, X64]
-    environment: ${{ github.event.inputs.environment }}
+    #environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
-######## UNIT TEST JOB ###############################
+# ######## UNIT TEST JOB ###############################
   test:
     name: Run Unit Tests
     runs-on: [macOS, X64]
@@ -62,7 +62,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           venv/bin/python -m pytest tests/ --disable-warnings
-##### STATIC ANALYSIS ##################################
+# ##### STATIC ANALYSIS ##################################
   sonarqube:
     name: SonarQube & Trivy Scan
     runs-on: [macOS, X64]
@@ -88,7 +88,7 @@ jobs:
         with:
           name: trivy-scan-results
           path: trivy-scan-results.txt
-########## PACKAGE AND PUSH ARTIFACT ################################
+# ########## PACKAGE AND PUSH ARTIFACT ################################
   package-and-publish:
     name: Publish to PyPI
     runs-on: [macOS, X64]
@@ -119,9 +119,9 @@ jobs:
         run: |
           source venv/bin/activate
           twine upload dist/*
-######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
+# ######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
   build-and-deploy-Docker-Hub:
-    name: Build and Deploy Docker Image
+    name: Build Docker Image
     runs-on: ubuntu-latest
     needs: package-and-publish
     steps:
@@ -140,7 +140,7 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push betrand1997/my-static-websites
 
-########### PULL AND RUN IMAGE ######################
+# ########### PULL AND RUN IMAGE #######################
   deploy-container:
    name: Run Image
    runs-on: self-hosted
@@ -178,9 +178,38 @@ jobs:
 
    
 
-   
-
-
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
-  
-  
+  deploy:
+    name: Deploy to Kubernetes on EC2
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Run checkout in container (Amazon Linux 2023)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: amazonlinux:2023
+          options: -v ${{ github.workspace }}:/workspace
+          run: |
+            yum install -y git tar gzip
+            cd /workspace
+            git config --global --add safe.directory /workspace
+            git init
+            git remote add origin https://github.com/${{ github.repository }}.git
+            git fetch --all
+            git checkout ${{ github.sha }}
+
+      - name: Debug - List repo structure
+        run: ls -la ${{ github.workspace }}
+
+      - name: Debug - List kubernetes folder
+        run: ls -la ${{ github.workspace }}/kubernetes
+
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl get namespace dev || kubectl create namespace dev
+          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-deployment.yaml -n dev
+          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-service.yaml -n dev
+          kubectl rollout status deployment/my-app -n dev
+
+
+ 
