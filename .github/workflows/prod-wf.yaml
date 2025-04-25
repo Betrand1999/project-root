@@ -182,5 +182,35 @@ jobs:
 
 
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
-  
+  deploy:
+    name: Deploy to Kubernetes on EC2
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Run checkout in container (Amazon Linux 2023)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: amazonlinux:2023
+          options: -v ${{ github.workspace }}:/workspace
+          run: |
+            yum install -y git tar gzip
+            cd /workspace
+            git config --global --add safe.directory /workspace
+            git init
+            git remote add origin https://github.com/${{ github.repository }}.git
+            git fetch --all
+            git checkout ${{ github.sha }}
+
+      - name: Debug - List repo structure
+        run: ls -la ${{ github.workspace }}
+
+      - name: Debug - List kubernetes folder
+        run: ls -la ${{ github.workspace }}/kubernetes
+
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl get namespace dev || kubectl create namespace dev
+          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-deployment.yaml -n dev
+          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-service.yaml -n dev
+          kubectl rollout status deployment/my-app -n dev
   
