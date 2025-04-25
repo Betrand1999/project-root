@@ -213,4 +213,3 @@ jobs:
           kubectl rollout status deployment/my-app -n dev
 
 
- 
