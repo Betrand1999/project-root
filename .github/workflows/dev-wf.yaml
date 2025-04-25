@@ -182,7 +182,7 @@ jobs:
   deploy:
     name: Deploy to Kubernetes on EC2
     runs-on: [self-hosted, Linux, X64]
-    needs:  deploy-container
+    needs: deploy-container
 
     steps:
       - name: Run checkout in container (Amazon Linux 2023)
@@ -205,12 +205,29 @@ jobs:
       - name: Debug - List kubernetes folder
         run: ls -la ${{ github.workspace }}/kubernetes
 
+      # 🔐 Create Kubernetes Secrets from GitHub Secrets
+      - name: Create Kubernetes Secret in dev namespace
+        run: |
+          kubectl delete secret my-app-secret -n dev --ignore-not-found
+          kubectl create secret generic my-app-secret \
+            --from-literal=MONGO_URI="${{ secrets.MONGO_URI }}" \
+            --from-literal=SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+            --from-literal=EMAIL_USER="${{ secrets.EMAIL_USER }}" \
+            --from-literal=EMAIL_PASS="${{ secrets.EMAIL_PASS }}" \
+            --from-literal=SMTP_SERVER="${{ secrets.SMTP_SERVER }}" \
+            --from-literal=SMTP_PORT="${{ secrets.SMTP_PORT }}" \
+            --from-literal=AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            --from-literal=AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+            --from-literal=WS_REGION="${{ secrets.WS_REGION }}" \
+            --from-literal=MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
+            --from-literal=MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
+            -n dev
+
+      # 🚀 Apply Kubernetes Manifests
       - name: Apply Kubernetes Manifests
         run: |
           kubectl get namespace dev || kubectl create namespace dev
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev-deployment.yaml -n dev
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev-service.yaml -n dev
           kubectl rollout status deployment/my-app -n dev
-
-
  
