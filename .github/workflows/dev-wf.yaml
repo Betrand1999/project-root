@@ -143,7 +143,7 @@ jobs:
 # ########### PULL AND RUN IMAGE #######################
   deploy-container:
    name: Run Image
-   runs-on: self-hosted
+   runs-on: [self-hosted, Linux, X64]
    needs: build-and-deploy-Docker-Hub
    steps:
     - name: Stop and Remove Existing Container (if exists)
