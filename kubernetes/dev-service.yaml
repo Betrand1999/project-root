@@ -8,6 +8,6 @@ spec:
     app: my-app
   ports:
     - protocol: TCP
-      port: 50        # Port exposed by the service
+      port:  8080        # Port exposed by the service
       targetPort: 50  # Port your app listens to in the container
-  type: NodePort
+  type: LoadBalancer
