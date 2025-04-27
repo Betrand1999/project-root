@@ -10,5 +10,5 @@ spec:
     - protocol: TCP
       port: 8080        # ClusterIP service port (optional)
       targetPort: 50    # Pod's container port
-      nodePort: 3000    # External NodePort
+      nodePort: 30000    # External NodePort
   type: NodePort
