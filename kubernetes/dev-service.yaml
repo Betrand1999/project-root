@@ -8,6 +8,7 @@ spec:
     app: my-app
   ports:
     - protocol: TCP
-      port:  8080        # Port exposed by the service
-      targetPort: 50  # Port your app listens to in the container
-  type: LoadBalancer
+      port: 8080        # ClusterIP service port (optional)
+      targetPort: 50    # Pod's container port
+      nodePort: 3000    # External NodePort
+  type: NodePort
