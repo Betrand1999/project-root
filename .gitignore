@@ -5,3 +5,4 @@ env
 __pycache__
 actions-runner/
 .env
+kubernetes/dashboad-token.pem

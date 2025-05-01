@@ -209,9 +209,9 @@ jobs:
         run: ls -la ${{ github.workspace }}/kubernetes
 
       # 🔐 Create Kubernetes Secrets from GitHub Secrets
-      - name: Create Kubernetes Secret in dev namespace
+      - name: Create Kubernetes Secret in prod namespace
         run: |
-          kubectl delete secret my-app-secret -n dev --ignore-not-found
+          kubectl delete secret my-app-secret -n prod --ignore-not-found
           kubectl create secret generic my-app-secret \
             --from-literal=MONGO_URI="${{ secrets.MONGO_URI }}" \
             --from-literal=SECRET_KEY="${{ secrets.SECRET_KEY }}" \
@@ -224,13 +224,15 @@ jobs:
             --from-literal=WS_REGION="${{ secrets.WS_REGION }}" \
             --from-literal=MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
             --from-literal=MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
-            -n dev
+            -n prod
 
       # 🚀 Apply Kubernetes Manifests
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl get namespace dev || kubectl create namespace dev
-          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-deployment.yaml -n dev
-          kubectl apply -f ${{ github.workspace }}/kubernetes/dev-service.yaml -n dev
-          kubectl rollout status deployment/my-app -n dev
+          kubectl get namespace prod || kubectl create namespace prod
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod-deployment.yaml -n prod
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod-service.yaml -n prod
+          kubectl rollout status deployment/my-app -n prod
+          kubectl rollout restart deployment my-app -n prod
+
  
