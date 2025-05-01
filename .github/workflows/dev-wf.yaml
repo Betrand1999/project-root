@@ -237,5 +237,6 @@ jobs:
       # 🚀 Register Argo CD Dev App
       - name: Register Argo CD Dev App
         run: |
-         kubectl apply -f ${{ github.workspace }}/argocd/project-root-dev.yaml
+         kubectl apply -f argocd/project-root-dev.yaml
+
 
