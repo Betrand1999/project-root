@@ -1,0 +1,14 @@
+kind: Service
+metadata:
+  name: my-app-service
+  namespace: prod
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 8080        # ClusterIP service port (optional)
+      targetPort: 50    # Pod's container port
+      nodePort: 30000    # External NodePort
+  type: NodePort
+
