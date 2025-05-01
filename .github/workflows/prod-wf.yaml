@@ -230,9 +230,12 @@ jobs:
       - name: Apply Kubernetes Manifests
         run: |
           kubectl get namespace prod || kubectl create namespace prod
-          kubectl apply -f ${{ github.workspace }}/kubernetes/prod-deployment.yaml -n prod
-          kubectl apply -f ${{ github.workspace }}/kubernetes/prod-service.yaml -n prod
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod/prod-deployment.yaml -n prod
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod/prod-service.yaml -n prod
           kubectl rollout status deployment/my-app -n prod
           kubectl rollout restart deployment my-app -n prod
-
+      # 🚀 Register Argo CD Dev App
+      - name: Register Argo CD Dev App
+        run: |
+         kubectl apply -f argocd/project-root-prod.yaml
  
