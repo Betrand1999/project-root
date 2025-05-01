@@ -238,4 +238,4 @@ jobs:
       - name: Register Argo CD Dev App
         run: |
          kubectl apply -f ${{ github.workspace }}/argocd/project-root-dev.yaml 
-         #
+         ##
