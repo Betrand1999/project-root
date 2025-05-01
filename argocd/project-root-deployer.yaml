@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: project-root-deployer
+  namespace: argocd  # Argo CD's namespace
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Betrand1999/project-root.git
+    targetRevision: main
+    path: kubernetes
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      prune: true        # remove resources not in Git
+      selfHeal: true     # auto-correct changes made outside Git
+    syncOptions:
+      - CreateNamespace=true  # ensures 'dev' namespace is created if not already
