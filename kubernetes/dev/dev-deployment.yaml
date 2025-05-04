@@ -1,21 +1,23 @@
-apiVersion: batch/v1
-kind: CronJob
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: trivy-image-scan
+  name: my-app
   namespace: dev
 spec:
-  schedule: "0 2 * * *"  # Runs every day at 2 AM
-  jobTemplate:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
     spec:
-      template:
-        spec:
-          containers:
-          - name: trivy
-            image: aquasec/trivy:latest
-            args:
-              - "image"
-              - "--severity"
-              - "CRITICAL,HIGH"
-              - "--no-progress"
-              - "betrand1997/my-static-websites:latest"
-          restartPolicy: OnFailure
+      containers:
+        - name: my-app
+          image: betrand1997/my-static-websites:latest
+          ports:
+            - containerPort: 50
+          envFrom:
+            - secretRef:
+                name: my-app-secret
