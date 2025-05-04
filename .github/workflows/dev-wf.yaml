@@ -230,8 +230,8 @@ jobs:
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev/dev-namespace.yaml
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev/dev-deployment.yaml -n dev
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev/dev-service.yaml -n dev
-          kubectl rollout status deployment/my-app -n dev
-          kubectl rollout restart deployment my-app -n dev
+        
+         
       # 🚀 Register Argo CD Dev App
       - name: Register Argo CD Dev App
         run: |
