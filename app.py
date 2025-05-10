@@ -123,7 +123,7 @@ def contact_form():
 
         # Remove the email or SMS notification logic here
         # Simply flash a success message
-        flash('Your message has been submitted successfully! Regards Betrand Founder', 'success')
+        flash('Your message has been submitted successfully!', 'success')
 
         return redirect(url_for('contact_form'))
     return render_template('contact-form.html')
