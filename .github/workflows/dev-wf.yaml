@@ -208,7 +208,7 @@ jobs:
       # 🔐 Create Kubernetes Secrets from GitHub Secrets
       - name: Create Kubernetes Secret in dev namespace
         run: |
-          kubectl delete secret my-app-secret -n dev --ignore-not-found
+          
           kubectl create secret generic my-app-secret \
             --from-literal=MONGO_URI="${{ secrets.MONGO_URI }}" \
             --from-literal=SECRET_KEY="${{ secrets.SECRET_KEY }}" \
