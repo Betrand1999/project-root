@@ -1,24 +1,3 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: project-root-dev
-#   namespace: argocd
-# spec:
-#   project: default
-#   source:
-#     repoURL: https://github.com/Betrand1999/project-root.git
-#     targetRevision: main
-#     path: kubernetes/dev
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: dev
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#       - CreateNamespace=true
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -32,11 +11,12 @@ spec:
     path: kubernetes/dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: dev  # <--- keep this; it applies to namespaced resources
+    namespace: dev
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
+
+
