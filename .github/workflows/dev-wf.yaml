@@ -221,7 +221,8 @@ jobs:
             --from-literal=WS_REGION="${{ secrets.WS_REGION }}" \
             --from-literal=MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
             --from-literal=MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
-            -n dev
+            -n dev \
+            --dry-run=client -o yaml | kubectl apply -f -
 
       # 🚀 Apply Kubernetes Manifests to Dev
       - name: Apply Kubernetes Manifests to Dev
