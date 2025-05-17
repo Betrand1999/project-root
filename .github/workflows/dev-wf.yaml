@@ -224,6 +224,7 @@ jobs:
             -n dev \
             --dry-run=client -o yaml | kubectl apply -f -
 
+
       # 🚀 Apply Kubernetes Manifests to Dev
       - name: Apply Kubernetes Manifests to Dev
         run: |
