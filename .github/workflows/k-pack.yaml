@@ -14,11 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Disable Docker keychain credential helper
-        run: |
-          mkdir -p ~/.docker
-          echo '{ "credsStore": "" }' > ~/.docker/config.json
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
