@@ -20,4 +20,4 @@ jobs:
             --builder heroku/builder:24 \
             --path . \
             --publish \
-            --tag docker.io/betrand1997/my-app:latest
+            --tag betrand1997/my-app:latest
