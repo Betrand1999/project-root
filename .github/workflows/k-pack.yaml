@@ -8,18 +8,16 @@ on:
 
 jobs:
   kpack-deploy:
-    runs-on: [macOS, X64]
+    runs-on: [macOS, X64]  # or [self-hosted, macos] if using your own runner
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.27.3'
-
-      - name: Apply Kpack Resources
+      - name: Build image with Cloud Native Buildpacks
         run: |
-          kubectl apply -f ${{ github.workspace }}/kpack/namespace.yaml
-          kubectl apply -f ${{ github.workspace }}/kpack/run-image.yaml
+          pack build my-app \
+            --builder heroku/builder:24 \
+            --path . \
+            --publish \
+            --tag docker.io/betrand1997/my-app:latest
