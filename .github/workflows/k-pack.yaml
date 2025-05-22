@@ -19,7 +19,13 @@ jobs:
         with:
           version: 'v1.27.3'
 
-      - name: Run kpack
+      - name: Install Kpack (CRDs and controller)
+        run: |
+          kubectl apply -f https://github.com/buildpacks-community/kpack/releases/latest/download/release.yaml
+          echo "Waiting for Kpack controller to be ready..."
+          kubectl wait deployment kpack-controller -n kpack --for=condition=Available=True --timeout=90s
+
+      - name: Apply Kpack Resources
         run: |
           kubectl apply -f ${{ github.workspace }}/kpack/namespace.yaml
           kubectl apply -f ${{ github.workspace }}/kpack/build-image.yaml
