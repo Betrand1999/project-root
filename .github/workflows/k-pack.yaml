@@ -1,4 +1,4 @@
-name: Build & Deploy with Kpack
+name: Deploy with Kpack
 
 on:
   push:
@@ -7,17 +7,17 @@ on:
       - new_feature_branch
 
 jobs:
-  package-and-publish:
-    name: Publish to PyPI
-    runs-on: macos-latest
-    needs: sonarqube
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  kpack-deploy:
+    runs-on: ubuntu-latest
 
-      - name: Setup Kubeconfig
-        run: |
-          aws eks update-kubeconfig --region us-east-1 --name your-cluster-name
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.27.3'
 
       - name: Run kpack
         run: |
