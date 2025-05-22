@@ -25,7 +25,7 @@ jobs:
       - name: Build image with Cloud Native Buildpacks
         run: |
           cd project-root
-          pack build my-app \
+          pack build docker.io/betrand1997/my-app \
             --builder heroku/builder:24 \
             --path . \
             --publish \
