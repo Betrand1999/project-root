@@ -236,13 +236,13 @@ jobs:
           kubectl rollout restart deployment my-app -n dev 
      
 
-      - name: Build and Push Image with Pack
-        run: |
-          pack build docker.io/betrand1997/my-app \
-            --builder heroku/builder:24 \
-            --path . \
-            --publish \
-            --tag docker.io/betrand1997/my-app:latest
+      # - name: Build and Push Image with Pack
+      #   run: |
+      #     pack build docker.io/betrand1997/my-app \
+      #       --builder heroku/builder:24 \
+      #       --path . \
+      #       --publish \
+      #       --tag docker.io/betrand1997/my-app:latest
          
         
          
