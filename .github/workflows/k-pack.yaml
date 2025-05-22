@@ -14,11 +14,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Disable Docker keychain credential helper
-        run: |
-          mkdir -p ~/.docker
-          echo '{ "credsStore": "none" }' > ~/.docker/config.json
-
       - name: Build image with Cloud Native Buildpacks
         run: |
           pack build my-app \
