@@ -8,7 +8,7 @@ on:
 
 jobs:
   pack-build:
-    runs-on: macos-latest
+    runs-on: [macOS, X64]
 
     steps:
       - name: Checkout repository
