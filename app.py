@@ -117,7 +117,7 @@ def contact_form():
         db.contacts.insert_one(contact_data)
         
         send_email('New Contact Form Submission', EMAIL_USER, f'Name: {name}\nEmail: {email}\nPhone: {phone}\nCategory: {category}\nAppointment: {appointment}\nMessage: {message}')
-        send_email('Thanks for contacting', email, "We will get back to you soon!")
+        send_email('Thanks for contacting', email, "We will get back to you as soon as possible!")
         
         
 
