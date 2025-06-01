@@ -70,3 +70,15 @@ python app.py
 #
 
 #
+
+####################################################
+pending pod disk space
+# See what images are present
+ctr -n k8s.io images list
+
+# Remove unused containerd images (be cautious)
+ctr -n k8s.io images prune
+
+# Or for Docker users (if running Docker instead):
+docker system prune -a
+####################################################
