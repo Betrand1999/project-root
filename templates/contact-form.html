@@ -1,10 +1,8 @@
 {% extends "base.html" %}
-
 {% block main %}
 <main class="container mt-5">
   <div class="row justify-content-center my-5" style="width: 100%;">
     <div class="col-md-6 mx-auto">
-
 <!-- Flash messages for feedback -->
 {% with messages = get_flashed_messages(with_categories=true) %} 
 {% if messages %}
@@ -55,8 +53,9 @@
           placeholder="Enter your phone number"
         />
       </div>
-  
-     
+
+      <div class="mb-3">
+      <div class="mb-3">
         <label for="category" class="form-label">Category:</label>
         <select id="category" name="category" class="form-select">
           <option value="general">General Inquiry</option>
@@ -65,14 +64,18 @@
           <option value="support">Technical Support</option>
         </select>
       </div>
+
   
       <div class="mb-3">
         <label for="appointment" class="form-label">Preferred Appointment Date and Time:</label>
         <input type="datetime-local" class="form-control" id="appointment" name="appointment" />
       </div>
   
+      <div class="mb-3">
+        <label for="file" class="form-label">Upload a File (if applicable):</label>
+        <input type="file" class="form-control" id="file" name="file" />
+      </div>
   
-
       <div class="mb-3">
         <label for="message" class="form-label">Message:</label>
         <textarea
@@ -89,10 +92,8 @@
         <input type="submit" class="btn btn-primary" value="Submit" />
       </div>
     </form>
-
   </div>
 </div>
 </div>
 </main>
 {% endblock main %}
-
