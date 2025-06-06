@@ -12,7 +12,8 @@ spec:
     metadata:
       labels:
         app: my-app
-    spec:
+      annotations:              
+        contact.email: "mmutagha@gmail.com"  
       containers:
         - name: my-app
           image: betrand1997/my-static-websites:latest
