@@ -12,8 +12,9 @@ spec:
     metadata:
       labels:
         app: my-app
-      annotations:              
-        contact.email: "mmutagha@gmail.com"  
+      annotations:
+        contact.email: "mmutagha@gmail.com"
+    spec:
       containers:
         - name: my-app
           image: betrand1997/my-static-websites:latest
@@ -22,3 +23,4 @@ spec:
           envFrom:
             - secretRef:
                 name: my-app-secret
+
