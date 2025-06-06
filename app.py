@@ -86,7 +86,7 @@ def register():
         hashed_password = generate_password_hash(password)
         user_data = {'username': username, 'password': hashed_password}
         users_collection.insert_one(user_data)
-        flash('Successfully registered! Please log in.', 'success')
+        flash('Successfully registered! Please log in.', 'success',end=' ❤️ ')
         return redirect(url_for('login'))
     return render_template('register.html')
 
