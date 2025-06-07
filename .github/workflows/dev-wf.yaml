@@ -250,5 +250,9 @@ jobs:
       - name: Register Argo CD Dev App
         run: |
          kubectl apply -f argocd/project-root-dev.yaml
+      - name: Run velero backup 
+        run: |
+         velero delete backup full-cluster-backup --confirm
+         velero backup create full-cluster-backup --ttl 168h0m0s
 
 
