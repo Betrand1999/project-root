@@ -5,6 +5,7 @@ metadata:
   namespace: dev
 spec:
   replicas: 1
+  minReadySeconds: 10
   selector:
     matchLabels:
       app: my-app
@@ -18,6 +19,7 @@ spec:
       containers:
         - name: my-app
           image: betrand1997/my-static-websites:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 50
           envFrom:
