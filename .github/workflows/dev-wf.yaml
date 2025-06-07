@@ -250,9 +250,17 @@ jobs:
       - name: Register Argo CD Dev App
         run: |
          kubectl apply -f argocd/project-root-dev.yaml
-      - name: Run velero backup 
+      - name: Delete and Recreate Velero Backup
+     
         run: |
-         velero delete backup full-cluster-backup --confirm
-         velero backup create full-cluster-backup --ttl 168h0m0s
+         velero delete backup full-cluster-backup --confirm || true
 
+         echo "⏳ Waiting for full-cluster-backup to be deleted..."
+         for i in {1..30}; do
+           velero backup get full-cluster-backup > /dev/null 2>&1 || break
+           echo "Still deleting... retrying in 10 seconds"
+           sleep 10
+           done
 
+           echo "📦 Creating new backup..."
+          velero backup create full-cluster-backup --ttl 168h0m0s || true
