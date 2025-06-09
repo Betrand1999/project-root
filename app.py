@@ -142,6 +142,11 @@ def logout():
     logout_user()
     flash("Logged out successfully!", "info")
     return redirect(url_for("login"))
+
+@app.route('/about')
+def about():
+    return "<h2>This is the About Page</h2>"
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 
