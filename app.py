@@ -145,7 +145,8 @@ def logout():
 
 @app.route('/about')
 def about():
-    return "<h2>This is the About Page</h2>"
+    return render_template('about.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
