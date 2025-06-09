@@ -182,6 +182,9 @@ jobs:
   deploy:
     name: Deploy to Kubernetes on EC2
     runs-on: [self-hosted, Linux, X64]
+    environment:
+      name: prod
+      url: https://clouddevopsconsulting.com/
     needs: deploy-container
 
     steps:
