@@ -135,7 +135,7 @@ def private_videos():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     videos = get_videos()
-    return render_template('private-videos.html',videos=videos)
+    return render_template('private-videos.html', videos=videos)
 @app.route("/logout")
 @login_required
 def logout():
