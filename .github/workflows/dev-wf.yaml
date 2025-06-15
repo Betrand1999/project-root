@@ -227,6 +227,12 @@ jobs:
             -n dev \
             --dry-run=client -o yaml | kubectl apply -f -
 
+      
+      - name: Prune Docker system (safely)
+        run: |
+          echo "🧹 Pruning unused Docker resources..."
+          docker system prune -a -f || echo "Nothing to prune or already clean."
+          echo "✅ Done pruning."
 
       # 🚀 Apply Kubernetes Manifests to Dev
       - name: Apply Kubernetes Manifests to Dev

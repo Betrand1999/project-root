@@ -142,11 +142,16 @@ def logout():
     logout_user()
     flash("Logged out successfully!", "info")
     return redirect(url_for("login"))
-
+# My added route
 @app.route('/about')
 def about():
     message = "We don’t just build infrastructure — we empower innovation. 💡💕"
     return render_template('about.html', message=message)
+
+@app.route('/test')
+def test():
+    return "Test route is working!"  # This shows in the browser
+
 
 
 if __name__ == '__main__':

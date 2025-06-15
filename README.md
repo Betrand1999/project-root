@@ -74,6 +74,7 @@ python app.py
 ####################################################
 pending pod disk space
 # See what images are present
+clear
 ctr -n k8s.io images list
 
 # Remove unused containerd images (be cautious)
