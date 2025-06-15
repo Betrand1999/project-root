@@ -145,8 +145,8 @@ def logout():
 
 @app.route('/about')
 def about():
-    #return render_template('about.html')
-    print("Hello world",end="💕 ")
+    message = "We don’t just build infrastructure — we empower innovation. 💡💕"
+    return render_template('about.html', message=message)
 
 
 if __name__ == '__main__':
