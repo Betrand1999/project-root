@@ -145,8 +145,8 @@ def logout():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
-print("Hello world",end="💕 ")
+    #return render_template('about.html')
+    print("Hello world",end="💕 ")
 
 
 if __name__ == '__main__':
