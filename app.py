@@ -142,6 +142,7 @@ def logout():
     logout_user()
     flash("Logged out successfully!", "info")
     return redirect(url_for("login"))
+
 # My added route
 @app.route('/about')
 def about():
@@ -150,8 +151,15 @@ def about():
 
 @app.route('/test')
 def test():
-    return "Test route is working!"  # This shows in the browser
+    # return "Test route is working!"  # This shows in the browser
+    return redirect(url_for('about', custom_message="Hello from /test!"))
 
+
+@app.route('/new')
+def new():
+    fisrt_name = "betrand".title()
+    last_name = "mutagha".upper()
+    return f"{fisrt_name}  {last_name}"
 
 
 if __name__ == '__main__':
