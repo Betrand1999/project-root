@@ -144,17 +144,19 @@ def logout():
     return redirect(url_for("login"))
 
 # My added route
-@app.route('/about')
+@app.route('/about', methods=['GET', 'POST'])
 def about():
-    mood =  "curious" 
-    if mood == "excited":
-        message = "We don’t just build infrastructure — we empower innovation. 💡💕"
-    elif mood == "curious":
-        message = "Explore what makes our infrastructure so powerful! 🔍"
-    else:
-        message = "We’re building something meaningful every day. 🌱"
-    return render_template('about.html', message=message)
+    message = None
+    if request.method == 'POST':
+        mood = request.form['mood'].lower()
+        if mood == "excited":
+            message = "We don’t just build infrastructure — we empower innovation. 💡💕"
+        elif mood == "curious":
+            message = "Explore what makes our infrastructure so powerful! 🔍"
+        else:
+            message = "We’re building something meaningful every day. 🌱"
 
+    return render_template('about.html', message=message)
 
 
 
