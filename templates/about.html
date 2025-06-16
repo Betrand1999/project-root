@@ -28,6 +28,24 @@
           practices — all tailored to accelerate your digital transformation.
         </p>
         <p style="font-weight: bold; color: hotpink">{{ message }}</p>
+
+        <!-- templates/about.html -->
+        <form action="/about" method="post">
+          <label for="mood">What's your mood?</label>
+          <input
+            type="text"
+            name="mood"
+            placeholder="excited / curious / other"
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+
+        <hr />
+
+        {% if message %}
+        <p><strong>Message:</strong> {{ message }}</p>
+        {% endif %}
       </div>
     </section>
   </body>
