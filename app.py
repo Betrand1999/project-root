@@ -146,7 +146,7 @@ def logout():
 # My added route
 @app.route('/about')
 def about():
-    mood =  "excited" 
+    mood =  "curious" 
     if mood == "excited":
         message = "We don’t just build infrastructure — we empower innovation. 💡💕"
     elif mood == "curious":
