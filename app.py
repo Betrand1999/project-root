@@ -146,20 +146,16 @@ def logout():
 # My added route
 @app.route('/about')
 def about():
-    message = "We don’t just build infrastructure — we empower innovation. 💡💕"
+    mood =  "excited" 
+    if mood == "excited":
+        message = "We don’t just build infrastructure — we empower innovation. 💡💕"
+    elif mood == "curious":
+        message = "Explore what makes our infrastructure so powerful! 🔍"
+    else:
+        message = "We’re building something meaningful every day. 🌱"
     return render_template('about.html', message=message)
 
-@app.route('/test')
-def test():
-    # return "Test route is working!"  # This shows in the browser
-    return redirect(url_for('about', custom_message="Hello from /test!"))
 
-
-@app.route('/new')
-def new():
-    fisrt_name = "betrand".title()
-    last_name = "mutagha".upper()
-    return f"{fisrt_name}  {last_name}"
 
 
 if __name__ == '__main__':
