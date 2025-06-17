@@ -150,9 +150,9 @@ def about():
     if request.method == 'POST':
         mood = request.form['mood'].lower()
         if mood == "excited":
-            message = "We don’t just build infrastructure — we empower innovation. 💡💕"
+            message = " Happy you are Excited We don’t just build infrastructure — we empower innovation. 💡💕"
         elif mood == "curious":
-            message = "Explore what makes our infrastructure so powerful! 🔍"
+            message = "Hmmmm curiousity is sometime good Explore what makes our infrastructure so powerful! 🔍"
         else:
             message = "We’re building something meaningful every day. 🌱"
 
