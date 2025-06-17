@@ -57,15 +57,17 @@
             CDC Firm <small>Cloud DevOps Consulting Company llc.io </small>
           </div>
         </a>
-
+        <!--   This is where you add clicable page on main base.html-->
         <nav aria-label="Main Navigation">
           <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
             <li><a href="{{ url_for('services') }}">Services</a></li>
             <li><a href="{{ url_for('contact_form') }}">Contact Form</a></li>
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('private_videos') }}">Videos</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
+
             {% else %}
 
             <li><a href="{{ url_for('register') }}">Register</a></li>
