@@ -159,6 +159,18 @@ def about():
     return render_template('about.html', message=message)
 
 
+@app.route('/assessment', methods=['GET', 'POST'])
+def assessment():
+    result = None
+    if request.method == 'POST':
+        name = request.form['client_name']
+        score = int(request.form['score'])
+        if score >= 70:
+            result = f"{name} is Cloud Ready ✅"
+        else:
+            result = f"{name} needs more preparation ❌"
+    return render_template('assessment.html', result=result)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
