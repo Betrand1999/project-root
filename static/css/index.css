@@ -259,3 +259,20 @@ nav ul.visible {
 .scroll-to-top:hover {
   background: #e07a35;
 }
+
+@media (max-width: 768px) {
+  .testimonials-carousel h3 {
+    font-size: 1.5rem;
+    padding: 0 15px;
+  }
+
+  .testimonial {
+    font-size: 1rem;
+    padding: 20px;
+    margin: 0 10px;
+  }
+
+  .carousel {
+    min-height: 180px;
+  }
+}

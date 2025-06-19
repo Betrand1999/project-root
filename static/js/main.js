@@ -72,3 +72,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.head.appendChild(styleSheet);
 });
 
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const testimonials = document.querySelectorAll(".testimonial");
+    let index = 0;
+  
+    function rotateTestimonials() {
+      testimonials[index].classList.remove("active");
+      index = (index + 1) % testimonials.length;
+      testimonials[index].classList.add("active");
+    }
+  
+    if (testimonials.length > 1) {
+      setInterval(rotateTestimonials, 2000);
+    }
+  });
+  
