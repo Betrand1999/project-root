@@ -91,3 +91,7 @@ a:hover {
   font-weight: bold;
   color: #189ab4;
 }
+
+nav ul li a i {
+  margin-right: 6px;
+}
