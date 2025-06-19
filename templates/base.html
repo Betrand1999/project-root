@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cloud & DevOps</title>
+
+    <!-- ✅ Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-papA0nJbcZrMeEWv3z3CTrRHRQ7Xq0Yf0n9NN07grIWq2VStfHh3ZlS0yo/EswdyRcdcf3aD/dOwDjdu1mGZDg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- ✅ Core CSS -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
@@ -12,6 +23,15 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/index.css') }}"
     />
+
+    <!-- ✅ Load services.css only on /services route -->
+    {% if request.endpoint == 'services' %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/services.css') }}"
+    />
+    {% endif %}
+
     <style>
       /* CSS for Moving Image */
       .moving-image-container {
@@ -57,8 +77,9 @@
             CDC Firm <small>Cloud DevOps Consulting Company llc.io </small>
           </div>
         </a>
-        <!--   This is where you add clicable page on main base.html-->
-        <nav aria-label="Main Navigation">
+
+        <!--
+       <nav aria-label="Main Navigation">
           <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('about') }}">About</a></li>
@@ -73,6 +94,60 @@
 
             <li><a href="{{ url_for('register') }}">Register</a></li>
             <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+          </ul>
+        </nav> -->
+
+        <nav aria-label="Main Navigation">
+          <ul>
+            <li>
+              <a href="{{ url_for('home') }}"
+                ><i class="fas fa-home"></i> Home</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('about') }}"
+                ><i class="fas fa-info-circle"></i> About</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('assessment') }}"
+                ><i class="fas fa-tasks"></i> Assessment</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('services') }}"
+                ><i class="fas fa-cloud"></i> Services</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('contact_form') }}"
+                ><i class="fas fa-envelope"></i> Contact Form</a
+              >
+            </li>
+
+            {% if current_user.is_authenticated %}
+            <li>
+              <a href="{{ url_for('private_videos') }}"
+                ><i class="fas fa-lock"></i> Videos</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('logout') }}"
+                ><i class="fas fa-sign-out-alt"></i> Logout</a
+              >
+            </li>
+            {% else %}
+            <li>
+              <a href="{{ url_for('register') }}"
+                ><i class="fas fa-user-plus"></i> Register</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('login') }}"
+                ><i class="fas fa-sign-in-alt"></i> Login</a
+              >
+            </li>
             {% endif %}
           </ul>
         </nav>

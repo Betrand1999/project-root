@@ -1,9 +1,6 @@
-{% extends "base.html" %}
-
-{% block main %}
-
+{% extends "base.html" %} {% block main %}
 <main class="container my-5">
-  <!-- Services sections remain unchanged -->
+  <!-- Cloud Consulting Section -->
   <section class="mb-5">
     <h2 class="mb-3">Cloud Consulting</h2>
     <p>
@@ -11,29 +8,33 @@
       business, enabling scalable and secure cloud solutions to drive
       innovation.
     </p>
-    <ul class="list-group">
-      <li class="list-group-item">Cloud Migration Planning & Execution</li>
-      <li class="list-group-item">Multi-Cloud Strategy & Architecture</li>
-      <li class="list-group-item">Cost Optimization & Management</li>
-      <li class="list-group-item">Security & Compliance Audits</li>
-    </ul>
+
+    <div class="service-card-grid">
+      <div class="service-card">🚀 Cloud Migration Planning & Execution</div>
+      <div class="service-card">🌐 Multi-Cloud Strategy & Architecture</div>
+      <div class="service-card">💰 Cost Optimization & Management</div>
+      <div class="service-card">🔒 Security & Compliance Audits</div>
+    </div>
   </section>
 
+  <!-- DevOps Solutions Section -->
   <section class="mb-5">
     <h2 class="mb-3">DevOps Solutions</h2>
     <p>
       From CI/CD pipelines to automated infrastructure, our DevOps services
       improve software delivery, reliability, and efficiency.
     </p>
-    <ul class="list-group">
-      <li class="list-group-item">CI/CD Pipeline Setup & Automation</li>
-      <li class="list-group-item">Infrastructure as Code (IaC) Implementations</li>
-      <li class="list-group-item">Monitoring & Logging with Modern Tools</li>
-      <li class="list-group-item">Configuration Management (Ansible, Chef, Puppet)</li>
-    </ul>
+
+    <div class="service-card-grid">
+      <div class="service-card">⚙️ CI/CD Pipeline Setup & Automation</div>
+      <div class="service-card">
+        📦 Infrastructure as Code (IaC) Implementations
+      </div>
+      <div class="service-card">📊 Monitoring & Logging with Modern Tools</div>
+      <div class="service-card">
+        🛠 Configuration Management (Ansible, Chef, Puppet)
+      </div>
+    </div>
   </section>
-
-  <!-- Other sections remain unchanged -->
 </main>
-
 {% endblock main %}
