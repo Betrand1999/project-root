@@ -1,1 +1,7 @@
 
+# Set yourself or a team as code owner
+* @Betrand1999
+
+# Or assign specific files/folders
+/kubernetes/ @Betrand1999 @DevOpsTeam
+*.py @PythonTeam
