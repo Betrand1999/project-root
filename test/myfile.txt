@@ -1,3 +1,0 @@
-Empowering businesses with scalable cloud solutions and expert DevOps consulting.  
-Accelerate your digital transformation with our tailored cloud-native strategies.  
-From CI/CD pipelines to Kubernetes, we build the future of your infrastructure.  
