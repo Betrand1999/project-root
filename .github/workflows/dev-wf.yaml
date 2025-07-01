@@ -259,6 +259,9 @@ jobs:
       # 🚀 Register Argo CD Dev App
       - name: Register Argo CD Dev App
         run: |
+         kubectl apply -f ${{ github.workspace }}/argocd/project-root-dev.yaml 
+         
+
          kubectl apply -f argocd/project-root-dev.yaml
       # - name: Delete and Recreate Velero Backup
      
@@ -274,3 +277,4 @@ jobs:
 
       #      echo "📦 Creating new backup..."
       #      velero backup create full-cluster-backup --ttl 168h0m0s || true
+
