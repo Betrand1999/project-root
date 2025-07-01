@@ -86,7 +86,7 @@ def register():
         hashed_password = generate_password_hash(password)
         user_data = {'username': username, 'password': hashed_password}
         users_collection.insert_one(user_data)
-        flash('Successfully registered! Please log in.', 'success')
+        flash('Successfully registered! Please log in.🥰', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
 
@@ -117,13 +117,13 @@ def contact_form():
         db.contacts.insert_one(contact_data)
         
         send_email('New Contact Form Submission', EMAIL_USER, f'Name: {name}\nEmail: {email}\nPhone: {phone}\nCategory: {category}\nAppointment: {appointment}\nMessage: {message}')
-        send_email('Thanks for contacting', email, "We will get back to you soon!")
+        send_email('Thanks for contacting', email, "We will get back to you as soon as possible!\nBest Regards,\nBetrand")
         
         
 
         # Remove the email or SMS notification logic here
         # Simply flash a success message
-        flash('Your message has been submitted successfully! Regards Betrand Founder', 'success')
+        flash('Your message has been submitted successfully!', 'success')
 
         return redirect(url_for('contact_form'))
     return render_template('contact-form.html')
@@ -142,6 +142,36 @@ def logout():
     logout_user()
     flash("Logged out successfully!", "info")
     return redirect(url_for("login"))
+
+# My added route
+@app.route('/about', methods=['GET', 'POST'])
+def about():
+    message = None
+    if request.method == 'POST':
+        mood = request.form['mood'].lower()
+        if mood == "excited":
+            message = " Happy you are Excited We don’t just build infrastructure — we empower innovation. 💡💕"
+        elif mood == "curious":
+            message = "Hmmmm curiousity is sometime good Explore what makes our infrastructure so powerful! 🔍"
+        else:
+            message = "We’re building something meaningful every day. 🌱"
+
+    return render_template('about.html', message=message)
+
+
+@app.route('/assessment', methods=['GET', 'POST'])
+def assessment():
+    result = None
+    if request.method == 'POST':
+        name = request.form['client_name']
+        score = int(request.form['score'])
+        if score >= 70:
+            result = f"{name} is Cloud Ready ✅"
+        else:
+            result = f"{name} needs more preparation ❌"
+    return render_template('assessment.html', result=result)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 

@@ -1,5 +1,5 @@
-############ BUILD ARTIFACT JOB ####################
-name: Build and Deploy to Prod
+# ############ BUILD ARTIFACT JOB ####################
+name: Build and Deploy to prod
 
 on:
   workflow_dispatch:
@@ -9,12 +9,12 @@ on:
         required: true
         type: choice
         options:
-          - Prod
+          - prod
 jobs:
   build:
     name: Build Python Package
     runs-on: [macOS, X64]
-    environment: ${{ github.event.inputs.environment }}
+    #environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
         with:
           name: python-package-${{ github.run_id }}
           path: dist/
-######## UNIT TEST JOB ###############################
+# ######## UNIT TEST JOB ###############################
   test:
     name: Run Unit Tests
     runs-on: [macOS, X64]
@@ -62,7 +62,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           venv/bin/python -m pytest tests/ --disable-warnings
-##### STATIC ANALYSIS ##################################
+# ##### STATIC ANALYSIS ##################################
   sonarqube:
     name: SonarQube & Trivy Scan
     runs-on: [macOS, X64]
@@ -88,7 +88,7 @@ jobs:
         with:
           name: trivy-scan-results
           path: trivy-scan-results.txt
-########## PACKAGE AND PUSH ARTIFACT ################################
+# ########## PACKAGE AND PUSH ARTIFACT ################################
   package-and-publish:
     name: Publish to PyPI
     runs-on: [macOS, X64]
@@ -119,9 +119,9 @@ jobs:
         run: |
           source venv/bin/activate
           twine upload dist/*
-######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
+# ######## CONTANARIZED IMAGE AND PUSH TO DOCKER HUB ##################
   build-and-deploy-Docker-Hub:
-    name: Build and Deploy Docker Image
+    name: Build Docker Image
     runs-on: ubuntu-latest
     needs: package-and-publish
     steps:
@@ -140,7 +140,7 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push betrand1997/my-static-websites
 
-########### PULL AND RUN IMAGE ######################
+# ########### PULL AND RUN IMAGE #######################
   deploy-container:
    name: Run Image
    runs-on: [self-hosted, Linux, X64]
@@ -178,13 +178,13 @@ jobs:
 
    
 
-   
-
-
 ############# PULL IMAGE AND DEPLOY TO KUBERNETES CLUSTER ###########################
   deploy:
     name: Deploy to Kubernetes on EC2
     runs-on: [self-hosted, Linux, X64]
+    environment:
+      name: prod
+      url: https://clouddevopsconsulting.com/
     needs: deploy-container
 
     steps:
@@ -211,7 +211,7 @@ jobs:
       # 🔐 Create Kubernetes Secrets from GitHub Secrets
       - name: Create Kubernetes Secret in prod namespace
         run: |
-          kubectl delete secret my-app-secret -n prod --ignore-not-found
+          
           kubectl create secret generic my-app-secret \
             --from-literal=MONGO_URI="${{ secrets.MONGO_URI }}" \
             --from-literal=SECRET_KEY="${{ secrets.SECRET_KEY }}" \
@@ -224,15 +224,46 @@ jobs:
             --from-literal=WS_REGION="${{ secrets.WS_REGION }}" \
             --from-literal=MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
             --from-literal=MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
-            -n prod
+            -n prod \
+            --dry-run=client -o yaml | kubectl apply -f -
 
-      # 🚀 Apply Kubernetes Manifests
-      - name: Apply Kubernetes Manifests
+
+      # 🚀 Apply Kubernetes Manifests to Prod
+      - name: Apply Kubernetes Manifests to prod
         run: |
           kubectl get namespace prod || kubectl create namespace prod
-          kubectl apply -f ${{ github.workspace }}/kubernetes/prod-deployment.yaml -n prod
-          kubectl apply -f ${{ github.workspace }}/kubernetes/prod-service.yaml -n prod
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod/prod-namespace.yaml
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod/prod-deployment.yaml -n prod
+          kubectl apply -f ${{ github.workspace }}/kubernetes/prod/prod-service.yaml -n prod
           kubectl rollout status deployment/my-app -n prod
           kubectl rollout restart deployment my-app -n prod
+     
 
- 
+      # - name: Build and Push Image with Pack
+      #   run: |
+      #     pack build docker.io/betrand1997/my-app \
+      #       --builder heroku/builder:24 \
+      #       --path . \
+      #       --publish \
+      #       --tag docker.io/betrand1997/my-app:latest
+         
+        
+         
+      # 🚀 Register Argo CD Prod App
+      - name: Register Argo CD prod App
+        run: |
+         kubectl apply -f argocd/project-root-prod.yaml
+      - name: Delete and Recreate Velero Backup
+     
+        run: |
+         velero delete backup full-cluster-backup --confirm || true
+
+         echo "⏳ Waiting for full-cluster-backup to be deleted..."
+         for i in {1..30}; do
+           velero backup get full-cluster-backup > /prod/null 2>&1 || break
+           echo "Still deleting... retrying in 10 seconds"
+           sleep 10
+           done
+
+           echo "📦 Creating new backup..."
+           velero backup create full-cluster-backup --ttl 168h0m0s || true

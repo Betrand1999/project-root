@@ -1,0 +1,14 @@
+apiVersion: kpack.io/v1alpha2
+kind: Image
+metadata:
+  name: myapp-image
+  namespace: kpack
+spec:
+  tag: docker.io/your-dockerhub-username/myapp:latest
+  builder:
+    name: heroku-builder
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/your-org/project-root
+      revision: main

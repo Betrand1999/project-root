@@ -5,6 +5,7 @@ metadata:
   namespace: dev
 spec:
   replicas: 1
+  minReadySeconds: 10
   selector:
     matchLabels:
       app: my-app
@@ -12,12 +13,16 @@ spec:
     metadata:
       labels:
         app: my-app
+      annotations:
+        contact.email: "mmutagha@gmail.com"
     spec:
       containers:
         - name: my-app
           image: betrand1997/my-static-websites:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 50
           envFrom:
             - secretRef:
                 name: my-app-secret
+
