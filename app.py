@@ -171,7 +171,18 @@ def assessment():
             result = f"{name} needs more preparation ❌"
     return render_template('assessment.html', result=result)
 
-
+# 👇 Add this before the final block
+@app.route('/subscribe', methods=['POST'])
+def subscribe():
+    email = request.form.get('email')
+    if email:
+        db.subscribers.insert_one({'email': email})
+        print(f"New subscriber: {email}")
+        flash('Thank you for subscribing!')
+    else:
+        flash('Please enter a valid email address.')
+    return redirect(url_for('home'))
+# 👇 Add this before the final block
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 
