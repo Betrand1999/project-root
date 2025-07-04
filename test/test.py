@@ -1,10 +1,9 @@
-def full_name(first_name,last_name):
-    return f"Hello {first_name}  {last_name}"
-message = full_name("Betrand ", "Mutagha ")
+def create_hero(name, power, city):
+    return f"Captain {name} has the {power} of fire and protects New {city}"
+message = create_hero("Flames", "power","York") 
 print(message)
-if message == message:
-    print(" yes ")
-elif message != message:
-    print("No")
-else:
-    print("All wrong")
+
+def hero_intro(hero_description):
+    return message
+new_message = hero_intro(message)
+print(new_message)
