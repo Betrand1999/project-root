@@ -2,15 +2,25 @@
 
 <main>
   <!-- Hero Section -->
-  <section class="hero">
-    <h2>Empowering Your Cloud & DevOps Journey</h2>
-    <p>
+  <section class="hero-section" style="position: relative; text-align: center; padding: 60px 20px">
+    <!-- ✨ Floating Shapes -->
+    <div class="floating-shape one"></div>
+    <div class="floating-shape two"></div>
+
+
+    <h1 data-aos="fade-up" id="dynamic-headline"></h1>
+    <p data-aos="fade-up" data-aos-delay="200">
       We specialize in delivering Cloud and DevOps consulting services tailored
-      to meet your unique business needs.
+      to your unique business needs.
     </p>
-    <button onclick="window.location.href='{{ url_for('services') }}'">
-      Explore our Services
-    </button>
+    <a
+      href="{{ url_for('services') }}"
+      class="btn btn-primary mt-3"
+      data-aos="zoom-in"
+      data-aos-delay="400"
+    >
+      Explore Our Services
+    </a>
   </section>
 
   <!-- add demo -->
@@ -101,6 +111,57 @@
       </div>
     </div>
   </section>
+
+  <!-- me added -->
+  <!-- Impact Stats Section -->
+  <section
+    class="stats-section"
+    style="background: #f9f9f9; padding: 60px 20px; text-align: center"
+  >
+    <h2 data-aos="fade-up">Our Impact in Numbers</h2>
+    <div
+      class="stats-grid"
+      style="
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+      "
+    >
+      <div class="stat" data-aos="fade-up" data-aos-delay="100">
+        <div
+          class="counter"
+          data-target="150"
+          style="font-size: 48px; font-weight: bold"
+        >
+          0
+        </div>
+        <p>Projects Delivered</p>
+      </div>
+      <div class="stat" data-aos="fade-up" data-aos-delay="200">
+        <div
+          class="counter"
+          data-target="95"
+          style="font-size: 48px; font-weight: bold"
+        >
+          0
+        </div>
+        <p>Happy Clients</p>
+      </div>
+      <div class="stat" data-aos="fade-up" data-aos-delay="300">
+        <div
+          class="counter"
+          data-target="24"
+          style="font-size: 48px; font-weight: bold"
+        >
+          0
+        </div>
+        <p>Supported Regions</p>
+      </div>
+    </div>
+  </section>
+
   <!--add testimony-->
   <section class="testimonials-carousel">
     <h3>What Our Clients Say</h3>
@@ -175,6 +236,7 @@
       </button>
     </form>
   </section>
+
   <!-- Subscription Section -->
 </main>
 
