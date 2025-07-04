@@ -14,7 +14,6 @@
       referrerpolicy="no-referrer"
     />
 
-    <!-- ✅ Core CSS -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
@@ -23,6 +22,8 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/index.css') }}"
     />
+    <!-- ✅ AOS Animation Styles -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
     <!-- ✅ Load services.css only on /services route -->
     {% if request.endpoint == 'services' %}
@@ -37,6 +38,14 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/contact-form.css') }}"
+    />
+    {% endif %}
+
+    <!-- ✅ Load about.css only on /about route -->
+    {% if request.endpoint == 'about' %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/about.css') }}"
     />
     {% endif %}
 
@@ -212,6 +221,21 @@
       crossorigin="anonymous"
     ></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- ✅ Load typing.js only on homepage -->
+    {% if request.endpoint == 'home' %}
+    <script src="{{ url_for('static', filename='js/typing.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/counter.js') }}"></script>
+    {% endif %}
+
+    <!-- ✅ AOS Animation Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800,
+        once: true,
+      });
+    </script>
 
     <!-- ✅ Tidio Live Chat Widget -->
     <script

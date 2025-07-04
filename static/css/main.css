@@ -95,3 +95,69 @@ a:hover {
 nav ul li a i {
   margin-right: 6px;
 }
+
+.floating-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #00b4d8, #0077b6);
+  width: 200px;
+  height: 200px;
+  opacity: 0.3;
+  animation: float 8s ease-in-out infinite;
+  z-index: 0;
+}
+
+.floating-shape.one {
+  top: -50px;
+  left: -50px;
+}
+
+.floating-shape.two {
+  bottom: -60px;
+  right: -40px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-30px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.floating-shape {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  opacity: 0.2;
+  animation: float 6s ease-in-out infinite;
+  z-index: 0;
+}
+
+.floating-shape.one {
+  top: 20px;
+  left: 15%;
+  background: radial-gradient(circle at center, #00c6ff, #0072ff);
+}
+
+.floating-shape.two {
+  bottom: 30px;
+  right: 10%;
+  background: radial-gradient(circle at center, #ff6a00, #ee0979);
+  animation-delay: 3s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
