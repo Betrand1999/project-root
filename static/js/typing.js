@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const text = [
-      "Empowering Your Cloud Journey 🚀",
-      "Automate. Scale. Secure. 🔐",
-      "From Dev to Ops — Faster ⚙️",
+      "Empowering Your Cloud Journey ",
+      "Automate. Scale. Secure. ",
+      "From Dev to Ops — Faster ",
     ];
     let i = 0;
     let j = 0;
