@@ -183,6 +183,15 @@ def subscribe():
         flash('Please enter a valid email address.')
     return redirect(url_for('home'))
 # 👇 Add this before the final block
+
+from flask import send_from_directory
+
+@app.route('/google77f25e63bec6dd80.html')
+def google_verification():
+    return send_from_directory('.', 'google77f25e63bec6dd80.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 

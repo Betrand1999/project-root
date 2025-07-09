@@ -82,4 +82,7 @@ ctr -n k8s.io images prune
 
 # Or for Docker users (if running Docker instead):
 docker system prune -a
-####################################################
+################################################
+
+
+site:1beto.com ### it confirms that 1beto.com is not yet indexed by Google
