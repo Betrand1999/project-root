@@ -192,6 +192,9 @@ def google_verification():
     with open('google77f25e63bec6dd80.html') as f:
         return Response(f.read(), mimetype='text/html')
 
+@app.route('/sitemap.xml')
+def sitemap():
+    return app.send_static_file('sitemap.xml')
 
 
 
