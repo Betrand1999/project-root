@@ -184,11 +184,14 @@ def subscribe():
     return redirect(url_for('home'))
 # 👇 Add this before the final block
 
-from flask import send_from_directory
+
+from flask import Response
 
 @app.route('/google77f25e63bec6dd80.html')
 def google_verification():
-    return send_from_directory('.', 'google77f25e63bec6dd80.html')
+    with open('google77f25e63bec6dd80.html') as f:
+        return Response(f.read(), mimetype='text/html')
+
 
 
 
