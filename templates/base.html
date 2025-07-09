@@ -250,20 +250,64 @@
     {% block main %}{% endblock main %}
 
     <footer>
-      <div class="contact-info" style="text-align: center; padding: 20px">
-        <address style="font-style: normal">
-          <strong>CDC Firm</strong><br />
-          6277 Stumph Road, Parma Heights, OH 44130<br />
-          Phone: <a href="tel:+12402981823">240-298-1823</a><br />
-          Email:
-          <a href="mailto:info@clouddevopsconsulting.com"
-            >info@clouddevopsconsulting.com</a
-          ><br />
-          <!--add whatapp logo-->
+      <div style="text-align: center; padding-top: 20px">
+        <p style="font-weight: bold; font-size: 1.2rem">Contact</p>
+        <p>240-298-1823</p>
+        <p>
+          <a href="mailto:info@clouddevopsconsulting.com" style="color: white">
+            info@clouddevopsconsulting.com
+          </a>
+        </p>
 
-          <!--add whatapp logo-->
-        </address>
+        <!-- Social Media Icons -->
+        <div style="margin-top: 10px">
+          <a
+            href="https://www.linkedin.com"
+            target="_blank"
+            style="margin: 0 8px"
+          >
+            <img
+              src="{{ url_for('static', filename='images/linkedin.png') }}"
+              alt="LinkedIn"
+              style="height: 32px"
+            />
+          </a>
+          <a
+            href="https://www.instagram.com"
+            target="_blank"
+            style="margin: 0 8px"
+          >
+            <img
+              src="{{ url_for('static', filename='images/instagram.png') }}"
+              alt="Instagram"
+              style="height: 32px"
+            />
+          </a>
+          <a
+            href="https://wa.me/12402981823?text=Hi%2C%20I%20need%20some%20help"
+            target="_blank"
+            style="margin: 0 8px"
+          >
+            <img
+              src="{{ url_for('static', filename='images/whatsapp-navbar.png') }}"
+              alt="WhatsApp"
+              style="height: 32px"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com"
+            target="_blank"
+            style="margin: 0 8px"
+          >
+            <img
+              src="{{ url_for('static', filename='images/facebook.png') }}"
+              alt="Facebook"
+              style="height: 32px"
+            />
+          </a>
+        </div>
       </div>
+
       <p style="text-align: center">
         &copy; 2025 Cloud & DevOps Consulting. All rights reserved.
       </p>
