@@ -106,6 +106,7 @@
       crossorigin="anonymous"
     />
   </head>
+
   <body>
     <header>
       <div class="header-container">
@@ -340,6 +341,48 @@
       src="//code.tidio.co/nm9da68kwarxu4poexeqqsiblocw7heq.js"
       async
     ></script>
+
+    <!-- ✅ Tidio Live Chat Widget -->
+    <script
+      src="//code.tidio.co/nm9da68kwarxu4poexeqqsiblocw7heq.js"
+      async
+    ></script>
+
+    <!-- ✅ Cookie Consent Banner -->
+    <div
+      id="cookieConsent"
+      style="
+        display: none;
+        position: fixed;
+        bottom: 0;
+        background: #f1f1f1;
+        width: 100%;
+        padding: 15px;
+        text-align: center;
+        z-index: 1000;
+      "
+    >
+      <span>
+        We use cookies to improve your experience.
+        <a href="/cookie-policy" target="_blank">Learn more</a>
+      </span>
+      <button onclick="acceptCookies()" style="margin-left: 10px">
+        Accept All Cookies
+      </button>
+    </div>
+
+    <script>
+      function acceptCookies() {
+        localStorage.setItem("cookiesAccepted", "true");
+        document.getElementById("cookieConsent").style.display = "none";
+      }
+
+      window.onload = function () {
+        if (!localStorage.getItem("cookiesAccepted")) {
+          document.getElementById("cookieConsent").style.display = "block";
+        }
+      };
+    </script>
   </body>
 </html>
 <!-- ✅ Tidio Live Chat Widget -->

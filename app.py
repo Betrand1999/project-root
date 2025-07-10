@@ -244,6 +244,12 @@ def reset_password(token):
     return render_template('reset-password.html')
 
 
+
+# Cookies
+@app.route('/cookie-policy')
+def cookie_policy():
+    return render_template('cookie-policy.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 
