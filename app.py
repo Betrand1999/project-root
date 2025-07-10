@@ -200,6 +200,50 @@ def sitemap():
 def robots():
     return app.send_static_file('robots.txt')
 
+
+
+
+# adding logic for passwords reset
+
+from itsdangerous import URLSafeTimedSerializer
+
+serializer = URLSafeTimedSerializer(SECRET_KEY)
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+        user = users_collection.find_one({'username': email})
+        if user:
+            token = serializer.dumps(str(user['_id']), salt='password-reset')
+            reset_url = url_for('reset_password', token=token, _external=True)
+            send_email("Password Reset Request", email, f"Click here to reset your password: {reset_url}")
+            flash("Password reset link sent to your email.", "info")
+        else:
+            flash("User not found.", "error")
+    return render_template('forgot-password.html')
+
+
+# adding logic for passwords reset
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    try:
+        user_id = serializer.loads(token, salt='password-reset', max_age=3600)  # 1 hour
+    except:
+        flash("The reset link is invalid or has expired.", "danger")
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        new_password = request.form['password']
+        hashed = generate_password_hash(new_password)
+        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'password': hashed}})
+        flash("Password updated. Please log in.", "success")
+        return redirect(url_for('login'))
+
+    return render_template('reset-password.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 
