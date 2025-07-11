@@ -152,12 +152,4 @@ nav ul li a i {
   animation-delay: 3s;
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
+/* moving image is not here */
