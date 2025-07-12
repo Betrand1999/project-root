@@ -1,181 +1,174 @@
 {% extends "base.html" %} {% block main %}
 
+<!-- Hero Section -->
+<section
+  class="hero-section"
+  style="position: relative; text-align: center; padding: 60px 20px"
+>
+  <!-- ✨ Floating Shapes -->
+  <div class="floating-shape one"></div>
+  <div class="floating-shape two"></div>
 
-
-  <!-- Hero Section -->
-  <section
-    class="hero-section"
-    style="position: relative; text-align: center; padding: 60px 20px"
+  <h1 data-aos="fade-up" id="dynamic-headline"></h1>
+  <p data-aos="fade-up" data-aos-delay="200">
+    We specialize in delivering Cloud and DevOps consulting services tailored to
+    your unique business needs.
+  </p>
+  <a
+    href="{{ url_for('services') }}"
+    class="btn btn-primary mt-3"
+    data-aos="zoom-in"
+    data-aos-delay="400"
   >
-    <!-- ✨ Floating Shapes -->
-    <div class="floating-shape one"></div>
-    <div class="floating-shape two"></div>
+    Explore Our Services
+  </a>
+</section>
 
-    <h1 data-aos="fade-up" id="dynamic-headline"></h1>
+<!-- 🔥 Background Video Section -->
+<section
+  class="video-hero-section"
+  style="
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+  "
+>
+  <!-- 🌐 Background Video with Poster -->
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    aria-hidden="true"
+    poster="{{ url_for('static', filename='images/video-poster.jpg') }}"
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    "
+  >
+    <source
+      src="{{ url_for('static', filename='videos/7989443-hd_1920_1080_25fps.mp4') }}"
+      type="video/mp4"
+    />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- 💡 Optional Dark Overlay -->
+  <div
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    "
+  ></div>
+
+  <!-- ✨ Content Over Video -->
+  <div
+    style="position: relative; z-index: 1; padding: 120px 20px; color: white"
+  >
+    <h1 data-aos="fade-up">Innovation That Scales Globally</h1>
     <p data-aos="fade-up" data-aos-delay="200">
-      We specialize in delivering Cloud and DevOps consulting services tailored
-      to your unique business needs.
+      Automation. Performance. Security. Delivered from the cloud to the edge.
     </p>
     <a
-      href="{{ url_for('services') }}"
+      href="{{ url_for('contact_form') }}"
       class="btn btn-primary mt-3"
       data-aos="zoom-in"
       data-aos-delay="400"
     >
-      Explore Our Services
+      Request a Consultation
     </a>
-  </section>
+  </div>
+</section>
 
-  <!-- 🔥 Background Video Section -->
-  <section
-    class="video-hero-section"
+<!-- 🔥 Background Video Section -->
+
+<!-- add demo -->
+<section style="background: #f8f9fa; padding: 60px 20px; text-align: center">
+  <h2
     style="
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-      text-align: center;
+      color: #1b1b1b;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 10px;
     "
   >
-    <!-- 🌐 Background Video with Poster -->
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      aria-hidden="true"
-      poster="{{ url_for('static', filename='images/video-poster.jpg') }}"
-      style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -2;
-      "
-    >
-      <source
-        src="{{ url_for('static', filename='videos/6804123-uhd_4096_2160_25fps.mp4') }}"
-        type="video/mp4"
-      />
-      Your browser does not support the video tag.
-    </video>
+    Drive More Sales and Deliver an Effortless Experience
+  </h2>
+  <h1
+    style="
+      color: #005f73;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    "
+  >
+    Live Chat Customer Service Software
+  </h1>
+  <p
+    style="color: #333; font-size: 18px; max-width: 700px; margin: 0 auto 30px"
+  >
+    CDC’s highly effective solution for cross-channel interactive customer
+    interactions.
+  </p>
+  <a
+    href="/contact-form"
+    style="
+      display: inline-block;
+      background-color: #005f73;
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+    "
+  >
+    Request A Demo
+  </a>
+</section>
 
-    <!-- 💡 Optional Dark Overlay -->
-    <div
-      style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: -1;
-      "
-    ></div>
-
-    <!-- ✨ Content Over Video -->
-    <div
-      style="position: relative; z-index: 1; padding: 120px 20px; color: white"
-    >
-      <h1 data-aos="fade-up">Innovation That Scales Globally</h1>
-      <p data-aos="fade-up" data-aos-delay="200">
-        Automation. Performance. Security. Delivered from the cloud to the edge.
-      </p>
-      <a
-        href="{{ url_for('contact_form') }}"
-        class="btn btn-primary mt-3"
-        data-aos="zoom-in"
-        data-aos-delay="400"
-      >
-        Request a Consultation
-      </a>
-    </div>
-  </section>
-
-  <!-- 🔥 Background Video Section -->
-
-  <!-- add demo -->
-  <section style="background: #f8f9fa; padding: 60px 20px; text-align: center">
-    <h2
-      style="
-        color: #1b1b1b;
-        font-size: 28px;
-        font-weight: 600;
-        margin-bottom: 10px;
-      "
-    >
-      Drive More Sales and Deliver an Effortless Experience
-    </h2>
-    <h1
-      style="
-        color: #005f73;
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 20px;
-      "
-    >
-      Live Chat Customer Service Software
-    </h1>
-    <p
-      style="
-        color: #333;
-        font-size: 18px;
-        max-width: 700px;
-        margin: 0 auto 30px;
-      "
-    >
-      CDC’s highly effective solution for cross-channel interactive customer
-      interactions.
-    </p>
-    <a
-      href="/contact-form"
-      style="
-        display: inline-block;
-        background-color: #005f73;
-        color: white;
-        padding: 15px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        text-decoration: none;
-      "
-    >
-      Request A Demo
-    </a>
-  </section>
-
-  <!-- Moving Image Section  1 -->
-  <!-- Horizontal Moving Images -->
-  <section class="moving-images-row">
-    <div class="moving-image-box">
-      <img
-        src="{{ url_for('static', filename='images/pexels-tiger-lily-7108466.jpg') }}"
-        alt="Tiger Lily"
-        class="moving-image"
-      />
-    </div>
-    <div class="moving-image-box">
-      <img
-        src="{{ url_for('static', filename='images/pexels-divinetechygirl-1181341.jpg') }}"
-        alt="Techy Girl"
-        class="moving-image"
-      />
-    </div>
-    <div class="moving-image-box">
-      <img
-        src="{{ url_for('static', filename='images/pexels-divinetechygirl-1181472.jpg') }}"
-        alt="Techy Girl"
-        class="moving-image"
-      />
-    </div>
-    <div class="moving-image-box">
-      <img
-        src="{{ url_for('static', filename='images/pexels-fotios-photos-16129703.jpg') }}"
-        alt="Techy Girl"
-        class="moving-image"
-      />
-    </div>
-  </section>
+<!-- Moving Image Section  1 -->
+<!-- Horizontal Moving Images -->
+<section class="moving-images-row">
+  <div class="moving-image-box">
+    <img
+      src="{{ url_for('static', filename='images/pexels-tiger-lily-7108466.jpg') }}"
+      alt="Tiger Lily"
+      class="moving-image"
+    />
+  </div>
+  <div class="moving-image-box">
+    <img
+      src="{{ url_for('static', filename='images/pexels-divinetechygirl-1181341.jpg') }}"
+      alt="Techy Girl"
+      class="moving-image"
+    />
+  </div>
+  <div class="moving-image-box">
+    <img
+      src="{{ url_for('static', filename='images/pexels-divinetechygirl-1181472.jpg') }}"
+      alt="Techy Girl"
+      class="moving-image"
+    />
+  </div>
+  <div class="moving-image-box">
+    <img
+      src="{{ url_for('static', filename='images/pexels-fotios-photos-16129703.jpg') }}"
+      alt="Techy Girl"
+      class="moving-image"
+    />
+  </div>
+</section>
 
 =======
 
@@ -312,7 +305,6 @@
           environments.
         </p>
         <a href="{{ url_for('services') }}" class="btn-link">Learn More</a>
-
       </div>
     </div>
   </section>
@@ -382,11 +374,9 @@
       <div class="testimonial">
         <p>Their DevOps support transformed our infrastructure!</p>
         <span>– <strong>DevOps Solutions</strong></span>
-
       </div>
     </div>
   </section>
-
 
   <!-- me added -->
   <!-- Impact Stats Section -->
@@ -456,7 +446,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- Quick Links Section -->
   <section class="quick-links">
@@ -493,7 +482,6 @@
       data-aos="zoom-in"
     />
   </section>
-
 
   <!-- Subscription Section -->
   <section
