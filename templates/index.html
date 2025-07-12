@@ -10,10 +10,23 @@
   <div class="floating-shape two"></div>
 
   <h1 data-aos="fade-up" id="dynamic-headline"></h1>
-  <p data-aos="fade-up" data-aos-delay="200">
+
+  <p
+    style="
+      font-size: 1.4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      color: #007bff;
+      font-weight: 600;
+      line-height: 1.6;
+    "
+    data-aos="fade-up"
+    data-aos-delay="200"
+  >
     We specialize in delivering Cloud and DevOps consulting services tailored to
     your unique business needs.
   </p>
+
   <a
     href="{{ url_for('services') }}"
     class="btn btn-primary mt-3"
@@ -222,19 +235,24 @@
 
   <!-- me added -->
   <!-- Impact Stats Section -->
+
   <section
     class="stats-section"
     style="background: #f9f9f9; padding: 60px 20px; text-align: center"
   >
-    <h2 data-aos="fade-up">Our Impact in Numbers</h2>
+    <h2 data-aos="fade-up" style="margin-bottom: 40px">
+      Our Impact in Numbers
+    </h2>
+
     <div
       class="stats-grid"
       style="
-        display: flex;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 40px;
-        flex-wrap: wrap;
-        margin-top: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
       "
     >
       <div class="stat" data-aos="fade-up" data-aos-delay="100">
@@ -247,20 +265,22 @@
         </div>
         <p>Projects Delivered</p>
       </div>
+
       <div class="stat" data-aos="fade-up" data-aos-delay="200">
         <div
           class="counter"
-          data-target="700"
+          data-target="9900"
           style="font-size: 48px; font-weight: bold"
         >
           0
         </div>
         <p>Happy Clients</p>
       </div>
+
       <div class="stat" data-aos="fade-up" data-aos-delay="300">
         <div
           class="counter"
-          data-target="950"
+          data-target="1000"
           style="font-size: 48px; font-weight: bold"
         >
           0
