@@ -304,3 +304,14 @@ nav ul.visible {
     opacity: 0;
   }
 }
+
+/* 🌄 Set the background image for the entire page */
+body {
+  background-color: #0f172a; /* fallback color */
+  background-image: url("/static/images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  color: white; /* ensure text is readable on dark backgrounds */
+}
