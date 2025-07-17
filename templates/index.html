@@ -1,41 +1,92 @@
 {% extends "base.html" %} {% block main %}
 
 <!-- Hero Section -->
+<!-- Hero Section -->
+<!-- Hero Section -->
 <section
   class="hero-section"
-  style="position: relative; text-align: center; padding: 60px 20px"
+  style="padding: 60px 40px; background-color: #ffffff"
 >
-  <!-- ✨ Floating Shapes -->
-  <div class="floating-shape one"></div>
-  <div class="floating-shape two"></div>
-
-  <h1 data-aos="fade-up" id="dynamic-headline"></h1>
-
-  <p
+  <div
     style="
-      font-size: 1.4rem;
-      max-width: 900px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      max-width: 1400px;
       margin: 0 auto;
-      color: #007bff;
-      font-weight: 600;
-      line-height: 1.6;
     "
-    data-aos="fade-up"
-    data-aos-delay="200"
   >
-    We specialize in delivering Cloud and DevOps consulting services tailored to
-    your unique business needs.
-  </p>
+    <!-- 🎥 Left: Full-width Video -->
+    <div style="flex: 1 1 700px; min-width: 400px">
 
-  <a
-    href="{{ url_for('services') }}"
-    class="btn btn-primary mt-3"
-    data-aos="zoom-in"
-    data-aos-delay="400"
-  >
-    Explore Our Services
-  </a>
+      <video
+        controls
+        poster="{{ url_for('static', filename='images/video-poster.jpg') }}"
+        style="
+          width: 100%;
+          height: auto;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <source
+          src="{{ url_for('static', filename='video/Untitled_video.mp4') }}"
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 📝 Right: Hero Text, also expanded -->
+    <div style="flex: 1 1 600px; min-width: 350px">
+      <h1
+        id="dynamic-headline"
+        data-aos="fade-up"
+        style="
+          font-size: 2.5rem;
+          color: #007bff;
+          font-weight: 700;
+          margin-bottom: 20px;
+        "
+      >
+        From Dev to Ops — Faster
+      </h1>
+      <p
+        style="
+          font-size: 1.25rem;
+          line-height: 1.8;
+          color: #333;
+          font-weight: 500;
+          margin-bottom: 30px;
+        "
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        We specialize in delivering Cloud and DevOps consulting services
+        tailored to your unique business needs.
+      </p>
+
+      <a
+        href="{{ url_for('services') }}"
+        class="btn btn-primary"
+        data-aos="zoom-in"
+        data-aos-delay="400"
+        style="
+          padding: 14px 28px;
+          font-weight: 600;
+          font-size: 16px;
+          border-radius: 8px;
+        "
+      >
+        Explore Our Services
+      </a>
+    </div>
+  </div>
 </section>
+
+<!-- 🔥 Background Video Section -->
 
 <!-- 🔥 Background Video Section -->
 <section
@@ -278,7 +329,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 40px;
-        max-width: 1200px;
+        max-width: 4000px;
         margin: 0 auto;
         padding: 0 20px;
       "
@@ -317,6 +368,8 @@
       </div>
     </div>
   </section>
+
+  <!-- 🔥 Intro Video with Narration -->
 
   <!-- Quick Links Section -->
   <section class="quick-links">
