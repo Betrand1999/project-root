@@ -322,19 +322,37 @@ def authorize():
 #     session.pop('user', None)
 #     return redirect(url_for('home'))  # 🔁 Also change to 'home' if 'index' doesn't exist
 
+# @app.route('/logout/cognito')
+# def logout_cognito():
+#     session.pop('user', None)
+
+#     cognito_domain = 'https://us-east-1tzvykdvvg.auth.us-east-1.amazoncognito.com'
+#     client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'  # Make sure this matches your App Client ID
+#     logout_redirect_uri = url_for('home', _external=True)
+
+#     return redirect(
+#         f"{cognito_domain}/logout?client_id={client_id}&logout_uri={logout_redirect_uri}"
+#     )
+
+
+from flask import request
+
 @app.route('/logout/cognito')
 def logout_cognito():
     session.pop('user', None)
 
     cognito_domain = 'https://us-east-1tzvykdvvg.auth.us-east-1.amazoncognito.com'
-    client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'  # Make sure this matches your App Client ID
-    logout_redirect_uri = url_for('home', _external=True)
+    client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'
+
+    # Ensure trailing slash and domain match Cognito settings exactly
+    if '1beto.com' in request.host:
+        logout_redirect_uri = 'https://1beto.com/'  # ✅ Matches Cognito config
+    else:
+        logout_redirect_uri = 'http://localhost:50/'  # ✅ Matches Cognito config for local
 
     return redirect(
         f"{cognito_domain}/logout?client_id={client_id}&logout_uri={logout_redirect_uri}"
     )
-
-
 
 
 
