@@ -13,8 +13,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY  # Secure your secret key with an environment variable 
-# 🔐 Let Flask correctly detect HTTPS and domain from proxy headers
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 ### app.secret_key = SECRET_KEY isn’t an import at all—it’s just an assignment
 login_manager = LoginManager()
 
@@ -304,10 +302,24 @@ def authorize():
 
 
 # Configure a logout route that erases user session data.
+# @app.route('/logout/cognito')
+# def logout_cognito():  # ✅ Renamed to avoid conflict
+#     session.pop('user', None)
+#     return redirect(url_for('home'))  # 🔁 Also change to 'home' if 'index' doesn't exist
+
 @app.route('/logout/cognito')
-def logout_cognito():  # ✅ Renamed to avoid conflict
+def logout_cognito():
     session.pop('user', None)
-    return redirect(url_for('home'))  # 🔁 Also change to 'home' if 'index' doesn't exist
+
+    cognito_domain = 'https://us-east-1tzvykdvvg.auth.us-east-1.amazoncognito.com'
+    client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'  # Make sure this matches your App Client ID
+    logout_redirect_uri = url_for('home', _external=True)
+
+    return redirect(
+        f"{cognito_domain}/logout?client_id={client_id}&logout_uri={logout_redirect_uri}"
+    )
+
+
 
 
 
