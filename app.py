@@ -250,6 +250,59 @@ def reset_password(token):
 def cookie_policy():
     return render_template('cookie-policy.html')
 
+
+
+
+# Cognito OIDC setup
+# Add and configure the authlib OAuth component.
+from flask import Flask, redirect, url_for, session
+from authlib.integrations.flask_client import OAuth
+import os
+
+
+
+oauth = OAuth(app)
+
+oauth.register(
+  name='oidc',
+  authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_TZVykdVvG',
+  client_id='1lc7qso1g3lr9kqbr0nb0jktbs',
+  client_secret='1f1qa6rf66549cta1uqpamjpjqt06ne3agvlgou638e56kmt8dve',
+  server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_TZVykdVvG/.well-known/openid-configuration',
+  client_kwargs={'scope': 'phone openid email'}
+)
+################################################
+
+#  Configure a login route to direct to Amazon Cognito managed login for authentication with a redirect to an authorize route.
+@app.route('/login/cognito')
+def login_cognito():
+    session.pop('user', None)
+    redirect_uri = url_for('authorize', _external=True)
+    return oauth.oidc.authorize_redirect(
+        redirect_uri,
+        prompt='login'  # 🔄 Forces re-authentication from Cognito
+    )
+
+
+
+
+# The OAuth module collects the access token and retrieves user data from the Amazon Cognito userInfo endpoint. Configure an authorize route to handle the access token and user data after authentication.
+@app.route('/authorize')
+def authorize():
+    token = oauth.oidc.authorize_access_token()
+    user = token['userinfo']
+    session['user'] = user
+    return redirect(url_for('home'))  # ✅ Fixed: 'home' matches your defined route
+
+
+# Configure a logout route that erases user session data.
+@app.route('/logout/cognito')
+def logout_cognito():  # ✅ Renamed to avoid conflict
+    session.pop('user', None)
+    return redirect(url_for('home'))  # 🔁 Also change to 'home' if 'index' doesn't exist
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 
