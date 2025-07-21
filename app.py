@@ -131,14 +131,22 @@ def contact_form():
         return redirect(url_for('contact_form'))
     return render_template('contact-form.html')
 
+# Update the /videos route to support both login types if does not work use this old one 
+# @app.route('/videos')
+# # @login_required
+# def private_videos():
+#     if not current_user.is_authenticated:
+#         return redirect(url_for('login'))
+#     videos = get_videos()
+#     return render_template('private-videos.html', videos=videos)
 
 @app.route('/videos')
-# @login_required
 def private_videos():
-    if not current_user.is_authenticated:
+    if not current_user.is_authenticated and 'user' not in session:
         return redirect(url_for('login'))
     videos = get_videos()
     return render_template('private-videos.html', videos=videos)
+
 @app.route("/logout")
 @login_required
 def logout():

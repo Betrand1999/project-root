@@ -208,13 +208,27 @@
                 ><i class="fas fa-sign-in-alt"></i> Login</a
               >
             </li>
-            <!-- add cognito login -->
-            <li>
-              <a href="{{ url_for('login_cognito') }}">
-                <i class="fas fa-user-lock"></i> Login with Cognito
-              </a>
-            </li>
-             <!-- add cognito login -->
+           <!-- ✅ add cognito login -->
+{% if session.user %}
+<li>
+  <span style="color: white; padding-right: 10px;">
+    Welcome, {{ session.user.name or session.user.email }}
+  </span>
+</li>
+<li>
+  <a href="{{ url_for('logout_cognito') }}">
+    <i class="fas fa-sign-out-alt"></i> Logout
+  </a>
+</li>
+{% else %}
+<li>
+  <a href="{{ url_for('login_cognito') }}">
+    <i class="fas fa-user-lock"></i> Login with Cognito
+  </a>
+</li>
+{% endif %}
+<!-- ✅ end cognito login -->
+
             
             <li
               style="
