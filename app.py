@@ -278,16 +278,31 @@ oauth.register(
 ################################################
 
 #  Configure a login route to direct to Amazon Cognito managed login for authentication with a redirect to an authorize route.
+# @app.route('/login/cognito')
+# def login_cognito():
+#     session.pop('user', None)
+#     redirect_uri = url_for('authorize', _external=True)
+#     print("🧭 Redirect URI being used:", redirect_uri)  # <--- add this
+#     return oauth.oidc.authorize_redirect(
+#         redirect_uri,
+#         prompt='login'
+#     )
+
 @app.route('/login/cognito')
 def login_cognito():
     session.pop('user', None)
-    redirect_uri = url_for('authorize', _external=True)
-    print("🧭 Redirect URI being used:", redirect_uri)  # <--- add this
+
+    # Determine redirect URI based on environment
+    if '1beto.com' in request.host:
+        redirect_uri = 'https://1beto.com/authorize'  # force HTTPS for production
+    else:
+        redirect_uri = url_for('authorize', _external=True)  # use localhost in dev
+
+    print("🧭 Redirect URI being used:", redirect_uri)
     return oauth.oidc.authorize_redirect(
         redirect_uri,
         prompt='login'
     )
-
 
 
 
