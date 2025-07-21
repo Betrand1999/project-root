@@ -7,11 +7,14 @@ import os
 from flask_login import LoginManager,login_user,UserMixin,login_required,logout_user,current_user
 from settings import SECRET_KEY,MONGO_URI, EMAIL_USER, MONGO_PASSWORD, MONGO_USERNAME
 from utils import send_email, get_videos
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY  # Secure your secret key with an environment variable 
+# 🔐 Let Flask correctly detect HTTPS and domain from proxy headers
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 ### app.secret_key = SECRET_KEY isn’t an import at all—it’s just an assignment
 login_manager = LoginManager()
 
@@ -278,10 +281,12 @@ oauth.register(
 def login_cognito():
     session.pop('user', None)
     redirect_uri = url_for('authorize', _external=True)
+    print("🧭 Redirect URI being used:", redirect_uri)  # <--- add this
     return oauth.oidc.authorize_redirect(
         redirect_uri,
-        prompt='login'  # 🔄 Forces re-authentication from Cognito
+        prompt='login'
     )
+
 
 
 
