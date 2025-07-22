@@ -174,6 +174,8 @@ jobs:
           -e AWS_REGION="${{ secrets.AWS_REGION }}" \
           -e MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
           -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
+          -e COGNITO_CLIENT_ID="${{ secrets.COGNITO_CLIENT_ID }}" \
+          -e COGNITO_CLIENT_SECRET="${{ secrets.COGNITO_CLIENT_SECRET }}" \
           betrand1997/my-static-websites
 
    
@@ -223,6 +225,8 @@ jobs:
             --from-literal=AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             --from-literal=WS_REGION="${{ secrets.WS_REGION }}" \
             --from-literal=MONGO_USERNAME="${{ secrets.MONGO_USERNAME }}" \
+            --from-literal=COGNITO_CLIENT_ID="${{ secrets.COGNITO_CLIENT_ID }}" \
+            --from-literal=COGNITO_CLIENT_SECRET="${{ secrets.COGNITO_CLIENT_SECRET }}" \
             --from-literal=MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
             -n dev \
             --dry-run=client -o yaml | kubectl apply -f -

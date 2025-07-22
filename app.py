@@ -5,7 +5,7 @@ from urllib.parse import quote_plus
 from bson.objectid import ObjectId
 import os
 from flask_login import LoginManager,login_user,UserMixin,login_required,logout_user,current_user
-from settings import SECRET_KEY,MONGO_URI, EMAIL_USER, MONGO_PASSWORD, MONGO_USERNAME
+from settings import SECRET_KEY,MONGO_URI, EMAIL_USER, MONGO_PASSWORD, MONGO_USERNAME, COGNITO_CLIENT_ID, COGNITO_CLIENT_SECRET
 from utils import send_email, get_videos
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -270,23 +270,12 @@ oauth = OAuth(app)
 oauth.register(
   name='oidc',
   authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_TZVykdVvG',
-  client_id='1lc7qso1g3lr9kqbr0nb0jktbs',
-  client_secret='1f1qa6rf66549cta1uqpamjpjqt06ne3agvlgou638e56kmt8dve',
+  client_id= COGNITO_CLIENT_ID,
+  client_secret=COGNITO_CLIENT_SECRET,    
   server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_TZVykdVvG/.well-known/openid-configuration',
   client_kwargs={'scope': 'phone openid email'}
 )
 ################################################
-
-#  Configure a login route to direct to Amazon Cognito managed login for authentication with a redirect to an authorize route.
-# @app.route('/login/cognito')
-# def login_cognito():
-#     session.pop('user', None)
-#     redirect_uri = url_for('authorize', _external=True)
-#     print("🧭 Redirect URI being used:", redirect_uri)  # <--- add this
-#     return oauth.oidc.authorize_redirect(
-#         redirect_uri,
-#         prompt='login'
-#     )
 
 @app.route('/login/cognito')
 def login_cognito():
@@ -316,23 +305,6 @@ def authorize():
     return redirect(url_for('home'))  # ✅ Fixed: 'home' matches your defined route
 
 
-# Configure a logout route that erases user session data.
-# @app.route('/logout/cognito')
-# def logout_cognito():  # ✅ Renamed to avoid conflict
-#     session.pop('user', None)
-#     return redirect(url_for('home'))  # 🔁 Also change to 'home' if 'index' doesn't exist
-
-# @app.route('/logout/cognito')
-# def logout_cognito():
-#     session.pop('user', None)
-
-#     cognito_domain = 'https://us-east-1tzvykdvvg.auth.us-east-1.amazoncognito.com'
-#     client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'  # Make sure this matches your App Client ID
-#     logout_redirect_uri = url_for('home', _external=True)
-
-#     return redirect(
-#         f"{cognito_domain}/logout?client_id={client_id}&logout_uri={logout_redirect_uri}"
-#     )
 
 
 from flask import request
