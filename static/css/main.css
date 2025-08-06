@@ -153,3 +153,42 @@ nav ul li a i {
 }
 
 /* moving image is not here */
+.itc-bars {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 40px;
+}
+
+.bar {
+  width: 4px;
+  background: linear-gradient(to bottom, #ffba00, #ff7300);
+  border-radius: 2px;
+}
+
+.bar1 {
+  height: 24px;
+}
+.bar2 {
+  height: 40px;
+}
+.bar3 {
+  height: 32px;
+}
+.bar4 {
+  height: 20px;
+}
+@keyframes pulseBar {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.2);
+  }
+}
+
+.bar {
+  animation: pulseBar 2s infinite ease-in-out;
+  transform-origin: bottom;
+}
