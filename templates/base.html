@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1beto | Cloud & DevOps Consulting – CDC Firm</title>
-    <meta name="description" content="1beto is a Cloud & DevOps consulting firm offering scalable cloud solutions, CI/CD pipelines, security services, and automation expertise.">
+    <meta
+      name="description"
+      content="1beto is a Cloud & DevOps consulting firm offering scalable cloud solutions, CI/CD pipelines, security services, and automation expertise."
+    />
 
     <link
       rel="apple-touch-icon"
@@ -155,19 +158,20 @@
     <header>
       <div class="header-container">
         <a href="{{ url_for('home') }}" style="text-decoration: none">
-<!-- add here ||| -->
-<div class="logo" style="display: flex; align-items: center; gap: 15px;">
-  <span style="font-weight: bold;">CDC</span>
-  <div class="itc-bars">
-    <div class="bar bar1"></div>
-    <div class="bar bar2"></div>
-    <div class="bar bar3"></div>
-  </div>
-</div>
+          <!-- add here ||| -->
+          <div
+            class="logo"
+            style="display: flex; align-items: center; gap: 15px"
+          >
+            <span style="font-weight: bold">CDC Cloud & DevOps Consulting</span>
+            <div class="itc-bars">
+              <div class="bar bar1"></div>
+              <div class="bar bar2"></div>
+              <div class="bar bar3"></div>
+            </div>
+          </div>
 
-<!-- add here -->
-
-
+          <!-- add here -->
         </a>
 
         <nav aria-label="Main Navigation">
@@ -220,28 +224,27 @@
                 ><i class="fas fa-sign-in-alt"></i> Login</a
               >
             </li>
-           <!-- ✅ add cognito login -->
-{% if session.user %}
-<li>
-  <span style="color: white; padding-right: 10px;">
-    Welcome, {{ session.user.name or session.user.email }}
-  </span>
-</li>
-<li>
-  <a href="{{ url_for('logout_cognito') }}">
-    <i class="fas fa-sign-out-alt"></i> Logout
-  </a>
-</li>
-{% else %}
-<li>
-  <a href="{{ url_for('login_cognito') }}">
-    <i class="fas fa-user-lock"></i> Login with Cognito
-  </a>
-</li>
-{% endif %}
-<!-- ✅ end cognito login -->
+            <!-- ✅ add cognito login -->
+            {% if session.user %}
+            <li>
+              <span style="color: white; padding-right: 10px">
+                Welcome, {{ session.user.name or session.user.email }}
+              </span>
+            </li>
+            <li>
+              <a href="{{ url_for('logout_cognito') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </li>
+            {% else %}
+            <li>
+              <a href="{{ url_for('login_cognito') }}">
+                <i class="fas fa-user-lock"></i> Login with Cognito
+              </a>
+            </li>
+            {% endif %}
+            <!-- ✅ end cognito login -->
 
-            
             <li
               style="
                 display: flex;
