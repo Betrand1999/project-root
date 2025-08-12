@@ -1,38 +1,41 @@
-name: Install Node 22 (Amazon Linux style)
+name: Install Node.js 22 and Serverless Framework
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch: {} # still allow manual runs
+  workflow_dispatch: {}
 
 jobs:
-  install-node22:
-    runs-on: [self-hosted, Linux, X64]
+  install-node22-serverless:
+    runs-on: ubuntu-latest
     container:
       image: public.ecr.aws/amazonlinux/amazonlinux:2023
 
     steps:
-      - name: Prep (update & tools)
-        run: |
-          dnf -y update
-          dnf -y install curl sudo
-
-      - name: Install Node.js 22 (yum style)
+      - name: Install Node.js 22 and Serverless
         shell: bash
         run: |
           set -euo pipefail
-          if ! yum list installed nodejs >/dev/null 2>&1; then
-            echo "Package nodejs is not installed. Installing Node.js 22 first..."
-            # Add NodeSource repo for Node.js 22
-            curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo -E bash -
-            sudo yum install -y nodejs
-            echo "Installed Node.js version: $(node -v)"
+          
+          if ! command -v sls &>/dev/null; then
+            if ! yum list installed nodejs >/dev/null 2>&1; then
+              echo "Package nodejs is not installed. Installing Node.js 22 first..."
+              # Add NodeSource repo for Node.js 22
+              curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+              yum install -y nodejs
+              echo "Installed Node.js version: $(node -v)"
+            fi
+            echo "Installing Serverless framework..."
+            npm install -g serverless@2.72.3
+            echo "Installed Serverless version: $(sls -v)"
           else
-            echo "Node.js already installed: $(node -v 2>/dev/null || echo 'unknown')"
+            echo "Serverless framework is already installed. Skipping..."
+            sls -v
           fi
 
       - name: Show versions
         run: |
           node -v
           npm -v
+          sls -v
