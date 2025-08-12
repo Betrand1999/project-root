@@ -17,17 +17,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          
-          if ! command -v sls &>/dev/null; then
-            if ! yum list installed nodejs >/dev/null 2>&1; then
-              echo "Package nodejs is not installed. Installing Node.js 22 first..."
-              # Add NodeSource repo for Node.js 22
-              curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
-              sudo yum install -y nodejs
 
-              yum install -y nodejs
+          if ! command -v sls &>/dev/null; then
+            if ! command -v node &>/dev/null || [[ "$(node -v)" != v22* ]]; then
+              echo "Node.js 22 not found. Installing..."
+              curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+              sudo dnf install -y nodejs
               echo "Installed Node.js version: $(node -v)"
             fi
+
             echo "Installing Serverless framework..."
             npm install -g serverless@2.72.3
             echo "Installed Serverless version: $(sls -v)"
