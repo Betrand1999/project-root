@@ -22,7 +22,9 @@ jobs:
             if ! yum list installed nodejs >/dev/null 2>&1; then
               echo "Package nodejs is not installed. Installing Node.js 22 first..."
               # Add NodeSource repo for Node.js 22
-              curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+              curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+              sudo yum install -y nodejs
+
               yum install -y nodejs
               echo "Installed Node.js version: $(node -v)"
             fi
