@@ -39,3 +39,4 @@ jobs:
           node -v
           npm -v
           sls -v
+
