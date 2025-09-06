@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://1beto.com/sitemap.xml
+Sitemap: https://joinworldtech.com/sitemap.xml

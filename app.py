@@ -282,8 +282,8 @@ def login_cognito():
     session.pop('user', None)
 
     # Determine redirect URI based on environment
-    if '1beto.com' in request.host:
-        redirect_uri = 'https://1beto.com/authorize'  # force HTTPS for production
+    if 'joinworldtech.com' in request.host:
+        redirect_uri = 'https://joinworldtech.com/authorize'  # force HTTPS for production
     else:
         redirect_uri = url_for('authorize', _external=True)  # use localhost in dev
 
@@ -317,8 +317,8 @@ def logout_cognito():
     client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'
 
     # Ensure trailing slash and domain match Cognito settings exactly
-    if '1beto.com' in request.host:
-        logout_redirect_uri = 'https://1beto.com/'  # ✅ Matches Cognito config
+    if 'joinworldtech.com' in request.host:
+        logout_redirect_uri = 'https://joinworldtech.com/'  # ✅ Matches Cognito config
     else:
         logout_redirect_uri = 'http://localhost:50/'  # ✅ Matches Cognito config for local
 
