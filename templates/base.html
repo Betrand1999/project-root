@@ -312,71 +312,102 @@
     <!-- ✅ Flash Messages -->
 
     {% block main %}{% endblock main %}
+    <!--    footer             -->
+    <footer
+      style="
+        background-color: #007c91;
+        color: white;
+        padding: 40px 20px 30px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      "
+    >
+      <div style="text-align: center; max-width: 600px; margin: 0 auto">
+        <p style="font-size: 1.5rem; font-weight: 600; margin-bottom: 10px">
+          📞 Contact
+        </p>
 
-    <footer>
-      <div style="text-align: center; padding-top: 20px">
-        <p style="font-weight: bold; font-size: 1.2rem">Contact</p>
-        <p>240-298-1823</p>
-        <p>
-          <a href="mailto:info@clouddevopsconsulting.com" style="color: white">
-            info@clouddevopsconsulting.com
+        <!-- 📱 Clickable Phone -->
+        <p style="font-size: 1.1rem; margin: 5px 0">
+          <a
+            href="tel:+12402981823"
+            style="color: #ffffffcc; text-decoration: none"
+          >
+            +1 (240) 298-1823
+          </a>
+        </p>
+
+        <!-- ✉️ Clickable Email -->
+        <p style="font-size: 1.1rem; margin: 5px 0">
+          <a
+            href="mailto:info@joinworldtech.com"
+            style="color: #ffffffcc; text-decoration: none"
+          >
+            info@joinworldtech.com
           </a>
         </p>
 
         <!-- Social Media Icons -->
-        <div style="margin-top: 10px">
+        <div style="margin-top: 20px">
           <a
             href="https://www.linkedin.com"
             target="_blank"
-            style="margin: 0 8px"
+            style="margin: 0 12px"
           >
             <img
               src="{{ url_for('static', filename='images/linkedin.png') }}"
               alt="LinkedIn"
-              style="height: 32px"
+              style="height: 32px; vertical-align: middle"
             />
           </a>
           <a
             href="https://www.instagram.com"
             target="_blank"
-            style="margin: 0 8px"
+            style="margin: 0 12px"
           >
             <img
               src="{{ url_for('static', filename='images/instagram.png') }}"
               alt="Instagram"
-              style="height: 32px"
+              style="height: 32px; vertical-align: middle"
             />
           </a>
           <a
             href="https://wa.me/12402981823?text=Hi%2C%20I%20need%20some%20help"
             target="_blank"
-            style="margin: 0 8px"
+            style="margin: 0 12px"
           >
             <img
               src="{{ url_for('static', filename='images/whatsapp-navbar.png') }}"
               alt="WhatsApp"
-              style="height: 32px"
+              style="height: 32px; vertical-align: middle"
             />
           </a>
           <a
             href="https://www.facebook.com"
             target="_blank"
-            style="margin: 0 8px"
+            style="margin: 0 12px"
           >
             <img
               src="{{ url_for('static', filename='images/facebook.png') }}"
               alt="Facebook"
-              style="height: 32px"
+              style="height: 32px; vertical-align: middle"
             />
           </a>
         </div>
       </div>
 
-      <p style="text-align: center">
+      <p
+        style="
+          text-align: center;
+          font-size: 0.9rem;
+          color: #ffffffaa;
+          margin-top: 30px;
+        "
+      >
         &copy; 2025 Cloud & DevOps Consulting. All rights reserved.
       </p>
     </footer>
 
+    <!--    footer             -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
