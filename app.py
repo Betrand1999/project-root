@@ -152,10 +152,10 @@ def logout():
 def about():
     message = None
     if request.method == 'POST':
-        mood = request.form['mood'].lower()
-        if mood == "excited":
+        mood = request.form['mood']
+        if mood == "Excited":
             message = " Happy you are Excited We don’t just build infrastructure — we empower innovation. 💡💕"
-        elif mood == "curious":
+        elif mood == "Curious":
             message = "Hmmmm curiousity is sometime good Explore what makes our infrastructure so powerful! 🔍"
         else:
             message = "We’re building something meaningful every day. 🌱"
