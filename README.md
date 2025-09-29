@@ -7,3 +7,8 @@ k8s dashbaord URL = https://3.224.40.205:32452/#/login
 To login K8S dashboard on the k8s cluster run =  kubectl create token dashboard-admin -n dev
 ####
 Argo UI login URL = https://3.224.40.205:32200/login
+
+### if pod Evicted ###
+kubectl scale deployment my-app -n prod --replicas=1
+
+kubectl delete pod -n prod --field-selector=status.phase=Failed
