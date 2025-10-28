@@ -261,11 +261,15 @@ def cookie_policy():
 ################################## Cognito #####################
 ################################## Cognito Login ##################################
 from authlib.integrations.flask_client import OAuth
+from werkzeug.middleware.proxy_fix import ProxyFix
 
-# Use the same Flask app defined above
+# ✅ Ensure Flask respects HTTPS when behind a reverse proxy (e.g., CloudFront, Nginx)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+# ✅ Use the same Flask app defined above
 oauth = OAuth(app)
 
-# Register Cognito as an OpenID Connect provider
+# ✅ Register Cognito as an OpenID Connect provider
 oauth.register(
     name='oidc',
     authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR',
@@ -277,13 +281,14 @@ oauth.register(
 
 @app.route('/login/cognito')
 def login_cognito():
-    # dynamically compute the redirect URI so it works both locally and online
+    # ✅ Dynamically compute the redirect URI so it works both locally and online
     redirect_uri = url_for('authorize_cognito', _external=True)
-    print(f"Redirecting to Cognito with URI: {redirect_uri}")  # 👈 helps debug mismatches
+    print(f"Redirecting to Cognito with URI: {redirect_uri}")  # Debug helper
     return oauth.oidc.authorize_redirect(redirect_uri)
 
 @app.route('/authorize/cognito')
 def authorize_cognito():
+    # ✅ Handle Cognito callback and store user session
     token = oauth.oidc.authorize_access_token()
     user = token['userinfo']
     session['user'] = user
@@ -292,14 +297,15 @@ def authorize_cognito():
 
 @app.route('/logout/cognito')
 def logout_cognito():
+    # ✅ Log out Cognito user and clear session
     session.pop('user', None)
     flash("You have been logged out from Cognito.", "info")
     return redirect(url_for('home'))
 
 
-
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
+
 
 
 
