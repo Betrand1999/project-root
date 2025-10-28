@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from datetime import datetime
 
 setup(
-    name='my-cloud-devops-consulting',
+    name='my_cloud_devops_consulting',
     version=datetime.now().strftime("1.1.%Y%m%d%H%M"),  # auto-version like 1.1.202503241130
     author='Betrand Mutagha',
     author_email='mmutagha@gmail.com',
