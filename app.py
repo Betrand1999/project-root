@@ -259,23 +259,27 @@ def cookie_policy():
 ################################## Cognito #####################
 ### Cognito ####
 ################################## Cognito #####################
+################################## Cognito Login ##################################
 from authlib.integrations.flask_client import OAuth
 
-# Use the existing app instance and secret key from above
+# Use the same Flask app defined above
 oauth = OAuth(app)
 
+# Register Cognito as an OpenID Connect provider
 oauth.register(
-  name='oidc',
-  authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR',
-  client_id='1quteh040dnkbk0t1c8qr6u2il',
-  client_secret='<your real secret here>',
-  server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR/.well-known/openid-configuration',
-  client_kwargs={'scope': 'phone openid email'}
+    name='oidc',
+    authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR',
+    client_id=COGNITO_CLIENT_ID,
+    client_secret=COGNITO_CLIENT_SECRET,
+    server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR/.well-known/openid-configuration',
+    client_kwargs={'scope': 'email openid phone'}
 )
 
 @app.route('/login/cognito')
 def login_cognito():
+    # dynamically compute the redirect URI so it works both locally and online
     redirect_uri = url_for('authorize_cognito', _external=True)
+    print(f"Redirecting to Cognito with URI: {redirect_uri}")  # 👈 helps debug mismatches
     return oauth.oidc.authorize_redirect(redirect_uri)
 
 @app.route('/authorize/cognito')
@@ -291,7 +295,6 @@ def logout_cognito():
     session.pop('user', None)
     flash("You have been logged out from Cognito.", "info")
     return redirect(url_for('home'))
-
 
 
 
