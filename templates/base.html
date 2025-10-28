@@ -271,24 +271,50 @@
             </li>
             <!-- ✅ add cognito login -->
 
-            {# ✅ add cognito login {% if session.user %}
+            {% if current_user.is_authenticated %}
+            <!-- ✅ Local Flask/MongoDB User Logged In -->
+            <li>
+              <a href="{{ url_for('private_videos') }}">
+                <i class="fas fa-lock"></i> Videos
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </li>
+
+            {% elif session.get('user') %}
+            <!-- ✅ Cognito User Logged In -->
             <li>
               <span style="color: white; padding-right: 10px">
-                Welcome, {{ session.user.name or session.user.email }}
+                Welcome, {{ session['user'].get('email', 'User') }}
               </span>
             </li>
             <li>
               <a href="{{ url_for('logout_cognito') }}">
-                <i class="fas fa-sign-out-alt"></i> Logout
+                <i class="fas fa-sign-out-alt"></i> Logout (Cognito)
               </a>
             </li>
+
             {% else %}
+            <!-- ✅ Not Logged In: Show All Login/Register Options -->
+            <li>
+              <a href="{{ url_for('register') }}">
+                <i class="fas fa-user-plus"></i> Register
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt"></i> Login
+              </a>
+            </li>
             <li>
               <a href="{{ url_for('login_cognito') }}">
                 <i class="fas fa-user-lock"></i> Login with Cognito
               </a>
             </li>
-            {% endif %} ✅ end cognito login #}
+            {% endif %}
 
             <!-- ✅ end cognito login -->
 
