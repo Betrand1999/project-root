@@ -256,75 +256,42 @@ def cookie_policy():
 
 
 
-
-# Cognito OIDC setup
-# Add and configure the authlib OAuth component.
-from flask import Flask, redirect, url_for, session
+################################## Cognito #####################
+### Cognito ####
+################################## Cognito #####################
 from authlib.integrations.flask_client import OAuth
-import os
 
-
-
+# Use the existing app instance and secret key from above
 oauth = OAuth(app)
 
 oauth.register(
   name='oidc',
-  authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_TZVykdVvG',
-  client_id= COGNITO_CLIENT_ID,
-  client_secret=COGNITO_CLIENT_SECRET,    
-  server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_TZVykdVvG/.well-known/openid-configuration',
+  authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR',
+  client_id='1quteh040dnkbk0t1c8qr6u2il',
+  client_secret='<your real secret here>',
+  server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR/.well-known/openid-configuration',
   client_kwargs={'scope': 'phone openid email'}
 )
-################################################
 
 @app.route('/login/cognito')
 def login_cognito():
-    session.pop('user', None)
+    redirect_uri = url_for('authorize_cognito', _external=True)
+    return oauth.oidc.authorize_redirect(redirect_uri)
 
-    # Determine redirect URI based on environment
-    if 'joinworldtech.com' in request.host:
-        redirect_uri = 'https://joinworldtech.com/authorize'  # force HTTPS for production
-    else:
-        redirect_uri = url_for('authorize', _external=True)  # use localhost in dev
-
-    print("🧭 Redirect URI being used:", redirect_uri)
-    return oauth.oidc.authorize_redirect(
-        redirect_uri,
-        prompt='login'
-    )
-
-
-
-
-# The OAuth module collects the access token and retrieves user data from the Amazon Cognito userInfo endpoint. Configure an authorize route to handle the access token and user data after authentication.
-@app.route('/authorize')
-def authorize():
+@app.route('/authorize/cognito')
+def authorize_cognito():
     token = oauth.oidc.authorize_access_token()
     user = token['userinfo']
     session['user'] = user
-    return redirect(url_for('home'))  # ✅ Fixed: 'home' matches your defined route
-
-
-
-
-from flask import request
+    flash(f"Welcome {user.get('email', 'User')}!", "success")
+    return redirect(url_for('home'))
 
 @app.route('/logout/cognito')
 def logout_cognito():
     session.pop('user', None)
+    flash("You have been logged out from Cognito.", "info")
+    return redirect(url_for('home'))
 
-    cognito_domain = 'https://us-east-1tzvykdvvg.auth.us-east-1.amazoncognito.com'
-    client_id = '1lc7qso1g3lr9kqbr0nb0jktbs'
-
-    # Ensure trailing slash and domain match Cognito settings exactly
-    if 'joinworldtech.com' in request.host:
-        logout_redirect_uri = 'https://joinworldtech.com/'  # ✅ Matches Cognito config
-    else:
-        logout_redirect_uri = 'http://localhost:50/'  # ✅ Matches Cognito config for local
-
-    return redirect(
-        f"{cognito_domain}/logout?client_id={client_id}&logout_uri={logout_redirect_uri}"
-    )
 
 
 
