@@ -263,8 +263,18 @@ def cookie_policy():
 from authlib.integrations.flask_client import OAuth
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-# ✅ Ensure Flask respects HTTPS when behind a reverse proxy (e.g., CloudFront, Nginx)
+# ✅ Secure Flask session to prevent state mismatch errors
+import secrets
+app.secret_key = "6d8feea57f6b23d6b3a8cba0e7f0b4135de2a6b7f8b1a4924c0c451f6a3b9f61"  # use a fixed random key
+
+# ✅ Ensure Flask respects HTTPS when behind a reverse proxy (CloudFront, Nginx, etc.)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+# ✅ Improve cookie behavior for production (helps with state validation)
+app.config.update(
+    SESSION_COOKIE_SAMESITE='None',
+    SESSION_COOKIE_SECURE=True
+)
 
 # ✅ Use the same Flask app defined above
 oauth = OAuth(app)
@@ -301,6 +311,7 @@ def logout_cognito():
     session.pop('user', None)
     flash("You have been logged out from Cognito.", "info")
     return redirect(url_for('home'))
+
 
 
 if __name__ == '__main__':
