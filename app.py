@@ -256,64 +256,6 @@ def cookie_policy():
 
 
 
-################################## Cognito #####################
-### Cognito ####
-################################## Cognito #####################
-################################## Cognito Login ##################################
-from authlib.integrations.flask_client import OAuth
-from werkzeug.middleware.proxy_fix import ProxyFix
-
-# ✅ Secure Flask session to prevent state mismatch errors
-import secrets
-app.secret_key = "6d8feea57f6b23d6b3a8cba0e7f0b4135de2a6b7f8b1a4924c0c451f6a3b9f61"  # use a fixed random key
-
-# ✅ Ensure Flask respects HTTPS when behind a reverse proxy (CloudFront, Nginx, etc.)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-
-# ✅ Improve cookie behavior for production (helps with state validation)
-app.config.update(
-    SESSION_COOKIE_SAMESITE='None',
-    SESSION_COOKIE_SECURE=True
-)
-
-# ✅ Use the same Flask app defined above
-oauth = OAuth(app)
-
-# ✅ Register Cognito as an OpenID Connect provider
-oauth.register(
-    name='oidc',
-    authority='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR',
-    client_id=COGNITO_CLIENT_ID,
-    client_secret=COGNITO_CLIENT_SECRET,
-    server_metadata_url='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_k8UGGEBgR/.well-known/openid-configuration',
-    client_kwargs={'scope': 'email openid phone'}
-)
-
-@app.route('/login/cognito')
-def login_cognito():
-    # ✅ Dynamically compute the redirect URI so it works both locally and online
-    redirect_uri = url_for('authorize_cognito', _external=True)
-    print(f"Redirecting to Cognito with URI: {redirect_uri}")  # Debug helper
-    return oauth.oidc.authorize_redirect(redirect_uri)
-
-@app.route('/authorize/cognito')
-def authorize_cognito():
-    # ✅ Handle Cognito callback and store user session
-    token = oauth.oidc.authorize_access_token()
-    user = token['userinfo']
-    session['user'] = user
-    flash(f"Welcome {user.get('email', 'User')}!", "success")
-    return redirect(url_for('home'))
-
-@app.route('/logout/cognito')
-def logout_cognito():
-    # ✅ Log out Cognito user and clear session
-    session.pop('user', None)
-    flash("You have been logged out from Cognito.", "info")
-    return redirect(url_for('home'))
-
-
-
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
 
