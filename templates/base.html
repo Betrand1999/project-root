@@ -49,24 +49,17 @@
     <!-- ✅ AOS Animation Styles -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
-    <!-- ✅ Load services.css only on /services route -->
     {% if request.endpoint == 'services' %}
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/services.css') }}"
     />
-    {% endif %}
-
-    <!-- ✅ Load contact-form.css only on /contact_form route -->
-    {% if request.endpoint == 'contact_form' %}
+    {% endif %} {% if request.endpoint == 'contact_form' %}
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/contact-form.css') }}"
     />
-    {% endif %}
-
-    <!-- ✅ Load about.css only on /about route -->
-    {% if request.endpoint == 'about' %}
+    {% endif %} {% if request.endpoint == 'about' %}
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/about.css') }}"
@@ -74,7 +67,6 @@
     {% endif %}
 
     <style>
-      /* Wrapper holding both images horizontally */
       .moving-images-row {
         display: flex;
         justify-content: center;
@@ -84,10 +76,9 @@
         overflow-x: auto;
       }
 
-      /* Individual image wrapper */
       .moving-image-box {
         position: relative;
-        width: 400px; /* Width of each image */
+        width: 400px;
         height: 200px;
         overflow: hidden;
         border-radius: 12px;
@@ -95,12 +86,11 @@
         flex: 0 0 auto;
       }
 
-      /* Floating animation effect */
       .moving-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        animation: floatImage 4s ease-in-out infinite; /* 👈 reduced from 8s to 4s */
+        animation: floatImage 4s ease-in-out infinite;
       }
 
       @keyframes floatImage {
@@ -115,7 +105,6 @@
         }
       }
 
-      /* Staggered float animation delays */
       .moving-image-box:nth-child(1) .moving-image {
         animation-delay: 0s;
       }
@@ -130,18 +119,6 @@
 
       .moving-image-box:nth-child(4) .moving-image {
         animation-delay: 6s;
-      }
-
-      @keyframes zoomInOut {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
       }
     </style>
 
@@ -179,29 +156,12 @@
         ]
       }
     </script>
-
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Betrand Mutagha",
-        "jobTitle": "Founder & CEO",
-        "worksFor": {
-          "@type": "Organization",
-          "name": "JoinWorldTech",
-          "url": "https://joinworldtech.com"
-        },
-        "url": "https://joinworldtech.com/about",
-        "sameAs": ["https://www.linkedin.com/in/betrand-mutagha/"]
-      }
-    </script>
   </head>
 
   <body>
     <header>
       <div class="header-container">
         <a href="{{ url_for('home') }}" style="text-decoration: none">
-          <!-- add here ||| -->
           <div
             class="logo"
             style="display: flex; align-items: center; gap: 15px"
@@ -215,8 +175,6 @@
               <div class="bar bar3"></div>
             </div>
           </div>
-
-          <!-- add here -->
         </a>
 
         <nav aria-label="Main Navigation">
@@ -269,63 +227,7 @@
                 ><i class="fas fa-sign-in-alt"></i> Login</a
               >
             </li>
-            <!-- ✅ add cognito login -->
-
-            {% if current_user.is_authenticated %}
-            <!-- ✅ Local Flask/MongoDB User Logged In -->
-            <li>
-              <a href="{{ url_for('private_videos') }}">
-                <i class="fas fa-lock"></i> Videos
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('logout') }}">
-                <i class="fas fa-sign-out-alt"></i> Logout
-              </a>
-            </li>
-            <!-- ✅ Cognito User Logged In -->
-            {% elif session.get('user') %}
-
-            <li>
-              <span style="color: white; padding-right: 10px">
-                Welcome, {{ session['user'].get('email', 'User') }}
-              </span>
-            </li>
-            <li>
-              <a href="{{ url_for('logout_cognito') }}">
-                <i class="fas fa-sign-out-alt"></i> Logout (Cognito)
-              </a>
-            </li>
-
-            {% else %}
-            <!-- ✅ Not Logged In: Show All Login/Register Options -->
-            <li>
-              <a href="{{ url_for('register') }}">
-                <i class="fas fa-user-plus"></i> Register
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('login') }}">
-                <i class="fas fa-sign-in-alt"></i> Login
-              </a>
-            </li>
-
-            <!-- ✅ Add Cognito Login & Register Options -->
-            <li>
-              <a href="{{ url_for('login_cognito') }}">
-                <i class="fas fa-user-lock"></i> Login with Cognito
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://us-east-1k8uggebgr.auth.us-east-1.amazoncognito.com/signup?client_id=1quteh040dnkbk0t1c8qr6u2il&response_type=code&scope=email+openid+phone&redirect_uri=https://joinworldtech.com/authorize/cognito"
-              >
-                <i class="fas fa-user-plus"></i> Register with Cognito
-              </a>
-            </li>
-
             {% endif %}
-            <!-- ✅ end cognito login -->
 
             <li
               style="
@@ -358,14 +260,11 @@
                 />
               </a>
             </li>
-
-            {% endif %}
           </ul>
         </nav>
       </div>
     </header>
 
-    <!-- ✅ Flash Messages -->
     {% with messages = get_flashed_messages() %} {% if messages %}
     <div class="flashes" style="text-align: center; margin-top: 20px">
       {% for message in messages %}
@@ -386,11 +285,8 @@
       </div>
       {% endfor %}
     </div>
-    {% endif %} {% endwith %}
-    <!-- ✅ Flash Messages -->
+    {% endif %} {% endwith %} {% block main %}{% endblock main %}
 
-    {% block main %}{% endblock main %}
-    <!--    footer             -->
     <footer
       style="
         background-color: #007c91;
@@ -403,8 +299,6 @@
         <p style="font-size: 1.5rem; font-weight: 600; margin-bottom: 10px">
           📞 Contact
         </p>
-
-        <!-- 📱 Clickable Phone -->
         <p style="font-size: 1.1rem; margin: 5px 0">
           <a
             href="tel:+12402981823"
@@ -413,8 +307,6 @@
             +1 (240) 298-1823
           </a>
         </p>
-
-        <!-- ✉️ Clickable Email -->
         <p style="font-size: 1.1rem; margin: 5px 0">
           <a
             href="mailto:info@joinworldtech.com"
@@ -423,8 +315,6 @@
             info@joinworldtech.com
           </a>
         </p>
-
-        <!-- Social Media Icons -->
         <div style="margin-top: 20px">
           <a
             href="https://www.linkedin.com"
@@ -434,7 +324,7 @@
             <img
               src="{{ url_for('static', filename='images/linkedin.png') }}"
               alt="LinkedIn"
-              style="height: 32px; vertical-align: middle"
+              style="height: 32px"
             />
           </a>
           <a
@@ -445,7 +335,7 @@
             <img
               src="{{ url_for('static', filename='images/instagram.png') }}"
               alt="Instagram"
-              style="height: 32px; vertical-align: middle"
+              style="height: 32px"
             />
           </a>
           <a
@@ -456,7 +346,7 @@
             <img
               src="{{ url_for('static', filename='images/whatsapp-navbar.png') }}"
               alt="WhatsApp"
-              style="height: 32px; vertical-align: middle"
+              style="height: 32px"
             />
           </a>
           <a
@@ -467,12 +357,11 @@
             <img
               src="{{ url_for('static', filename='images/facebook.png') }}"
               alt="Facebook"
-              style="height: 32px; vertical-align: middle"
+              style="height: 32px"
             />
           </a>
         </div>
       </div>
-
       <p
         style="
           text-align: center;
@@ -485,7 +374,6 @@
       </p>
     </footer>
 
-    <!--    footer             -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -493,28 +381,21 @@
     ></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-    <!-- ✅ Load typing.js only on homepage -->
     {% if request.endpoint == 'home' %}
     <script src="{{ url_for('static', filename='js/typing.js') }}"></script>
     <script src="{{ url_for('static', filename='js/counter.js') }}"></script>
     {% endif %}
 
-    <!-- ✅ AOS Animation Script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-      AOS.init({
-        duration: 800,
-        once: true,
-      });
+      AOS.init({ duration: 800, once: true });
     </script>
 
-    <!-- ✅ Tidio Live Chat Widget -->
     <script
       src="//code.tidio.co/nm9da68kwarxu4poexeqqsiblocw7heq.js"
       async
     ></script>
 
-    <!-- ✅ Cookie Consent Banner -->
     <div
       id="cookieConsent"
       style="
@@ -542,7 +423,6 @@
         localStorage.setItem("cookiesAccepted", "true");
         document.getElementById("cookieConsent").style.display = "none";
       }
-
       window.onload = function () {
         if (!localStorage.getItem("cookiesAccepted")) {
           document.getElementById("cookieConsent").style.display = "block";
