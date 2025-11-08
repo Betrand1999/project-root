@@ -284,47 +284,7 @@
               </a>
             </li>
             <!-- ✅ Cognito User Logged In -->
-            {% elif session.get('user') %}
 
-            <li>
-              <span style="color: white; padding-right: 10px">
-                Welcome, {{ session['user'].get('email', 'User') }}
-              </span>
-            </li>
-            <li>
-              <a href="{{ url_for('logout_cognito') }}">
-                <i class="fas fa-sign-out-alt"></i> Logout (Cognito)
-              </a>
-            </li>
-
-            {% else %}
-            <!-- ✅ Not Logged In: Show All Login/Register Options -->
-            <li>
-              <a href="{{ url_for('register') }}">
-                <i class="fas fa-user-plus"></i> Register
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('login') }}">
-                <i class="fas fa-sign-in-alt"></i> Login
-              </a>
-            </li>
-
-            <!-- ✅ Add Cognito Login & Register Options -->
-            <li>
-              <a href="{{ url_for('login_cognito') }}">
-                <i class="fas fa-user-lock"></i> Login with Cognito
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://us-east-1k8uggebgr.auth.us-east-1.amazoncognito.com/signup?client_id=1quteh040dnkbk0t1c8qr6u2il&response_type=code&scope=email+openid+phone&redirect_uri=https://joinworldtech.com/authorize/cognito"
-              >
-                <i class="fas fa-user-plus"></i> Register with Cognito
-              </a>
-            </li>
-
-            {% endif %}
             <!-- ✅ end cognito login -->
 
             <li
