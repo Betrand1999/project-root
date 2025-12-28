@@ -254,6 +254,9 @@ def reset_password(token):
 def cookie_policy():
     return render_template('cookie-policy.html')
 
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing.html')
 
 
 if __name__ == '__main__':
