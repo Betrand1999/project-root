@@ -258,6 +258,9 @@ def cookie_policy():
 def pricing():
     return render_template('pricing.html')
 
+@app.route('/case-studies')
+def case_studies():
+    return render_template('case-studies.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
