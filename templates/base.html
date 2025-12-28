@@ -38,6 +38,12 @@
       referrerpolicy="no-referrer"
     />
 
+    <!-- ✅ Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
@@ -450,6 +456,67 @@
         }
       };
     </script>
+    <!-- ✅ Swiper JS - Carousel Functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        new Swiper(".mySwiper", {
+          loop: true,
+          autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      });
+    </script>
+    <!-- ✅ Sticky Booking Button -->
+    <a
+      href="https://calendly.com/joinworldtech-info/30min"
+      target="_blank"
+      class="sticky-consult-btn"
+      title="Book a Free 30min Consultation"
+    >
+      Book Free Consultation
+    </a>
+
+    <style>
+      .sticky-consult-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #007bff;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 9999;
+        transition: background-color 0.3s ease;
+      }
+
+      .sticky-consult-btn:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 768px) {
+        .sticky-consult-btn {
+          bottom: 20px;
+          right: 20px;
+          padding: 10px 16px;
+          font-size: 14px;
+        }
+      }
+    </style>
 
     <!-- ✅ Sticky Booking Button -->
     <!-- ✅ Sticky Booking Button -->
