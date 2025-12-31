@@ -1,10 +1,11 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello-cron
+  name: cron
   namespace: job
 spec:
-  schedule: "*/1 * * * *" # Every minute
+  schedule: "*/5 * * * *" # Every 5 minutes
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
