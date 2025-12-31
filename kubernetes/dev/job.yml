@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+  namespace: job
+spec:
+  template:
+    spec:
+      containers:
+        - name: hello
+          image: busybox
+          command: ["echo", "Hello from Kubernetes Job"]
+      restartPolicy: Never
+# It runs a container using the busybox image That container runs the command: echo "Hello from Kubernetes Job"
