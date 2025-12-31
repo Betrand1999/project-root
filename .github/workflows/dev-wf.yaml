@@ -246,10 +246,10 @@ jobs:
           kubectl apply -f ${{ github.workspace }}/kubernetes/dev/cluster-issuer.yaml  -n dev
           kubectl apply -f ${{ github.workspace }}/kubernetes/service-account/azure-devops-sa-role-binding-secres.yaml -n dev
           kubectl apply -f ${{ github.workspace }}/kubernetes/service-account/my-project-service-account.yaml -n dev
-          kubectl apply -f ${{ github.workspace }}/kubernetes/dev/job.yaml -n job
-           kubectl apply -f ${{ github.workspace }}/kubernetes/dev/cronJob.yaml -n job
           kubectl rollout status deployment/my-app -n dev
           kubectl rollout restart deployment my-app -n dev
+      # kubectl apply -f ${{ github.workspace }}/kubernetes/dev/job.yaml -n job
+      # kubectl apply -f ${{ github.workspace }}/kubernetes/dev/cronJob.yaml -n job
 
       # - name: Build and Push Image with Pack
       #   run: |
