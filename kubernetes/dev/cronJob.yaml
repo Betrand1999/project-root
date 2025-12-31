@@ -30,3 +30,6 @@ spec:
 
 ###### job ########
 # Do samething just that it runs once
+
+# TEST kubectl exec -it job-hbn2j -n job -- sh AND cat /output/job-output.txt
+
