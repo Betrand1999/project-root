@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello-cron
+  namespace: job
+spec:
+  schedule: "*/1 * * * *" # Every minute
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: hello
+              image: busybox
+              command:
+                [
+                  "/bin/sh",
+                  "-c",
+                  "mkdir -p /output && echo 'Hello from Kubernetes CronJob' > /output/cronjob.txt && sleep 300",
+                ]
+          restartPolicy: Never
+# Kubernetes automatically creates a new Job
+# That Job spins up a new pod
+# Inside that pod, the command you defined is executed
+# create a file output and echo Hello from Kubernetes CronJob
+# Kubernetes automatically deletes old pods created by the CronJob after a certain time
+
+###### job ########
+# Do samething just that it runs once

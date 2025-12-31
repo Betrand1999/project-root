@@ -9,6 +9,10 @@ spec:
       containers:
         - name: hello
           image: busybox
-          command: ["echo", "Hello from Kubernetes Job"]
+          command:
+            [
+              "/bin/sh",
+              "-c",
+              "mkdir -p /output && echo 'Hello from Kubernetes Job' > /output/job-output.txt && sleep 300",
+            ]
       restartPolicy: Never
-# It runs a container using the busybox image That container runs the command: echo "Hello from Kubernetes Job"
