@@ -13,6 +13,6 @@ spec:
             [
               "/bin/sh",
               "-c",
-              "mkdir -p /output && echo 'Hello from Kubernetes Job' > /output/job-output.txt && sleep 300",
+              "mkdir -p /output && echo 'Hello from Kubernetes Job By Betrand Mutagha' > /output/job-output.txt && sleep 300",
             ]
       restartPolicy: Never

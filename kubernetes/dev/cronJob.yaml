@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello-cron
+  name: cron
   namespace: job
 spec:
   schedule: "*/5 * * * *"
@@ -19,7 +19,7 @@ spec:
                 [
                   "/bin/sh",
                   "-c",
-                  "mkdir -p /output && echo 'Hello from Kubernetes CronJob' > /output/cronjob.txt && sleep 300",
+                  "mkdir -p /output && echo 'Hello from Kubernetes CronJob Writing By Betrand Mutagha' > /output/cronjob.txt && sleep 300",
                 ]
           restartPolicy: Never
 # Kubernetes automatically creates a new Job
