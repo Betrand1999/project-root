@@ -118,8 +118,10 @@ def contact_form():
         db.contacts.insert_one(contact_data)
         
         send_email('New Contact Form Submission', EMAIL_USER, f'Name: {name}\nEmail: {email}\nPhone: {phone}\nCategory: {category}\nAppointment: {appointment}\nMessage: {message}')
-        send_email('Thanks for contacting', email, "Thank you for contacting JoinWorldTech. Your inquiry has been received, and a member of our team will follow up shortly\nBest Regards,\nJoinworldtech")
-        
+        # send_email('Thanks for contacting', email, "Thank you for contacting JoinWorldTech. Your inquiry has been received, and a member of our team will follow up shortly\nBest Regards,\nJoinworldtech")
+        send_email('Thanks for contacting', email, f"Hi {name},\n\nThank you for contacting JoinWorldTech. Your inquiry has been received, and a member of our team will follow up shortly.\n\nBest regards,\nJoinWorldTech")
+
+
         
 
         # Remove the email or SMS notification logic here
