@@ -66,7 +66,7 @@ def login():
             login_user(user_obj)
 
             # success message
-            flash("Login successful!", "success")
+            flash("Login successful! To Access Videos", "success")
 
             # redirect to videos page
             return redirect(url_for('private_videos'))
