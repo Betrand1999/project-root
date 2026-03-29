@@ -24,11 +24,11 @@ spec:
             - containerPort: 50
           resources:
             requests:
-              cpu: 20m
-              memory: 64Mi
+              cpu: 60m
+              memory: 130Mi
             limits:
               cpu: 300m
-              memory: 100Mi
+              memory: 256Mi
           envFrom:
             - secretRef:
                 name: my-app-secret
