@@ -52,21 +52,28 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('private_videos'))
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
+
         user = users_collection.find_one({'username': username})
         print(user)
+
         if user and check_password_hash(user['password'], password):
-            user_obj =User(user["_id"], user["username"])
+            user_obj = User(user["_id"], user["username"])
             login_user(user_obj)
-            # return redirect(url_for('home'))
-            return jsonify({"message":"Login successful", "status": 200})
-        else:
-            # return redirect(url_for('login'))
-            return jsonify({"message":"Invalid username or password", "status": 400})
+
+            # success message
+            flash("Login successful!", "success")
+
+            # redirect to videos page
+            return redirect(url_for('private_videos'))
+
+        flash("Invalid username or password", "danger")
+        return redirect(url_for('login'))
+
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
