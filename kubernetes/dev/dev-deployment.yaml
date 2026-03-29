@@ -4,7 +4,7 @@ metadata:
   name: my-app
   namespace: dev
 spec:
-  replicas: 0
+  replicas: 1
   minReadySeconds: 5
   selector:
     matchLabels:
@@ -24,11 +24,11 @@ spec:
             - containerPort: 50
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 20m
+              memory: 64Mi
             limits:
               cpu: 300m
-              memory: 256Mi
+              memory: 100Mi
           envFrom:
             - secretRef:
                 name: my-app-secret
